@@ -27,6 +27,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <!-- Mermaid para diagramas -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
     <style>
       :root {
         --bg: #0a0c10;
@@ -774,6 +776,109 @@
         box-shadow: var(--shadow);
       }
 
+      /* Estilos para el selector de tablas */
+      .tables-selector select {
+        transition: all 0.3s ease;
+      }
+
+      .tables-selector select:hover {
+        border-color: var(--accent);
+      }
+
+      .tables-selector select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(79, 143, 247, 0.1);
+      }
+
+      .tables-selector option {
+        background: var(--bg-alt);
+        color: var(--text);
+        padding: 8px;
+      }
+
+      /* Estilos para contenido de tablas */
+      .table-content {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        margin-bottom: 30px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .table-header {
+        padding: 24px 30px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-alt);
+      }
+
+      .table-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+
+      .table-body {
+        padding: 30px;
+        overflow-x: auto;
+      }
+
+      .table-body table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        background: var(--bg-alt);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .table-body th,
+      .table-body td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .table-body th {
+        background: var(--accent);
+        color: white;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .table-body td {
+        color: var(--text-muted);
+        line-height: 1.5;
+      }
+
+      .table-body tr:hover td {
+        background: var(--border);
+      }
+
+      .table-body strong {
+        color: var(--accent-light);
+        font-weight: 600;
+      }
+
+      /* Estilos para diagramas Mermaid */
+      .mermaid-container {
+        background: var(--bg-alt);
+        border-radius: var(--radius);
+        padding: 20px;
+        margin: 20px 0;
+        text-align: center;
+        border: 1px solid var(--border);
+        overflow-x: auto;
+      }
+
+      .mermaid {
+        max-width: 100%;
+      }
+
       /* Responsive */
       @media (max-width: 768px) {
         .sidebar {
@@ -1024,6 +1129,35 @@
           >
             Selecciona el contenido
           </p>
+
+          <!-- Selector de tablas dinámico -->
+          <div class="tables-selector" style="margin-top: 20px">
+            <h3
+              style="
+                color: var(--accent-light);
+                font-size: 1rem;
+                margin-bottom: 12px;
+              "
+            >
+              📊 Tablas de Referencia
+            </h3>
+            <select
+              id="tablesSelect"
+              style="
+                width: 100%;
+                padding: 10px;
+                background: var(--bg-alt);
+                border: 2px solid var(--border);
+                border-radius: 8px;
+                color: var(--text);
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+              "
+            >
+              <option value="">Selecciona una tabla...</option>
+            </select>
+          </div>
         </div>
 
         <div class="sidebar-content">
@@ -2527,6 +2661,19 @@
             const lang = language || "text";
             let processedCode = code.trim();
 
+            // Manejar bloques Mermaid especialmente
+            if (lang.toLowerCase() === "mermaid") {
+              const mermaidId = `mermaid-${Math.random()
+                .toString(36)
+                .substr(2, 9)}`;
+              return `
+                <div class="mermaid-container">
+                  <div class="mermaid" id="${mermaidId}">
+                    ${processedCode}
+                  </div>
+                </div>`;
+            }
+
             // Escapar HTML/XML tags first
             processedCode = escapeHtml(processedCode);
 
@@ -2997,6 +3144,31 @@
           });
         }
 
+        // Inicializar Mermaid si está disponible
+        if (typeof mermaid !== "undefined") {
+          mermaid.initialize({
+            startOnLoad: false, // Cambiar a false para control manual
+            theme: "dark",
+            themeVariables: {
+              primaryColor: "#4f8ff7",
+              primaryTextColor: "#f1f3f8",
+              primaryBorderColor: "#6ba3f9",
+              lineColor: "#a8b3c5",
+              secondaryColor: "#7c3aed",
+              tertiaryColor: "#1a1d29",
+              background: "#0a0c10",
+              mainBkg: "#141721",
+              secondBkg: "#1a1d29",
+              tertiaryBkg: "#2a3140",
+            },
+            securityLevel: "loose", // Permite más flexibilidad
+            flowchart: {
+              htmlLabels: true,
+              curve: "basis",
+            },
+          });
+        }
+
         // Configurar sidebar móvil
         const sidebarToggle = document.getElementById("sidebarToggle");
         const sidebar = document.getElementById("sidebar");
@@ -3435,6 +3607,222 @@
           closeModal();
           closeResultDetail();
         }
+      });
+
+      // Función para cargar tablas disponibles
+      async function loadAvailableTables() {
+        const tablesSelect = document.getElementById("tablesSelect");
+
+        try {
+          // Lista de archivos de tablas conocidos con títulos personalizados
+          const knownTables = [
+            { name: "http.md", title: "📡 Códigos de Estado HTTP" },
+            { name: "sql.md", title: "🗄️ Comandos SQL Esenciales" },
+            {
+              name: "microservicios-arquitectura.md",
+              title: "🏗️ Arquitecturas de Microservicios",
+            },
+            { name: "arquitecturas.md", title: "🏛️ Patrones Arquitectónicos" },
+          ];
+
+          // Limpiar opciones existentes (excepto la primera)
+          tablesSelect.innerHTML =
+            '<option value="">Selecciona una tabla...</option>';
+
+          // Agregar archivos conocidos
+          for (const file of knownTables) {
+            try {
+              const response = await fetch(`../tablas/${file.name}`);
+              if (response.ok) {
+                const option = document.createElement("option");
+                option.value = file.name;
+                option.textContent = file.title;
+                tablesSelect.appendChild(option);
+              }
+            } catch (error) {
+              console.log(`Archivo ${file.name} no encontrado`);
+            }
+          }
+
+          // Intentar cargar archivos adicionales dinámicamente
+          await loadAdditionalTables();
+
+          // Ordenar opciones alfabéticamente (excepto la primera)
+          const options = Array.from(tablesSelect.options).slice(1);
+          options.sort((a, b) => a.textContent.localeCompare(b.textContent));
+
+          // Limpiar y reagregar ordenado
+          tablesSelect.innerHTML =
+            '<option value="">Selecciona una tabla...</option>';
+          options.forEach((option) => tablesSelect.appendChild(option));
+        } catch (error) {
+          console.error("Error cargando tablas:", error);
+        }
+      }
+
+      // Función para intentar cargar archivos adicionales de la carpeta tablas
+      async function loadAdditionalTables() {
+        // Lista de posibles archivos que podrían existir
+        const potentialFiles = [
+          { name: "nosql.md", title: "🍃 Bases de Datos NoSQL" },
+          { name: "patrones.md", title: "🎯 Patrones de Diseño" },
+          { name: "testing.md", title: "🧪 Estrategias de Testing" },
+          { name: "performance.md", title: "⚡ Optimización de Performance" },
+          { name: "security.md", title: "🔒 Seguridad en Aplicaciones" },
+          { name: "azure.md", title: "☁️ Servicios de Azure" },
+          { name: "aws.md", title: "🚀 Servicios de AWS" },
+          { name: "docker.md", title: "🐳 Docker y Contenedores" },
+          { name: "kubernetes.md", title: "⚓ Kubernetes" },
+          { name: "devops.md", title: "🔄 DevOps y CI/CD" },
+          { name: "apis.md", title: "🌐 Diseño de APIs REST" },
+          { name: "monitoring.md", title: "📊 Monitoreo y Observabilidad" },
+        ];
+
+        const tablesSelect = document.getElementById("tablesSelect");
+
+        for (const file of potentialFiles) {
+          try {
+            const response = await fetch(`../tablas/${file.name}`);
+            if (response.ok) {
+              // Verificar si ya no existe para evitar duplicados
+              const existingOption = Array.from(tablesSelect.options).find(
+                (option) => option.value === file.name
+              );
+
+              if (!existingOption) {
+                const option = document.createElement("option");
+                option.value = file.name;
+                option.textContent = file.title;
+                tablesSelect.appendChild(option);
+              }
+            }
+          } catch (error) {
+            // Archivo no existe, continuar
+          }
+        }
+      }
+
+      // Función para cargar y mostrar una tabla
+      async function loadTable(fileName) {
+        if (!fileName) return;
+
+        const contentArea = document.getElementById("contentArea");
+        const contentTitle = document.getElementById("contentTitle");
+        const contentDescription =
+          document.getElementById("contentDescription");
+        const sectionsContainer = document.getElementById("sectionsContainer");
+
+        // Mostrar loading
+        contentArea.classList.add("active");
+        sectionsContainer.innerHTML = `
+          <div class="loading">
+            <div class="loader"></div>
+            Cargando tabla...
+          </div>
+        `;
+
+        try {
+          const response = await fetch(`../tablas/${fileName}`);
+          if (!response.ok) throw new Error(`Error cargando ${fileName}`);
+
+          const markdownContent = await response.text();
+
+          // Actualizar título y descripción
+          const title = fileName
+            .replace(".md", "")
+            .split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+
+          contentTitle.textContent = `📊 ${title}`;
+          contentDescription.textContent = `Tabla de referencia: ${title}`;
+
+          // Convertir markdown a HTML
+          const htmlContent = convertMarkdownToHtml(markdownContent);
+
+          // Mostrar contenido
+          sectionsContainer.innerHTML = `
+            <div class="table-content">
+              <div class="table-body">
+                ${htmlContent}
+              </div>
+            </div>
+          `;
+
+          // Aplicar highlighting primero, luego inicializar Mermaid
+          setTimeout(() => {
+            applyHighlighting();
+
+            // Inicializar Mermaid después de que el contenido esté renderizado
+            if (typeof mermaid !== "undefined") {
+              try {
+                // Reinicializar Mermaid para los nuevos diagramas
+                mermaid.init(undefined, ".mermaid");
+              } catch (error) {
+                console.warn("Error inicializando Mermaid:", error);
+              }
+            }
+          }, 100);
+
+          // Activar búsqueda
+          loadedData = {
+            title: `Tabla: ${title}`,
+            description: `Tabla de referencia: ${title}`,
+            sections: [
+              {
+                title: title,
+                content: markdownContent,
+                type: "table",
+              },
+            ],
+          };
+
+          indexContentForSearch(loadedData);
+          document.getElementById("searchSection").classList.add("active");
+        } catch (error) {
+          sectionsContainer.innerHTML = `
+            <div class="qa-item">
+              <div class="qa-title" style="color: var(--danger);">❌ Error</div>
+              <div class="qa-content">
+                No se pudo cargar la tabla "${fileName}". 
+                <br><br>
+                <strong>Posibles causas:</strong>
+                <ul>
+                  <li>El archivo no existe</li>
+                  <li>Error de permisos</li>
+                  <li>Problema de red</li>
+                </ul>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      // Event listener para el selector de tablas
+      document.addEventListener("DOMContentLoaded", () => {
+        // Cargar tablas disponibles al inicializar
+        loadAvailableTables();
+
+        // Manejar selección de tabla
+        const tablesSelect = document.getElementById("tablesSelect");
+        tablesSelect.addEventListener("change", (e) => {
+          const selectedFile = e.target.value;
+          if (selectedFile) {
+            // Limpiar selección de otras opciones
+            document
+              .querySelectorAll(".json-option")
+              .forEach((option) => option.classList.remove("selected"));
+
+            loadTable(selectedFile);
+
+            // Cerrar sidebar en móvil
+            if (window.innerWidth <= 768) {
+              document.getElementById("sidebar").classList.remove("open");
+            }
+          }
+        });
+
+        // ... resto del código de inicialización existente ...
       });
     </script>
   </body>

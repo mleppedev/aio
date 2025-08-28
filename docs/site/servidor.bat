@@ -1,1 +1,1 @@
-cd /d "c:\Users\micha\Desktop\mleppe\entrevistas\23people\biometrika\docs" && python -m http.server 8000
+cd /d "C:\Users\micha\Desktop\mleppe\entrevistas\aio\docs" && python -m http.server 8000
