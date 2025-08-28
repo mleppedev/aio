@@ -1,0 +1,134 @@
+{
+  "title": "Logic Building Problems - Fácil",
+  "description": "Problemas fáciles de construcción de lógica de programación",
+  "version": "1.0",
+  "lastUpdated": "2025-08-21",
+  "difficulty": "easy",
+  "section": {
+    "id": "logic-easy",
+    "title": "🟡 Logic Building - Problemas Fáciles",
+    "description": "Problemas de nivel fácil para fortalecer la lógica de programación",
+    "subsections": [
+      {
+        "id": "sum-of-digits",
+        "title": "Sum of Digits",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Calcular la suma de todos los dígitos de un número.<br><br><strong>Ejemplos:</strong><br>• Input: 1234, Output: 10 (1+2+3+4)<br>• Input: 567, Output: 18 (5+6+7)<br><br><strong>Solución Iterativa:</strong><br>```javascript<br>function sumOfDigits(n) {<br>    let sum = 0;<br>    while (n > 0) {<br>        sum += n % 10;<br>        n = Math.floor(n / 10);<br>    }<br>    return sum;<br>}<br>```<br><br><strong>Solución con String:</strong><br>```javascript<br>function sumOfDigits(n) {<br>    return n.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);<br>}<br>```<br><br><strong>Lógica:</strong> Extraer dígitos usando módulo 10 y división entera."
+      },
+      {
+        "id": "reverse-digits",
+        "title": "Reverse Digits",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Invertir los dígitos de un número.<br><br><strong>Ejemplos:</strong><br>• Input: 1234, Output: 4321<br>• Input: 506, Output: 605<br><br><strong>Solución Matemática:</strong><br>```javascript<br>function reverseDigits(n) {<br>    let reversed = 0;<br>    while (n > 0) {<br>        reversed = reversed * 10 + (n % 10);<br>        n = Math.floor(n / 10);<br>    }<br>    return reversed;<br>}<br>```<br><br><strong>Solución con String:</strong><br>```javascript<br>function reverseDigits(n) {<br>    return parseInt(n.toString().split('').reverse().join(''));<br>}<br>```<br><br><strong>Lógica:</strong> Construir el número invertido dígito por dígito."
+      },
+      {
+        "id": "prime-testing",
+        "title": "Prime Number Testing",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Determinar si un número es primo.<br><br><strong>Ejemplos:</strong><br>• Input: 17, Output: true (solo divisible por 1 y 17)<br>• Input: 15, Output: false (divisible por 1, 3, 5, 15)<br><br><strong>Solución Básica:</strong><br>```javascript<br>function isPrime(n) {<br>    if (n <= 1) return false;<br>    if (n <= 3) return true;<br>    if (n % 2 === 0 || n % 3 === 0) return false;<br>    <br>    for (let i = 5; i * i <= n; i += 6) {<br>        if (n % i === 0 || n % (i + 2) === 0) {<br>            return false;<br>        }<br>    }<br>    return true;<br>}<br>```<br><br><strong>Solución Simple:</strong><br>```javascript<br>function isPrime(n) {<br>    if (n <= 1) return false;<br>    for (let i = 2; i <= Math.sqrt(n); i++) {<br>        if (n % i === 0) return false;<br>    }<br>    return true;<br>}<br>```<br><br><strong>Lógica:</strong> Verificar divisibilidad solo hasta la raíz cuadrada del número."
+      },
+      {
+        "id": "check-power",
+        "title": "Check if Number is Power of Another",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Verificar si un número x es una potencia de otro número y.<br><br><strong>Ejemplos:</strong><br>• Input: x = 8, y = 2, Output: true (2³ = 8)<br>• Input: x = 10, y = 2, Output: false<br><br><strong>Solución:</strong><br>```javascript<br>function isPower(x, y) {<br>    if (y === 1) return x === 1;<br>    <br>    let power = 1;<br>    while (power < x) {<br>        power *= y;<br>    }<br>    return power === x;<br>}<br>```<br><br><strong>Solución con Logaritmos:</strong><br>```javascript<br>function isPower(x, y) {<br>    if (y === 1) return x === 1;<br>    <br>    let logResult = Math.log(x) / Math.log(y);<br>    return Math.abs(logResult - Math.round(logResult)) < 1e-10;<br>}<br>```<br><br><strong>Lógica:</strong> Multiplicar y hasta alcanzar o superar x, o usar logaritmos."
+      },
+      {
+        "id": "distance-between-points",
+        "title": "Distance Between Two Points",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Calcular la distancia euclidiana entre dos puntos en el plano.<br><br><strong>Fórmula:</strong> d = √[(x₂-x₁)² + (y₂-y₁)²]<br><br><strong>Ejemplos:</strong><br>• Input: P1(0,0), P2(3,4), Output: 5<br>• Input: P1(1,1), P2(4,5), Output: 5<br><br><strong>Solución:</strong><br>```javascript<br>function distanceBetweenPoints(x1, y1, x2, y2) {<br>    const dx = x2 - x1;<br>    const dy = y2 - y1;<br>    return Math.sqrt(dx * dx + dy * dy);<br>}<br><br>// Con objetos punto<br>function distance(point1, point2) {<br>    const dx = point2.x - point1.x;<br>    const dy = point2.y - point1.y;<br>    return Math.sqrt(dx * dx + dy * dy);<br>}<br>```<br><br><strong>Lógica:</strong> Aplicar el teorema de Pitágoras para calcular la hipotenusa."
+      },
+      {
+        "id": "valid-triangle",
+        "title": "Valid Triangle",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Determinar si tres lados pueden formar un triángulo válido.<br><br><strong>Regla:</strong> La suma de dos lados debe ser mayor que el tercer lado.<br><br><strong>Ejemplos:</strong><br>• Input: a=3, b=4, c=5, Output: true<br>• Input: a=1, b=2, c=5, Output: false<br><br><strong>Solución:</strong><br>```javascript<br>function isValidTriangle(a, b, c) {<br>    return (a + b > c) && (a + c > b) && (b + c > a);<br>}<br><br>// Versión más descriptiva<br>function canFormTriangle(side1, side2, side3) {<br>    const sides = [side1, side2, side3].sort((a, b) => a - b);<br>    return sides[0] + sides[1] > sides[2];<br>}<br>```<br><br><strong>Lógica:</strong> Verificar que la suma de cualquier par de lados sea mayor que el tercero."
+      },
+      {
+        "id": "overlapping-rectangles",
+        "title": "Overlapping Rectangles",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Determinar si dos rectángulos se superponen.<br><br><strong>Entrada:</strong> Dos rectángulos definidos por esquinas (x1,y1,x2,y2)<br><br><strong>Ejemplos:</strong><br>• Rect1: (0,0,2,2), Rect2: (1,1,3,3), Output: true<br>• Rect1: (0,0,1,1), Rect2: (2,2,3,3), Output: false<br><br><strong>Solución:</strong><br>```javascript<br>function doRectanglesOverlap(rect1, rect2) {<br>    const [x1, y1, x2, y2] = rect1;<br>    const [x3, y3, x4, y4] = rect2;<br>    <br>    // No se superponen si están completamente separados<br>    return !(x2 < x3 || x4 < x1 || y2 < y3 || y4 < y1);<br>}<br><br>// Versión alternativa más clara<br>function rectanglesOverlap(r1, r2) {<br>    return r1.right > r2.left && <br>           r2.right > r1.left && <br>           r1.bottom > r2.top && <br>           r2.bottom > r1.top;<br>}<br>```<br><br><strong>Lógica:</strong> Verificar que no estén completamente separados en ningún eje."
+      },
+      {
+        "id": "factorial",
+        "title": "Factorial of a Number",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Calcular el factorial de un número (n!).<br><br><strong>Definición:</strong> n! = n × (n-1) × (n-2) × ... × 1<br><br><strong>Ejemplos:</strong><br>• Input: 5, Output: 120 (5×4×3×2×1)<br>• Input: 0, Output: 1 (por definición)<br><br><strong>Solución Iterativa:</strong><br>```javascript<br>function factorial(n) {<br>    if (n < 0) return -1; // Error para negativos<br>    let result = 1;<br>    for (let i = 2; i <= n; i++) {<br>        result *= i;<br>    }<br>    return result;<br>}<br>```<br><br><strong>Solución Recursiva:</strong><br>```javascript<br>function factorial(n) {<br>    if (n < 0) return -1;<br>    if (n === 0 || n === 1) return 1;<br>    return n * factorial(n - 1);<br>}<br>```<br><br><strong>Lógica:</strong> Multiplicar todos los números desde 1 hasta n."
+      },
+      {
+        "id": "pair-cube-count",
+        "title": "Pair Cube Count",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Contar cuántos pares (a,b) existen donde a³ + b³ = n.<br><br><strong>Ejemplos:</strong><br>• Input: n = 9, Output: 2 pares [(1,2), (2,1)] porque 1³+2³=9<br>• Input: n = 16, Output: 1 par [(2,2)] porque 2³+2³=16<br><br><strong>Solución:</strong><br>```javascript<br>function pairCubeCount(n) {<br>    let count = 0;<br>    const cubeRoot = Math.cbrt(n);<br>    <br>    for (let a = 1; a <= cubeRoot; a++) {<br>        const cubeA = a * a * a;<br>        if (cubeA > n) break;<br>        <br>        const remaining = n - cubeA;<br>        const b = Math.cbrt(remaining);<br>        <br>        if (Number.isInteger(b) && b >= 1) {<br>            count += (a === b) ? 1 : 2; // Evitar duplicados<br>        }<br>    }<br>    return count;<br>}<br>```<br><br><strong>Lógica:</strong> Iterar valores de a y verificar si n-a³ es un cubo perfecto."
+      },
+      {
+        "id": "gcd-hcf",
+        "title": "GCD (Greatest Common Divisor)",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Encontrar el máximo común divisor de dos números.<br><br><strong>Ejemplos:</strong><br>• Input: a=48, b=18, Output: 6<br>• Input: a=17, b=13, Output: 1<br><br><strong>Algoritmo de Euclides:</strong><br>```javascript<br>function gcd(a, b) {<br>    while (b !== 0) {<br>        let temp = b;<br>        b = a % b;<br>        a = temp;<br>    }<br>    return a;<br>}<br>```<br><br><strong>Versión Recursiva:</strong><br>```javascript<br>function gcd(a, b) {<br>    return b === 0 ? a : gcd(b, a % b);<br>}<br>```<br><br><strong>Para múltiples números:</strong><br>```javascript<br>function gcdMultiple(numbers) {<br>    return numbers.reduce((acc, num) => gcd(acc, num));<br>}<br>```<br><br><strong>Lógica:</strong> Aplicar el algoritmo de Euclides basado en el residuo de la división."
+      },
+      {
+        "id": "lcm",
+        "title": "LCM (Least Common Multiple)",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Encontrar el mínimo común múltiplo de dos números.<br><br><strong>Fórmula:</strong> LCM(a,b) = |a×b| / GCD(a,b)<br><br><strong>Ejemplos:</strong><br>• Input: a=12, b=18, Output: 36<br>• Input: a=7, b=3, Output: 21<br><br><strong>Solución:</strong><br>```javascript<br>function gcd(a, b) {<br>    return b === 0 ? a : gcd(b, a % b);<br>}<br><br>function lcm(a, b) {<br>    return Math.abs(a * b) / gcd(a, b);<br>}<br>```<br><br><strong>Para múltiples números:</strong><br>```javascript<br>function lcmMultiple(numbers) {<br>    return numbers.reduce((acc, num) => lcm(acc, num));<br>}<br>```<br><br><strong>Método Directo:</strong><br>```javascript<br>function lcmDirect(a, b) {<br>    let max = Math.max(a, b);<br>    while (true) {<br>        if (max % a === 0 && max % b === 0) {<br>            return max;<br>        }<br>        max++;<br>    }<br>}<br>```<br><br><strong>Lógica:</strong> Usar la relación matemática entre GCD y LCM."
+      },
+      {
+        "id": "perfect-number",
+        "title": "Perfect Number",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Determinar si un número es perfecto (igual a la suma de sus divisores propios).<br><br><strong>Ejemplos:</strong><br>• Input: 6, Output: true (divisores: 1,2,3 → 1+2+3=6)<br>• Input: 28, Output: true (divisores: 1,2,4,7,14 → suma=28)<br><br><strong>Solución:</strong><br>```javascript<br>function isPerfectNumber(n) {<br>    if (n <= 1) return false;<br>    <br>    let sum = 1; // 1 siempre es divisor<br>    <br>    for (let i = 2; i <= Math.sqrt(n); i++) {<br>        if (n % i === 0) {<br>            sum += i;<br>            if (i !== n / i) { // Evitar contar dos veces la raíz cuadrada<br>                sum += n / i;<br>            }<br>        }<br>    }<br>    <br>    return sum === n;<br>}<br>```<br><br><strong>Encontrar todos los perfectos hasta n:</strong><br>```javascript<br>function findPerfectNumbers(limit) {<br>    const perfects = [];<br>    for (let i = 2; i <= limit; i++) {<br>        if (isPerfectNumber(i)) {<br>            perfects.push(i);<br>        }<br>    }<br>    return perfects;<br>}<br>```<br><br><strong>Lógica:</strong> Encontrar todos los divisores propios y sumar para verificar si equals al número."
+      },
+      {
+        "id": "add-fractions",
+        "title": "Add Two Fractions",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Sumar dos fracciones y simplificar el resultado.<br><br><strong>Fórmula:</strong> a/b + c/d = (a×d + c×b) / (b×d)<br><br><strong>Ejemplos:</strong><br>• Input: 1/2 + 1/3, Output: 5/6<br>• Input: 2/4 + 1/4, Output: 3/4<br><br><strong>Solución:</strong><br>```javascript<br>function gcd(a, b) {<br>    return b === 0 ? a : gcd(b, a % b);<br>}<br><br>function addFractions(num1, den1, num2, den2) {<br>    // Sumar fracciones<br>    const numerator = num1 * den2 + num2 * den1;<br>    const denominator = den1 * den2;<br>    <br>    // Simplificar<br>    const commonDivisor = gcd(Math.abs(numerator), Math.abs(denominator));<br>    <br>    return {<br>        numerator: numerator / commonDivisor,<br>        denominator: denominator / commonDivisor<br>    };<br>}<br>```<br><br><strong>Clase Fracción:</strong><br>```javascript<br>class Fraction {<br>    constructor(num, den) {<br>        const g = gcd(Math.abs(num), Math.abs(den));<br>        this.num = num / g;<br>        this.den = den / g;<br>    }<br>    <br>    add(other) {<br>        return new Fraction(<br>            this.num * other.den + other.num * this.den,<br>            this.den * other.den<br>        );<br>    }<br>}<br>```<br><br><strong>Lógica:</strong> Aplicar álgebra de fracciones y simplificar usando GCD."
+      },
+      {
+        "id": "day-of-week",
+        "title": "Day of the Week",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Determinar qué día de la semana corresponde a una fecha dada.<br><br><strong>Algoritmo de Doomsday o Zeller's Congruence</strong><br><br><strong>Ejemplos:</strong><br>• Input: 21/08/2025, Output: 'Thursday'<br>• Input: 01/01/2000, Output: 'Saturday'<br><br><strong>Solución - Zeller's Congruence:</strong><br>```javascript<br>function dayOfWeek(day, month, year) {<br>    // Ajustar para el algoritmo de Zeller<br>    if (month < 3) {<br>        month += 12;<br>        year--;<br>    }<br>    <br>    const k = year % 100;<br>    const j = Math.floor(year / 100);<br>    <br>    const h = (day + Math.floor((13 * (month + 1)) / 5) + k + <br>               Math.floor(k / 4) + Math.floor(j / 4) - 2 * j) % 7;<br>    <br>    const days = ['Saturday', 'Sunday', 'Monday', 'Tuesday', <br>                  'Wednesday', 'Thursday', 'Friday'];<br>    <br>    return days[h];<br>}<br>```<br><br><strong>Solución Simple (JavaScript Date):</strong><br>```javascript<br>function dayOfWeek(day, month, year) {<br>    const date = new Date(year, month - 1, day);<br>    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', <br>                  'Thursday', 'Friday', 'Saturday'];<br>    return days[date.getDay()];<br>}<br>```<br><br><strong>Lógica:</strong> Aplicar fórmulas matemáticas para cálculo de fechas."
+      },
+      {
+        "id": "fibonacci-nth",
+        "title": "Nth Fibonacci Number",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Encontrar el enésimo número de Fibonacci.<br><br><strong>Serie:</strong> 0, 1, 1, 2, 3, 5, 8, 13, 21, 34...<br><br><strong>Ejemplos:</strong><br>• Input: n=7, Output: 8<br>• Input: n=10, Output: 34<br><br><strong>Solución Iterativa (Eficiente):</strong><br>```javascript<br>function fibonacci(n) {<br>    if (n <= 1) return n;<br>    <br>    let a = 0, b = 1;<br>    for (let i = 2; i <= n; i++) {<br>        [a, b] = [b, a + b];<br>    }<br>    return b;<br>}<br>```<br><br><strong>Solución Recursiva (Simple):</strong><br>```javascript<br>function fibonacci(n) {<br>    if (n <= 1) return n;<br>    return fibonacci(n - 1) + fibonacci(n - 2);<br>}<br>```<br><br><strong>Solución con Memoización:</strong><br>```javascript<br>function fibonacci(n, memo = {}) {<br>    if (n in memo) return memo[n];<br>    if (n <= 1) return n;<br>    <br>    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);<br>    return memo[n];<br>}<br>```<br><br><strong>Lógica:</strong> Cada número es la suma de los dos anteriores."
+      },
+      {
+        "id": "decimal-to-binary",
+        "title": "Decimal to Binary Conversion",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Convertir un número decimal a binario.<br><br><strong>Ejemplos:</strong><br>• Input: 10, Output: '1010'<br>• Input: 25, Output: '11001'<br><br><strong>Método División:</strong><br>```javascript<br>function decimalToBinary(decimal) {<br>    if (decimal === 0) return '0';<br>    <br>    let binary = '';<br>    while (decimal > 0) {<br>        binary = (decimal % 2) + binary;<br>        decimal = Math.floor(decimal / 2);<br>    }<br>    return binary;<br>}<br>```<br><br><strong>Método Recursivo:</strong><br>```javascript<br>function decimalToBinary(decimal) {<br>    if (decimal === 0) return '';<br>    if (decimal === 1) return '1';<br>    <br>    return decimalToBinary(Math.floor(decimal / 2)) + (decimal % 2);<br>}<br>```<br><br><strong>Método Built-in:</strong><br>```javascript<br>function decimalToBinary(decimal) {<br>    return decimal.toString(2);<br>}<br>```<br><br><strong>Con relleno de ceros:</strong><br>```javascript<br>function decimalToBinary(decimal, minLength = 8) {<br>    return decimal.toString(2).padStart(minLength, '0');<br>}<br>```<br><br><strong>Lógica:</strong> Dividir repetidamente entre 2 y tomar los residuos."
+      },
+      {
+        "id": "triangular-sequence",
+        "title": "N-th term of 1, 3, 6, 10, 15, 21...",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Encontrar el enésimo término de la secuencia de números triangulares.<br><br><strong>Secuencia:</strong> 1, 3, 6, 10, 15, 21, 28, 36...<br><strong>Fórmula:</strong> T(n) = n(n+1)/2<br><br><strong>Ejemplos:</strong><br>• Input: n=4, Output: 10<br>• Input: n=6, Output: 21<br><br><strong>Solución Directa:</strong><br>```javascript<br>function triangularNumber(n) {<br>    return (n * (n + 1)) / 2;<br>}<br>```<br><br><strong>Solución Iterativa:</strong><br>```javascript<br>function triangularNumber(n) {<br>    let sum = 0;<br>    for (let i = 1; i <= n; i++) {<br>        sum += i;<br>    }<br>    return sum;<br>}<br>```<br><br><strong>Generar secuencia:</strong><br>```javascript<br>function generateTriangularSequence(count) {<br>    const sequence = [];<br>    for (let i = 1; i <= count; i++) {<br>        sequence.push((i * (i + 1)) / 2);<br>    }<br>    return sequence;<br>}<br>```<br><br><strong>Verificar si un número es triangular:</strong><br>```javascript<br>function isTriangular(num) {<br>    // Un número es triangular si 8n+1 es un cuadrado perfecto<br>    const discriminant = 8 * num + 1;<br>    const sqrt = Math.sqrt(discriminant);<br>    return Number.isInteger(sqrt);<br>}<br>```<br><br><strong>Lógica:</strong> Los números triangulares representan la suma de los primeros n enteros positivos."
+      },
+      {
+        "id": "armstrong-number",
+        "title": "Armstrong Number",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Verificar si un número es Armstrong (suma de dígitos elevados a la potencia del número de dígitos igual al número).<br><br><strong>Ejemplos:</strong><br>• Input: 153, Output: true (1³ + 5³ + 3³ = 1 + 125 + 27 = 153)<br>• Input: 9474, Output: true (9⁴ + 4⁴ + 7⁴ + 4⁴ = 9474)<br><br><strong>Solución:</strong><br>```javascript<br>function isArmstrong(num) {<br>    const str = num.toString();<br>    const numDigits = str.length;<br>    let sum = 0;<br>    <br>    for (let digit of str) {<br>        sum += Math.pow(parseInt(digit), numDigits);<br>    }<br>    <br>    return sum === num;<br>}<br>```<br><br><strong>Versión Matemática:</strong><br>```javascript<br>function isArmstrong(num) {<br>    const original = num;<br>    const numDigits = num.toString().length;<br>    let sum = 0;<br>    <br>    while (num > 0) {<br>        const digit = num % 10;<br>        sum += Math.pow(digit, numDigits);<br>        num = Math.floor(num / 10);<br>    }<br>    <br>    return sum === original;<br>}<br>```<br><br><strong>Encontrar todos los Armstrong hasta n:</strong><br>```javascript<br>function findArmstrongNumbers(limit) {<br>    const armstrong = [];<br>    for (let i = 1; i <= limit; i++) {<br>        if (isArmstrong(i)) {<br>            armstrong.push(i);<br>        }<br>    }<br>    return armstrong;<br>}<br>```<br><br><strong>Lógica:</strong> Sumar cada dígito elevado a la potencia del número total de dígitos."
+      },
+      {
+        "id": "palindrome-number",
+        "title": "Palindrome Number",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Verificar si un número es palíndromo (se lee igual hacia adelante y hacia atrás).<br><br><strong>Ejemplos:</strong><br>• Input: 121, Output: true<br>• Input: 12321, Output: true<br>• Input: 123, Output: false<br><br><strong>Solución con String:</strong><br>```javascript<br>function isPalindrome(num) {<br>    const str = num.toString();<br>    return str === str.split('').reverse().join('');<br>}<br>```<br><br><strong>Solución Matemática:</strong><br>```javascript<br>function isPalindrome(num) {<br>    const original = num;<br>    let reversed = 0;<br>    <br>    while (num > 0) {<br>        reversed = reversed * 10 + (num % 10);<br>        num = Math.floor(num / 10);<br>    }<br>    <br>    return original === reversed;<br>}<br>```<br><br><strong>Optimización (sin crear número completo):</strong><br>```javascript<br>function isPalindrome(num) {<br>    if (num < 0) return false;<br>    <br>    const str = num.toString();<br>    let left = 0;<br>    let right = str.length - 1;<br>    <br>    while (left < right) {<br>        if (str[left] !== str[right]) {<br>            return false;<br>        }<br>        left++;<br>        right--;<br>    }<br>    <br>    return true;<br>}<br>```<br><br><strong>Lógica:</strong> Comparar el número con su versión invertida, o comparar dígitos desde extremos hacia el centro."
+      },
+      {
+        "id": "digit-root",
+        "title": "Digital Root",
+        "type": "logic-problem",
+        "content": "<strong>Problema:</strong> Calcular la raíz digital (sumar dígitos repetidamente hasta obtener un solo dígito).<br><br><strong>Ejemplos:</strong><br>• Input: 38, Output: 2 (3+8=11, 1+1=2)<br>• Input: 123, Output: 6 (1+2+3=6)<br><br><strong>Solución Iterativa:</strong><br>```javascript<br>function digitalRoot(num) {<br>    while (num >= 10) {<br>        let sum = 0;<br>        while (num > 0) {<br>            sum += num % 10;<br>            num = Math.floor(num / 10);<br>        }<br>        num = sum;<br>    }<br>    return num;<br>}<br>```<br><br><strong>Solución Recursiva:</strong><br>```javascript<br>function digitalRoot(num) {<br>    if (num < 10) return num;<br>    <br>    let sum = 0;<br>    while (num > 0) {<br>        sum += num % 10;<br>        num = Math.floor(num / 10);<br>    }<br>    <br>    return digitalRoot(sum);<br>}<br>```<br><br><strong>Solución Matemática (Fórmula):</strong><br>```javascript<br>function digitalRoot(num) {<br>    if (num === 0) return 0;<br>    return 1 + (num - 1) % 9;<br>}<br>```<br><br><strong>Con String:</strong><br>```javascript<br>function digitalRoot(num) {<br>    while (num >= 10) {<br>        num = num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);<br>    }<br>    return num;<br>}<br>```<br><br><strong>Lógica:</strong> Sumar dígitos repetidamente o usar la propiedad matemática relacionada con módulo 9."
+      }
+    ]
+  }
+}

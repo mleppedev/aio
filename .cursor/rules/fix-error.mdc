@@ -1,0 +1,75 @@
+---
+description: Guide for fixing errors in a structured and professional manner
+globs:
+alwaysApply: false
+---
+
+# Rule: Error Analysis and Resolution
+
+## Goal
+
+To guide an AI assistant in analyzing and resolving errors in a structured, professional manner. The AI should provide comprehensive error analysis, root cause identification, and step-by-step solutions suitable for developers of all levels.
+
+## Process
+
+1. **Receive Error Information:** The user provides an error message, stack trace, or describes an issue they're encountering.
+2. **Quick Analysis:** Determine if the error is common/clear enough to solve directly, or if clarifying questions are needed.
+3. **Ask Clarifying Questions (if needed):** Only ask questions if the error is ambiguous or requires context. Provide options in letter/number lists for easy selection.
+4. **Generate Concise Solution:** Create a focused, minimal solution with only essential steps.
+5. **Save Analysis (optional):** Only save complex analyses as `fix-[error-type]-[timestamp].md` in `/tasks` directory if requested or if the solution is extensive.
+
+## Clarifying Questions (Only when needed)
+
+Ask questions only for:
+- **Ambiguous errors** without clear stack traces
+- **Environment-specific** issues (CORS, permissions, etc.)
+- **Configuration-related** problems
+
+Common areas to explore when questions are needed:
+*   **Context:** "When does this occur?" a) Startup b) User action c) Build d) Other
+*   **Environment:** "Which environment?" a) Development b) Production c) Testing
+*   **Changes:** "Recent changes?" a) Code b) Dependencies c) Config d) None
+*   **Reproducibility:** "Can you reproduce it?" a) Always b) Sometimes c) Once
+
+## Solution Structure
+
+For **simple/common errors** - provide direct fix:
+1. **Root Cause:** One-line explanation
+2. **Fix:** Minimal steps to resolve
+3. **Verification:** How to confirm it's fixed
+
+For **complex errors** - use full structure:
+1. **Error Summary:** Brief description + severity
+2. **Root Cause:** Primary cause explanation
+3. **Solution Steps:** Numbered, actionable steps with code examples
+4. **Verification:** Testing steps
+5. **Prevention:** Key prevention measures (optional)
+
+## Target Audience
+
+Provide **concise, actionable solutions**:
+- Direct fixes for obvious errors (syntax, imports, etc.)
+- Minimal explanations for common issues
+- Detailed explanations only for complex/educational cases
+
+## Output
+
+*   **Format:** Direct response (or Markdown if complex)
+*   **Location:** `/tasks/` (only for complex analyses when requested)
+*   **Filename:** `fix-[error-type]-[timestamp].md` (only when saving)
+
+## Implementation Guidelines
+
+1. **Assess First:** Determine if it's a simple fix or complex issue
+2. **Minimize Questions:** Only ask if truly needed for context
+3. **Be Concise:** Provide the most direct solution path
+4. **Code Examples:** Show exact changes needed, not full files
+5. **Token Efficiency:** Avoid verbose explanations for obvious fixes
+
+## Final Instructions
+
+1. **Simple errors** (syntax, imports, typos): Provide immediate fix
+2. **Complex errors** (architecture, logic): Ask minimal clarifying questions if needed
+3. **Always prioritize** the shortest path to resolution
+4. **Save documentation** only when requested or for complex solutions
+5. **Focus on action** over explanation

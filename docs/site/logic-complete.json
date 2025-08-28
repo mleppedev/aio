@@ -1,0 +1,135 @@
+{
+  "title": "Logic Building Problems - Completo",
+  "description": "Colección completa de problemas de construcción de lógica de programación de todos los niveles",
+  "version": "1.0",
+  "lastUpdated": "2025-08-21",
+  "difficulty": "all",
+  "sections": [
+    {
+      "id": "logic-basic-section",
+      "title": "🟢 Problemas Básicos",
+      "description": "Fundamentos de lógica de programación",
+      "subsections": [
+        {
+          "id": "check-even-odd",
+          "title": "Check Even or Odd",
+          "type": "logic-problem",
+          "difficulty": "basic",
+          "content": "<strong>Problema:</strong> Dado un número n, determinar si es par o impar. Retornar true para par y false para impar.<br><br><strong>Ejemplos:</strong><br>• Input: n = 15, Output: false (15 % 2 = 1, entonces 15 es impar)<br>• Input: n = 44, Output: true (44 % 2 = 0, entonces 44 es par)<br><br><strong>Solución:</strong><br>```javascript<br>function isEven(n) {<br>    return n % 2 === 0;<br>}<br>```<br><br><strong>Lógica:</strong> Un número es par si el residuo de dividirlo entre 2 es 0."
+        },
+        {
+          "id": "multiplication-table",
+          "title": "Multiplication Table",
+          "type": "logic-problem",
+          "difficulty": "basic",
+          "content": "<strong>Problema:</strong> Generar la tabla de multiplicar de un número dado n hasta un límite específico.<br><br><strong>Ejemplos:</strong><br>• Input: n = 5, limit = 10<br>• Output: 5x1=5, 5x2=10, 5x3=15... 5x10=50<br><br><strong>Solución:</strong><br>```javascript<br>function multiplicationTable(n, limit) {<br>    const result = [];<br>    for (let i = 1; i <= limit; i++) {<br>        result.push(`${n} x ${i} = ${n * i}`);<br>    }<br>    return result;<br>}<br>```<br><br><strong>Lógica:</strong> Iterar desde 1 hasta el límite y multiplicar cada número por n."
+        },
+        {
+          "id": "sum-of-naturals",
+          "title": "Sum of Natural Numbers",
+          "type": "logic-problem",
+          "difficulty": "basic",
+          "content": "<strong>Problema:</strong> Calcular la suma de los primeros n números naturales.<br><br><strong>Ejemplos:</strong><br>• Input: n = 5, Output: 15 (1+2+3+4+5)<br>• Input: n = 10, Output: 55<br><br><strong>Solución Iterativa:</strong><br>```javascript<br>function sumNaturals(n) {<br>    let sum = 0;<br>    for (let i = 1; i <= n; i++) {<br>        sum += i;<br>    }<br>    return sum;<br>}<br>```<br><br><strong>Solución Matemática:</strong><br>```javascript<br>function sumNaturals(n) {<br>    return (n * (n + 1)) / 2;<br>}<br>```<br><br><strong>Lógica:</strong> Suma aritmética o fórmula matemática directa."
+        },
+        {
+          "id": "factorial",
+          "title": "Factorial of a Number",
+          "type": "logic-problem",
+          "difficulty": "basic",
+          "content": "<strong>Problema:</strong> Calcular el factorial de un número (n!).<br><br><strong>Definición:</strong> n! = n × (n-1) × (n-2) × ... × 1<br><br><strong>Ejemplos:</strong><br>• Input: 5, Output: 120 (5×4×3×2×1)<br>• Input: 0, Output: 1 (por definición)<br><br><strong>Solución Iterativa:</strong><br>```javascript<br>function factorial(n) {<br>    if (n < 0) return -1;<br>    let result = 1;<br>    for (let i = 2; i <= n; i++) {<br>        result *= i;<br>    }<br>    return result;<br>}<br>```<br><br><strong>Solución Recursiva:</strong><br>```javascript<br>function factorial(n) {<br>    if (n < 0) return -1;<br>    if (n === 0 || n === 1) return 1;<br>    return n * factorial(n - 1);<br>}<br>```"
+        }
+      ]
+    },
+    {
+      "id": "logic-easy-section",
+      "title": "🟡 Problemas Fáciles",
+      "description": "Algoritmos fundamentales y estructuras básicas",
+      "subsections": [
+        {
+          "id": "fibonacci-nth",
+          "title": "Nth Fibonacci Number",
+          "type": "logic-problem",
+          "difficulty": "easy",
+          "content": "<strong>Problema:</strong> Encontrar el enésimo número de Fibonacci.<br><br><strong>Serie:</strong> 0, 1, 1, 2, 3, 5, 8, 13, 21, 34...<br><br><strong>Ejemplos:</strong><br>• Input: n=7, Output: 8<br>• Input: n=10, Output: 34<br><br><strong>Solución Iterativa (Eficiente):</strong><br>```javascript<br>function fibonacci(n) {<br>    if (n <= 1) return n;<br>    <br>    let a = 0, b = 1;<br>    for (let i = 2; i <= n; i++) {<br>        [a, b] = [b, a + b];<br>    }<br>    return b;<br>}<br>```<br><br><strong>Solución Recursiva:</strong><br>```javascript<br>function fibonacci(n) {<br>    if (n <= 1) return n;<br>    return fibonacci(n - 1) + fibonacci(n - 2);<br>}<br>```<br><br><strong>Lógica:</strong> Cada número es la suma de los dos anteriores."
+        },
+        {
+          "id": "prime-testing",
+          "title": "Prime Number Testing",
+          "type": "logic-problem",
+          "difficulty": "easy",
+          "content": "<strong>Problema:</strong> Determinar si un número es primo.<br><br><strong>Ejemplos:</strong><br>• Input: 17, Output: true (solo divisible por 1 y 17)<br>• Input: 15, Output: false (divisible por 1, 3, 5, 15)<br><br><strong>Solución Optimizada:</strong><br>```javascript<br>function isPrime(n) {<br>    if (n <= 1) return false;<br>    if (n <= 3) return true;<br>    if (n % 2 === 0 || n % 3 === 0) return false;<br>    <br>    for (let i = 5; i * i <= n; i += 6) {<br>        if (n % i === 0 || n % (i + 2) === 0) {<br>            return false;<br>        }<br>    }<br>    return true;<br>}<br>```<br><br><strong>Lógica:</strong> Verificar divisibilidad solo hasta la raíz cuadrada del número."
+        },
+        {
+          "id": "palindrome-number",
+          "title": "Palindrome Number",
+          "type": "logic-problem",
+          "difficulty": "easy",
+          "content": "<strong>Problema:</strong> Verificar si un número es palíndromo (se lee igual hacia adelante y hacia atrás).<br><br><strong>Ejemplos:</strong><br>• Input: 121, Output: true<br>• Input: 12321, Output: true<br>• Input: 123, Output: false<br><br><strong>Solución con String:</strong><br>```javascript<br>function isPalindrome(num) {<br>    const str = num.toString();<br>    return str === str.split('').reverse().join('');<br>}<br>```<br><br><strong>Solución Matemática:</strong><br>```javascript<br>function isPalindrome(num) {<br>    const original = num;<br>    let reversed = 0;<br>    <br>    while (num > 0) {<br>        reversed = reversed * 10 + (num % 10);<br>        num = Math.floor(num / 10);<br>    }<br>    <br>    return original === reversed;<br>}<br>```"
+        },
+        {
+          "id": "gcd-hcf",
+          "title": "GCD (Greatest Common Divisor)",
+          "type": "logic-problem",
+          "difficulty": "easy",
+          "content": "<strong>Problema:</strong> Encontrar el máximo común divisor de dos números.<br><br><strong>Ejemplos:</strong><br>• Input: a=48, b=18, Output: 6<br>• Input: a=17, b=13, Output: 1<br><br><strong>Algoritmo de Euclides:</strong><br>```javascript<br>function gcd(a, b) {<br>    while (b !== 0) {<br>        let temp = b;<br>        b = a % b;<br>        a = temp;<br>    }<br>    return a;<br>}<br>```<br><br><strong>Versión Recursiva:</strong><br>```javascript<br>function gcd(a, b) {<br>    return b === 0 ? a : gcd(b, a % b);<br>}<br>```<br><br><strong>Lógica:</strong> Aplicar el algoritmo de Euclides basado en el residuo de la división."
+        }
+      ]
+    },
+    {
+      "id": "logic-medium-section",
+      "title": "🟠 Problemas Medios",
+      "description": "Algoritmos avanzados y matemáticas complejas",
+      "subsections": [
+        {
+          "id": "sieve-basic",
+          "title": "Basic Prime Sieve",
+          "type": "logic-problem",
+          "difficulty": "medium",
+          "content": "<strong>Problema:</strong> Encontrar todos los números primos hasta n usando el algoritmo básico de criba.<br><br><strong>Ejemplos:</strong><br>• Input: n=20, Output: [2, 3, 5, 7, 11, 13, 17, 19]<br><br><strong>Implementación:</strong><br>```javascript<br>function basicSieve(n) {<br>    const primes = [];<br>    const isPrime = Array(n + 1).fill(true);<br>    isPrime[0] = isPrime[1] = false;<br>    <br>    for (let i = 2; i <= n; i++) {<br>        if (isPrime[i]) {<br>            primes.push(i);<br>            for (let j = i * i; j <= n; j += i) {<br>                isPrime[j] = false;<br>            }<br>        }<br>    }<br>    return primes;<br>}<br>```"
+        },
+        {
+          "id": "pascal-triangle",
+          "title": "Pascal's Triangle",
+          "type": "logic-problem",
+          "difficulty": "medium",
+          "content": "<strong>Problema:</strong> Generar las primeras n filas del triángulo de Pascal.<br><br><strong>Propiedades:</strong> Cada elemento es la suma de los dos elementos superiores<br><br><strong>Solución:</strong><br>```javascript<br>function generatePascalTriangle(numRows) {<br>    const triangle = [];<br>    <br>    for (let i = 0; i < numRows; i++) {<br>        const row = new Array(i + 1);<br>        row[0] = row[i] = 1;<br>        <br>        for (let j = 1; j < i; j++) {<br>            row[j] = triangle[i - 1][j - 1] + triangle[i - 1][j];<br>        }<br>        triangle.push(row);<br>    }<br>    return triangle;<br>}<br>```"
+        },
+        {
+          "id": "modular-exponentiation",
+          "title": "Modular Exponentiation",
+          "type": "logic-problem",
+          "difficulty": "medium",
+          "content": "<strong>Problema:</strong> Calcular (base^exp) % mod eficientemente para números grandes.<br><br><strong>Ejemplos:</strong><br>• Input: base=2, exp=10, mod=1000, Output: 24<br><br><strong>Exponenciación Rápida:</strong><br>```javascript<br>function modularExponentiation(base, exp, mod) {<br>    if (mod === 1) return 0;<br>    <br>    let result = 1;<br>    base = base % mod;<br>    <br>    while (exp > 0) {<br>        if (exp % 2 === 1) {<br>            result = (result * base) % mod;<br>        }<br>        exp = Math.floor(exp / 2);<br>        base = (base * base) % mod;<br>    }<br>    return result;<br>}<br>```"
+        }
+      ]
+    },
+    {
+      "id": "logic-hard-section",
+      "title": "🔴 Problemas Difíciles",
+      "description": "Algoritmos complejos y teoría avanzada",
+      "subsections": [
+        {
+          "id": "tower-hanoi",
+          "title": "Tower of Hanoi",
+          "type": "logic-problem",
+          "difficulty": "hard",
+          "content": "<strong>Problema:</strong> Resolver el puzzle de las Torres de Hanoi para n discos.<br><br><strong>Reglas:</strong><br>• Solo se puede mover un disco a la vez<br>• Un disco más grande no puede estar sobre uno más pequeño<br><br><strong>Solución Recursiva:</strong><br>```javascript<br>function towerOfHanoi(n, source, destination, auxiliary) {<br>    const moves = [];<br>    <br>    function solve(disks, from, to, temp) {<br>        if (disks === 1) {<br>            moves.push(`Move disk 1 from ${from} to ${to}`);<br>            return;<br>        }<br>        <br>        solve(disks - 1, from, temp, to);<br>        moves.push(`Move disk ${disks} from ${from} to ${to}`);<br>        solve(disks - 1, temp, to, from);<br>    }<br>    <br>    solve(n, source, destination, auxiliary);<br>    return moves;<br>}<br>```<br><br><strong>Complejidad:</strong> O(2^n) movimientos"
+        },
+        {
+          "id": "josephus-problem",
+          "title": "Josephus Problem",
+          "type": "logic-problem",
+          "difficulty": "hard",
+          "content": "<strong>Problema:</strong> En un círculo de n personas, eliminando cada k-ésima persona, encontrar la posición del sobreviviente.<br><br><strong>Ejemplos:</strong><br>• n=7, k=3: Sobrevive posición 4<br><br><strong>Solución Recursiva:</strong><br>```javascript<br>function josephus(n, k) {<br>    if (n === 1) return 0;<br>    return (josephus(n - 1, k) + k) % n;<br>}<br>```<br><br><strong>Solución Iterativa:</strong><br>```javascript<br>function josephusIterative(n, k) {<br>    let position = 0;<br>    for (let i = 2; i <= n; i++) {<br>        position = (position + k) % i;<br>    }<br>    return position + 1;<br>}<br>```"
+        },
+        {
+          "id": "matrix-determinant",
+          "title": "Matrix Determinant",
+          "type": "logic-problem",
+          "difficulty": "hard",
+          "content": "<strong>Problema:</strong> Calcular el determinante de una matriz cuadrada.<br><br><strong>Solución Recursiva:</strong><br>```javascript<br>function determinant(matrix) {<br>    const n = matrix.length;<br>    <br>    if (n === 1) return matrix[0][0];<br>    if (n === 2) {<br>        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];<br>    }<br>    <br>    let det = 0;<br>    for (let col = 0; col < n; col++) {<br>        const sign = col % 2 === 0 ? 1 : -1;<br>        const subMatrix = getSubMatrix(matrix, 0, col);<br>        det += sign * matrix[0][col] * determinant(subMatrix);<br>    }<br>    return det;<br>}<br>```"
+        }
+      ]
+    }
+  ]
+}

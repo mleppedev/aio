@@ -1,0 +1,45 @@
+---
+alwaysApply: false
+---
+# Task List Management
+
+Guidelines for managing task lists in markdown files to track progress on completing a PRD
+
+## Task Implementation
+- **One sub-task at a time:** Wait for user permission ("yes"/"y") before starting next sub-task
+- **Completion protocol:**  
+  1. **Sub-task done:** Mark `[ ]` → `[x]`
+  2. **All subtasks done:** Test → Stage → Clean → Commit → Mark parent `[x]`
+     - Test: Run relevant tests (not always full suite)
+     - Stage: `git add .` (only if tests pass)
+     - Clean: Remove temp files/code
+     - Commit: `git commit -m "type: summary" -m "- key changes" -m "Task X.Y"`
+  3. **Ask permission** for next sub-task
+
+## Task List Maintenance
+
+**Update as you work:**
+- Mark completed: `[ ]` → `[x]`
+- Add new tasks when discovered
+- Update "Relevant Files" with created/modified files
+
+**Relevant Files format:**
+- `path/file.ext` - Brief purpose description
+
+## AI Instructions
+
+**Workflow:**
+1. Check next sub-task
+2. Implement sub-task
+3. Update task list (mark `[x]`)
+4. Ask permission for next sub-task
+
+**Testing strategy:**
+- Run relevant tests, not always full suite
+- Focus on affected functionality
+- Full suite only for major changes
+
+**Efficiency:**
+- Keep updates concise
+- Focus on completion over documentation
+- Ask "Continue?" after each sub-task

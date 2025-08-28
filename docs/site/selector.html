@@ -1,0 +1,3441 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Biblia Técnica – Selector de Contenido</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Highlight.js para syntax highlighting -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+    <style>
+      :root {
+        --bg: #0a0c10;
+        --bg-alt: #141721;
+        --bg-card: #1a1d29;
+        --border: #2a3140;
+        --border-light: #384155;
+        --text: #f1f3f8;
+        --text-muted: #a8b3c5;
+        --text-dim: #7a8396;
+        --accent: #4f8ff7;
+        --accent-light: #6ba3f9;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --radius: 12px;
+        --shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.4);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 40px 20px;
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .header h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 700;
+        background: linear-gradient(
+          135deg,
+          #4f8ff7 0%,
+          #7c3aed 50%,
+          #ec4899 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 16px;
+      }
+
+      .selector-section {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: var(--shadow);
+      }
+
+      .selector-section h2 {
+        color: var(--accent);
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+      }
+
+      .json-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .json-option {
+        background: var(--bg-alt);
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .json-option:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+      }
+
+      .json-option.selected {
+        border-color: var(--accent);
+        background: rgba(79, 143, 247, 0.1);
+      }
+
+      .json-option h3 {
+        color: var(--accent-light);
+        margin-bottom: 12px;
+        font-size: 1.2rem;
+      }
+
+      .json-option p {
+        color: var(--text-muted);
+        margin-bottom: 12px;
+      }
+
+      .json-option .stats {
+        display: flex;
+        gap: 15px;
+        font-size: 0.9rem;
+        color: var(--text-dim);
+      }
+
+      .json-option .stats span {
+        background: var(--border);
+        padding: 4px 8px;
+        border-radius: 6px;
+      }
+
+      .load-button {
+        background: linear-gradient(135deg, #4f8ff7 0%, #7c3aed 100%);
+        border: none;
+        border-radius: var(--radius);
+        padding: 16px 32px;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        display: block;
+      }
+
+      .load-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px -8px rgba(79, 143, 247, 0.4);
+      }
+
+      .load-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .content-area {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        margin-bottom: 30px;
+        box-shadow: var(--shadow);
+        display: none;
+      }
+
+      .content-area.active {
+        display: block;
+      }
+
+      .section-header {
+        padding: 24px 30px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-alt);
+        border-radius: var(--radius) var(--radius) 0 0;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+
+      .section-content {
+        padding: 30px;
+      }
+
+      .search-section {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: var(--shadow);
+        display: none;
+      }
+
+      .search-section.active {
+        display: block;
+      }
+
+      .search-box {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 16px 80px 16px 20px;
+        background: var(--bg-alt);
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(79, 143, 247, 0.1);
+      }
+
+      .search-input::placeholder {
+        color: var(--text-dim);
+      }
+
+      .search-icon {
+        position: absolute;
+        right: 50px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-dim);
+        font-size: 1.2rem;
+      }
+
+      .clear-search-btn {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        transition: all 0.2s ease;
+      }
+
+      .clear-search-btn:hover {
+        background: var(--bg-hover);
+      }
+
+      .clear-search-btn.visible {
+        display: flex;
+      }
+
+      .clear-icon {
+        color: var(--text-muted);
+        font-size: 1rem;
+        font-weight: bold;
+      }
+
+      .clear-search-btn:hover .clear-icon {
+        color: var(--text);
+      }
+
+      .search-filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .filter-chip {
+        padding: 8px 16px;
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .filter-chip:hover,
+      .filter-chip.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
+      .search-results {
+        max-height: 60vh;
+        overflow-y: auto;
+      }
+
+      .search-result-item {
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        margin-bottom: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .search-result-item:hover {
+        border-color: var(--accent);
+        transform: translateY(-1px);
+      }
+
+      .search-result-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--accent-light);
+        margin-bottom: 8px;
+      }
+
+      .search-result-content {
+        color: var(--text-muted);
+        line-height: 1.6;
+        max-height: 100px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .search-result-content.expanded {
+        max-height: none;
+      }
+
+      .search-result-meta {
+        margin-top: 12px;
+        font-size: 0.85rem;
+        color: var(--text-dim);
+      }
+
+      .highlight {
+        background: rgba(79, 143, 247, 0.3);
+        color: var(--accent-light);
+        padding: 2px 4px;
+        border-radius: 4px;
+      }
+
+      .no-results {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-muted);
+      }
+
+      .toc {
+        background: var(--bg-alt);
+        border-radius: var(--radius);
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+
+      .toc h3 {
+        color: var(--accent);
+        margin-bottom: 15px;
+      }
+
+      .toc-item {
+        display: block;
+        padding: 8px 12px;
+        margin: 6px 0;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 0.95rem;
+      }
+
+      .toc-item:hover {
+        background: var(--border);
+        border-color: var(--accent);
+      }
+
+      .qa-item {
+        margin-bottom: 24px;
+        padding: 20px;
+        background: var(--bg-alt);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+      }
+
+      .qa-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--accent-light);
+        margin-bottom: 12px;
+      }
+
+      .qa-content {
+        line-height: 1.7;
+      }
+
+      .qa-content strong {
+        color: var(--accent);
+      }
+
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-muted);
+      }
+
+      .loader {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid var(--border);
+        border-radius: 50%;
+        border-top-color: var(--accent);
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+
+        .json-options {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Estilos para código con syntax highlighting */
+      pre {
+        background: var(--bg-alt) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius) !important;
+        padding: 20px !important;
+        margin: 15px 0 !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        font-family: "Consolas", "Monaco", "Courier New", monospace !important;
+        font-size: 0.85rem !important;
+        line-height: 1.5 !important;
+        color: var(--text) !important;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        word-break: break-all !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      pre::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-light));
+        border-radius: var(--radius) var(--radius) 0 0;
+      }
+
+      code {
+        font-family: "Consolas", "Monaco", "Courier New", monospace !important;
+        font-size: 0.9em !important;
+      }
+
+      /* Inline code */
+      :not(pre) > code {
+        background: var(--bg-alt) !important;
+        color: var(--accent-light) !important;
+        padding: 3px 8px !important;
+        border-radius: 4px !important;
+        border: 1px solid var(--border) !important;
+        font-weight: 500;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Override highlight.js styles for dark theme */
+      .hljs {
+        background: var(--bg-alt) !important;
+        color: var(--text) !important;
+      }
+
+      .hljs-keyword,
+      .hljs-selector-tag,
+      .hljs-literal,
+      .hljs-section,
+      .hljs-title {
+        color: #ff79c6 !important;
+      }
+
+      .hljs-string,
+      .hljs-regexp {
+        color: #f1fa8c !important;
+      }
+
+      .hljs-number {
+        color: #bd93f9 !important;
+      }
+
+      .hljs-function,
+      .hljs-title.function_ {
+        color: #50fa7b !important;
+      }
+
+      .hljs-comment {
+        color: #6272a4 !important;
+        font-style: italic !important;
+      }
+
+      .hljs-variable,
+      .hljs-attr {
+        color: #8be9fd !important;
+      }
+
+      /* Scrollbars personalizados */
+      ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--bg-alt);
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        border-radius: 6px;
+        border: 2px solid var(--bg-alt);
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, var(--accent-light), #7bb7fa);
+      }
+
+      ::-webkit-scrollbar-corner {
+        background: var(--bg-alt);
+      }
+
+      /* Para Firefox */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) var(--bg-alt);
+      }
+
+      /* Layout con sidebar */
+      .app-layout {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        background: var(--bg);
+      }
+
+      .sidebar {
+        width: 380px;
+        background: var(--bg-card);
+        border-right: 2px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .sidebar-header {
+        padding: 25px 20px;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(135deg, var(--bg-alt), var(--bg-card));
+      }
+
+      .sidebar-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background: var(--bg-card);
+      }
+
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: var(--bg);
+      }
+
+      .main-header {
+        padding: 25px 30px;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(135deg, var(--bg-card), var(--bg-alt));
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .main-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 30px;
+        background: var(--bg);
+      }
+
+      /* Ajustar estilos del container original */
+      .container {
+        height: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Ajustar json-options para sidebar */
+      .json-options {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        grid-template-columns: none;
+      }
+
+      .json-option {
+        padding: 18px;
+        cursor: pointer;
+        border-radius: 12px;
+        border: 2px solid var(--border);
+        background: linear-gradient(135deg, var(--bg-alt), var(--bg));
+        transition: all 0.3s ease;
+        margin-bottom: 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .json-option::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(79, 143, 247, 0.1),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      .json-option:hover {
+        border-color: var(--accent);
+        background: linear-gradient(135deg, var(--bg), var(--bg-alt));
+        transform: translateX(8px);
+        box-shadow: 0 5px 20px rgba(79, 143, 247, 0.2);
+      }
+
+      .json-option:hover::before {
+        left: 100%;
+      }
+
+      .json-option.selected {
+        background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        border-color: var(--accent-light);
+        color: var(--bg);
+        transform: translateX(5px);
+        box-shadow: 0 8px 25px rgba(79, 143, 247, 0.4);
+      }
+
+      .json-option.selected::before {
+        display: none;
+      }
+
+      .json-option.selected h3,
+      .json-option.selected p,
+      .json-option.selected .stats span {
+        color: #ffffff !important;
+        text-shadow: none;
+        font-weight: 600;
+      }
+
+      .json-option.selected .stats span {
+        background: rgba(255, 255, 255, 0.2) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .json-option h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .json-option p {
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+        line-height: 1.4;
+        color: var(--text-muted);
+      }
+
+      .json-option .stats {
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .json-option .stats span {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        background: var(--border);
+        color: var(--text);
+        border-radius: 6px;
+        font-weight: 500;
+      }
+
+      /* Esconder elementos del layout original */
+      .header {
+        display: none;
+      }
+
+      .selector-section {
+        display: none;
+      }
+
+      /* Toggle button para mobile */
+      .sidebar-toggle {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1001;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .sidebar {
+          position: fixed;
+          top: 0;
+          left: -380px;
+          height: 100vh;
+          z-index: 1000;
+          transition: left 0.3s ease;
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar.open {
+          left: 0;
+        }
+
+        .sidebar-toggle {
+          display: block;
+        }
+
+        .main-content {
+          margin-left: 0;
+          width: 100%;
+        }
+
+        .main-header {
+          padding: 20px;
+        }
+
+        .main-body {
+          padding: 20px;
+        }
+
+        .json-option {
+          padding: 15px;
+        }
+
+        .json-option h3 {
+          font-size: 1rem;
+        }
+
+        .json-option p {
+          font-size: 0.85rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .sidebar {
+          width: 100vw;
+          left: -100vw;
+        }
+
+        .main-header {
+          padding: 15px;
+        }
+
+        .main-body {
+          padding: 15px;
+        }
+
+        .sidebar-header {
+          padding: 20px 15px;
+        }
+
+        .sidebar-content {
+          padding: 15px;
+        }
+      }
+
+      /* Modal styles */
+      #modal {
+        backdrop-filter: blur(4px);
+      }
+
+      #modal .modal-content {
+        animation: modalFadeIn 0.3s ease-out;
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95) translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      /* Estilos para el contenido del modal */
+      #modalContent pre {
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        margin: 16px 0;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        word-break: break-all;
+        max-width: 100%;
+        box-sizing: border-box;
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
+
+      #modalContent code {
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 2px 6px;
+        font-size: 0.9em;
+      }
+
+      #modalContent pre code {
+        background: none;
+        border: none;
+        padding: 0;
+      }
+
+      /* Estilos para elementos de texto en el modal */
+      #modalContent h1,
+      #modalContent h2,
+      #modalContent h3,
+      #modalContent h4,
+      #modalContent h5,
+      #modalContent h6 {
+        margin: 0;
+        line-height: 1.2;
+        padding: 0;
+        margin-bottom: 2px;
+      }
+
+      #modalContent p {
+        margin: 0;
+        line-height: 1.4;
+        padding: 0;
+      }
+
+      #modalContent ul,
+      #modalContent ol {
+        margin: 0;
+        padding-left: 20px;
+        margin-top: 2px;
+      }
+
+      #modalContent li {
+        margin: 0;
+        line-height: 1.3;
+        padding: 0;
+      }
+
+      #modalContent blockquote {
+        margin: 2px 0;
+        padding: 4px 8px;
+        border-left: 3px solid var(--accent);
+        background: var(--bg-alt);
+      }
+
+      /* Estilos para bloques de código colapsables */
+      .collapsible-code {
+        margin: 7px 0;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--bg-alt);
+        overflow: hidden;
+      }
+
+      .code-header {
+        background: var(--bg-secondary);
+        padding: 5px 7px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid var(--border);
+        transition: background-color 0.2s ease;
+      }
+
+      .code-header:hover {
+        background: var(--bg-hover);
+      }
+
+      .code-language {
+        background: var(--accent);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8em;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .toggle-icon {
+        color: var(--accent);
+        font-weight: bold;
+        transition: transform 0.2s ease;
+      }
+
+      .toggle-icon.expanded {
+        transform: rotate(180deg);
+      }
+
+      .code-action {
+        color: var(--text-muted);
+        font-size: 0.9em;
+        margin-left: auto;
+      }
+
+      .code-preview {
+        padding: 15px;
+        background: var(--bg-alt);
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        font-size: 0.9em;
+        white-space: pre-wrap;
+        overflow: hidden;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .code-full {
+        transition: all 0.3s ease;
+      }
+
+      .code-full pre {
+        margin: 0;
+        background: var(--bg-alt);
+        border: none;
+        border-radius: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-layout">
+      <!-- Sidebar izquierdo -->
+      <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h2 style="margin: 0; color: var(--accent); font-size: 1.3rem">
+            📚 Biblia Técnica
+          </h2>
+          <p
+            style="
+              margin: 5px 0 0 0;
+              color: var(--text-muted);
+              font-size: 0.9rem;
+            "
+          >
+            Selecciona el contenido
+          </p>
+        </div>
+
+        <div class="sidebar-content">
+          <div class="json-options">
+            <div class="json-option" data-file="biblia-general.json">
+              <h3>📋 Preguntas Generales</h3>
+              <p>Fundamentos técnicos, .NET, Azure, y Biometrika</p>
+              <div class="stats">
+                <span>~50KB</span>
+                <span>10 Secciones</span>
+                <span>Carga Rápida</span>
+              </div>
+            </div>
+
+            <div
+              class="json-option"
+              data-file="../plan/100-preguntas-tipicas.md"
+              data-type="markdown"
+            >
+              <h3>⚡ 100 Preguntas .NET Senior</h3>
+              <p>
+                Guía completa y detallada para entrevistas de Ingeniero .NET
+                Senior
+              </p>
+              <div class="stats">
+                <span>~500KB</span>
+                <span>100 Preguntas</span>
+                <span>Markdown</span>
+              </div>
+            </div>
+
+            <div
+              class="json-option"
+              data-file="../plan/dotnet_interview_questions.md"
+              data-type="markdown"
+            >
+              <h3>🎯 .NET Interview Questions</h3>
+              <p>80 preguntas técnicas de .NET con Cloud & DevOps incluidas</p>
+              <div class="stats">
+                <span>~850KB</span>
+                <span>80 Preguntas</span>
+                <span>Completo</span>
+              </div>
+            </div>
+
+            <div class="json-option" data-file="microservicios.json">
+              <h3>🔧 Microservices Architecture</h3>
+              <p>Preguntas sobre microservicios y arquitectura distribuida</p>
+              <div class="stats">
+                <span>~25KB</span>
+                <span>15 Preguntas</span>
+                <span>Architecture</span>
+              </div>
+            </div>
+
+            <div class="json-option" data-file="logical-thinking.json">
+              <h3>🧠 Logical Thinking</h3>
+              <p>54 preguntas de pensamiento lógico</p>
+              <div class="stats">
+                <span>~25KB</span>
+                <span>54 Preguntas</span>
+                <span>Especializada</span>
+              </div>
+            </div>
+
+            <div class="json-option" data-file="logic-basic.json">
+              <h3>🟢 Logic Basic</h3>
+              <p>Problemas básicos de lógica</p>
+              <div class="stats">
+                <span>~15KB</span>
+                <span>8 Problemas</span>
+                <span>Principiante</span>
+              </div>
+            </div>
+
+            <div class="json-option" data-file="logic-easy.json">
+              <h3>🟡 Logic Easy</h3>
+              <p>Algoritmos fundamentales</p>
+              <div class="stats">
+                <span>~35KB</span>
+                <span>20 Problemas</span>
+                <span>Intermedio</span>
+              </div>
+            </div>
+
+            <div class="json-option" data-file="logic-medium.json">
+              <h3>🟠 Logic Medium</h3>
+              <p>Matemáticas avanzadas</p>
+              <div class="stats">
+                <span>~45KB</span>
+                <span>15 Problemas</span>
+                <span>Avanzado</span>
+              </div>
+            </div>
+
+            <div class="json-option" data-file="logic-hard.json">
+              <h3>🔴 Logic Hard</h3>
+              <p>Algoritmos complejos</p>
+              <div class="stats">
+                <span>~40KB</span>
+                <span>8 Problemas</span>
+                <span>Experto</span>
+              </div>
+            </div>
+
+            <div class="json-option" data-file="logic-complete.json">
+              <h3>🧠 Logic Building (Completo)</h3>
+              <p>Todos los problemas de lógica</p>
+              <div class="stats">
+                <span>~80KB</span>
+                <span>51 Problemas</span>
+                <span>Todos los Niveles</span>
+              </div>
+            </div>
+
+            <div class="json-option" data-file="biblia.json">
+              <h3>📖 Biblia Completa</h3>
+              <p>Todo el contenido completo</p>
+              <div class="stats">
+                <span>~117KB</span>
+                <span>11 Secciones</span>
+                <span>Carga Lenta</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido principal -->
+      <div class="main-content">
+        <div class="main-header">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <div>
+              <h1 style="margin: 0; font-size: 1.5rem" id="contentTitle">
+                Selecciona contenido del menú lateral
+              </h1>
+              <p
+                style="margin: 5px 0 0 0; color: var(--text-muted)"
+                id="contentDescription"
+              >
+                Elige una opción del menú izquierdo para comenzar
+              </p>
+            </div>
+            <button class="btn-primary" id="loadButton" style="display: none">
+              🚀 Cargar Contenido
+            </button>
+          </div>
+        </div>
+
+        <div class="main-body">
+          <!-- Sección de búsqueda -->
+          <div class="search-section" id="searchSection">
+            <div class="search-box">
+              <input
+                type="text"
+                class="search-input"
+                id="searchInput"
+                placeholder="Busca preguntas por palabra clave..."
+              />
+              <span class="search-icon">🔍</span>
+              <button
+                class="clear-search-btn"
+                id="clearSearchBtn"
+                title="Limpiar búsqueda"
+              >
+                <span class="clear-icon">✕</span>
+              </button>
+            </div>
+
+            <div class="search-filters">
+              <div class="filter-chip active" data-filter="all">Todos</div>
+              <div class="filter-chip" data-filter="qa">Q&A</div>
+              <div class="filter-chip" data-filter="list">Listas</div>
+              <div class="filter-chip" data-filter="text">Texto</div>
+              <div class="filter-chip" data-filter="logical">
+                Logical Thinking
+              </div>
+              <div class="filter-chip" data-filter="logic-problem">
+                Logic Building
+              </div>
+            </div>
+
+            <div class="search-results" id="searchResults">
+              <div class="no-results">
+                Escribe algo en el buscador para ver resultados...
+              </div>
+            </div>
+          </div>
+
+          <!-- Área de contenido -->
+          <div class="content-area" id="contentArea">
+            <div class="section-content">
+              <div class="toc" id="tocContainer" style="display: none">
+                <h3>📋 Índice de Contenidos</h3>
+                <div id="tocItems"></div>
+              </div>
+              <div id="sectionsContainer">
+                <div
+                  class="qa-item"
+                  style="text-align: center; background: var(--bg-card)"
+                >
+                  <div class="qa-title">👈 Bienvenido a la Biblia Técnica</div>
+                  <div class="qa-content">
+                    Haz clic en cualquier opción del menú lateral izquierdo para
+                    cargar automáticamente el contenido.
+                    <br /><br />
+                    <strong>Disponible:</strong>
+                    <br />• Preguntas Generales (técnicas y Biometrika) <br />•
+                    100 Preguntas .NET Senior (guía completa) <br />• .NET
+                    Interview Questions (70 preguntas con Cloud & DevOps)
+                    <br />• Microservices Architecture (15 preguntas
+                    especializadas) <br />• Logical Thinking (54 preguntas)
+                    <br />• Logic Building (51 problemas por dificultad) <br />•
+                    Biblia Completa (todo el contenido) <br /><br />
+                    <em style="color: var(--text-muted)"
+                      >💡 La carga es automática e incluye búsqueda
+                      integrada</em
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toggle button para mobile -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+    <!-- Mantener la estructura original oculta para compatibilidad -->
+    <div class="container" style="display: none">
+      <div class="header">
+        <h1>📚 Biblia Técnica de Entrevista</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem">
+          Elige el conjunto de preguntas que necesitas estudiar
+        </p>
+      </div>
+
+      <div class="selector-section">
+        <h2>🎯 Selecciona el Contenido</h2>
+
+        <div class="json-options">
+          <div class="json-option" data-file="biblia-general.json">
+            <h3>📋 Preguntas Generales</h3>
+            <p>
+              Fundamentos técnicos, .NET, Azure, y Biometrika sin Logical
+              Thinking
+            </p>
+            <div class="stats">
+              <span>~50KB</span>
+              <span>10 Secciones</span>
+              <span>Carga Rápida</span>
+            </div>
+          </div>
+
+          <div
+            class="json-option"
+            data-file="../plan/100-preguntas-tipicas.md"
+            data-type="markdown"
+          >
+            <h3>⚡ 100 Preguntas .NET Senior</h3>
+            <p>
+              Guía completa y detallada para entrevistas de Ingeniero .NET
+              Senior
+            </p>
+            <div class="stats">
+              <span>~500KB</span>
+              <span>100 Preguntas</span>
+              <span>Markdown</span>
+            </div>
+          </div>
+
+          <div class="json-option" data-file="logical-thinking.json">
+            <h3>🧠 Logical Thinking</h3>
+            <p>54 preguntas de pensamiento lógico y resolución de problemas</p>
+            <div class="stats">
+              <span>~25KB</span>
+              <span>54 Preguntas</span>
+              <span>Especializada</span>
+            </div>
+          </div>
+
+          <div class="json-option" data-file="logic-basic.json">
+            <h3>🟢 Logic Basic</h3>
+            <p>Problemas básicos de construcción de lógica de programación</p>
+            <div class="stats">
+              <span>~15KB</span>
+              <span>8 Problemas</span>
+              <span>Principiante</span>
+            </div>
+          </div>
+
+          <div class="json-option" data-file="logic-easy.json">
+            <h3>🟡 Logic Easy</h3>
+            <p>Problemas fáciles con algoritmos fundamentales</p>
+            <div class="stats">
+              <span>~35KB</span>
+              <span>20 Problemas</span>
+              <span>Intermedio</span>
+            </div>
+          </div>
+
+          <div class="json-option" data-file="logic-medium.json">
+            <h3>🟠 Logic Medium</h3>
+            <p>Problemas medios con matemáticas avanzadas</p>
+            <div class="stats">
+              <span>~45KB</span>
+              <span>15 Problemas</span>
+              <span>Avanzado</span>
+            </div>
+          </div>
+
+          <div class="json-option" data-file="logic-hard.json">
+            <h3>🔴 Logic Hard</h3>
+            <p>Problemas difíciles con algoritmos complejos</p>
+            <div class="stats">
+              <span>~40KB</span>
+              <span>8 Problemas</span>
+              <span>Experto</span>
+            </div>
+          </div>
+
+          <div class="json-option" data-file="logic-complete.json">
+            <h3>🧠 Logic Building (Completo)</h3>
+            <p>Todos los problemas de lógica organizados por dificultad</p>
+            <div class="stats">
+              <span>~80KB</span>
+              <span>51 Problemas</span>
+              <span>Todos los Niveles</span>
+            </div>
+          </div>
+
+          <div class="json-option" data-file="biblia.json">
+            <h3>📖 Biblia Completa</h3>
+            <p>Todo el contenido: preguntas técnicas + logical thinking</p>
+            <div class="stats">
+              <span>~117KB</span>
+              <span>11 Secciones</span>
+              <span>Carga Lenta</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="load-button" id="loadButton" disabled>
+          Selecciona una opción primero
+        </button>
+      </div>
+
+      <div class="search-section" id="searchSection">
+        <h2>🔍 Buscador de Preguntas</h2>
+
+        <div class="search-box">
+          <input
+            type="text"
+            class="search-input"
+            id="searchInput"
+            placeholder="Busca preguntas por palabra clave..."
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="search-filters">
+          <div class="filter-chip active" data-filter="all">Todos</div>
+          <div class="filter-chip" data-filter="qa">Q&A</div>
+          <div class="filter-chip" data-filter="list">Listas</div>
+          <div class="filter-chip" data-filter="logical">Logical Thinking</div>
+          <div class="filter-chip" data-filter="logic-problem">
+            Logic Building
+          </div>
+        </div>
+
+        <div class="search-results" id="searchResults">
+          <div class="no-results">
+            Escribe algo en el buscador para ver resultados...
+          </div>
+        </div>
+      </div>
+
+      <div class="content-area" id="contentArea">
+        <div class="section-header">
+          <div class="section-title" id="contentTitle">Contenido Cargado</div>
+          <div style="color: var(--text-muted)" id="contentDescription"></div>
+        </div>
+        <div class="section-content">
+          <div class="toc" id="tocContainer" style="display: none">
+            <h3>📋 Índice de Contenidos</h3>
+            <div id="tocItems"></div>
+          </div>
+          <div id="sectionsContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let selectedFile = null;
+      let loadedData = null;
+
+      // Manejar selección y carga automática de archivos
+      document.querySelectorAll(".json-option").forEach((option) => {
+        option.addEventListener("click", async () => {
+          // Remover selección anterior
+          document
+            .querySelectorAll(".json-option")
+            .forEach((opt) => opt.classList.remove("selected"));
+
+          // Seleccionar actual
+          option.classList.add("selected");
+          selectedFile = option.dataset.file;
+
+          // Ocultar botón (ya no es necesario)
+          const loadButton = document.getElementById("loadButton");
+          loadButton.style.display = "none";
+
+          // Actualizar título y descripción inmediatamente
+          const contentTitle = document.getElementById("contentTitle");
+          const contentDescription =
+            document.getElementById("contentDescription");
+          contentTitle.textContent = option.querySelector("h3").textContent;
+          contentDescription.textContent =
+            option.querySelector("p").textContent;
+
+          // Cargar contenido automáticamente
+          await loadContent();
+
+          // Cerrar sidebar en móvil después de cargar
+          if (window.innerWidth <= 768) {
+            document.getElementById("sidebar").classList.remove("open");
+          }
+        });
+      });
+
+      // Parser de markdown a JSON para diferentes formatos de preguntas .NET
+      function parseMarkdownToJson(markdownText) {
+        const lines = markdownText.split("\n");
+
+        // Detectar qué tipo de archivo es basándose en la estructura
+        const isSpanishFormat =
+          markdownText.includes("## 🔧") ||
+          markdownText.includes("**FUNDAMENTOS .NET");
+
+        const isMicroservicesFormat =
+          markdownText.includes("## 1. What is a _microservice_") ||
+          markdownText.includes("_microservices architecture_");
+
+        if (isSpanishFormat) {
+          return parseSpanishMarkdown(lines);
+        } else if (isMicroservicesFormat) {
+          return parseMicroservicesMarkdown(lines);
+        } else {
+          return parseEnglishMarkdown(lines);
+        }
+      }
+
+      // Parser para el formato español (100-preguntas-tipicas.md)
+      function parseSpanishMarkdown(lines) {
+        const result = {
+          title: "100 Preguntas Típicas para Ingeniero .NET Senior",
+          description:
+            "Guía completa para preparación de entrevistas técnicas de Ingeniero .NET Senior",
+          sections: [],
+        };
+
+        let currentSection = null;
+        let currentQuestion = null;
+        let currentContent = [];
+        let inCodeBlock = false;
+        let questionNumber = 0;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          const trimmedLine = line.trim();
+
+          // Detectar bloques de código
+          if (trimmedLine.startsWith("```")) {
+            inCodeBlock = !inCodeBlock;
+            currentContent.push(line);
+            continue;
+          }
+
+          // Si estamos en un bloque de código, solo agregar la línea
+          if (inCodeBlock) {
+            currentContent.push(line);
+            continue;
+          }
+
+          // Detectar secciones principales (## 🔧 **FUNDAMENTOS .NET (15 preguntas)**)
+          if (trimmedLine.match(/^##\s+[^\s]/)) {
+            // Guardar pregunta anterior si existe
+            if (currentQuestion && currentContent.length > 0) {
+              currentQuestion.answer = currentContent.join("\n").trim();
+              currentSection.content.push(currentQuestion);
+            }
+
+            // Extraer título de la sección
+            let sectionTitle = trimmedLine.replace(/^##\s*/, "");
+            sectionTitle = sectionTitle.replace(/^[^\x00-\x7F]+\s*/, "");
+            const match = sectionTitle.match(/\*\*([^*]+)\*\*/);
+            if (match) {
+              sectionTitle = match[1];
+            }
+            sectionTitle = sectionTitle
+              .replace(/\s*\(\d+\s*preguntas?\).*$/, "")
+              .trim();
+
+            if (!sectionTitle || sectionTitle.length < 3) {
+              const expectedTitles = [
+                "FUNDAMENTOS .NET",
+                "C# AVANZADO",
+                "ARQUITECTURA Y PATRONES",
+                "APIs Y MICROSERVICIOS",
+                "BASE DE DATOS Y ORM",
+                "PRUEBAS Y CALIDAD",
+                "PERFORMANCE Y OPTIMIZACIÓN",
+                "SEGURIDAD",
+                "DEVOPS Y CI/CD",
+              ];
+              sectionTitle =
+                expectedTitles[result.sections.length] ||
+                `Sección ${result.sections.length + 1}`;
+            }
+
+            currentSection = {
+              id: `section-${result.sections.length + 1}`,
+              title: sectionTitle,
+              description: `Preguntas sobre ${sectionTitle.toLowerCase()}`,
+              content: [],
+            };
+            result.sections.push(currentSection);
+            currentQuestion = null;
+            currentContent = [];
+            continue;
+          }
+
+          // Detectar preguntas (### 1. ¿Cuál es...)
+          if (trimmedLine.match(/^### \d+\.\s/)) {
+            if (currentQuestion && currentContent.length > 0) {
+              currentQuestion.answer = currentContent.join("\n").trim();
+              if (currentSection) {
+                currentSection.content.push(currentQuestion);
+              }
+            }
+
+            questionNumber++;
+            const questionText = trimmedLine
+              .replace(/^### \d+\.\s*/, "")
+              .trim();
+
+            currentQuestion = {
+              id: `pregunta-${questionNumber}`,
+              question: questionText,
+              context: "",
+              answer: "",
+            };
+            currentContent = [];
+            continue;
+          }
+
+          if (trimmedLine.startsWith("**Contexto**:")) {
+            if (currentQuestion) {
+              currentQuestion.context = trimmedLine
+                .replace("**Contexto**:", "")
+                .trim();
+            }
+            continue;
+          }
+
+          if (trimmedLine.startsWith("**Respuesta detallada**:")) {
+            continue;
+          }
+
+          if (
+            currentQuestion &&
+            trimmedLine === "" &&
+            currentContent.length === 0
+          ) {
+            continue;
+          }
+
+          if (currentQuestion) {
+            currentContent.push(line);
+          }
+        }
+
+        if (currentQuestion && currentContent.length > 0) {
+          currentQuestion.answer = currentContent.join("\n").trim();
+          if (currentSection) {
+            currentSection.content.push(currentQuestion);
+          }
+        }
+
+        return result;
+      }
+
+      // Parser para el formato inglés (dotnet_interview_questions.md)
+      function parseEnglishMarkdown(lines) {
+        const result = {
+          title: ".NET Interview Questions and Answers",
+          description:
+            "Comprehensive collection of .NET interview questions with detailed answers covering Basic to Cloud & DevOps topics",
+          sections: [],
+        };
+
+        let currentSection = null;
+        let questions = new Map(); // Para almacenar preguntas por número
+        let currentAnswer = null;
+        let currentContent = [];
+        let inCodeBlock = false;
+
+        // Primera pasada: recopilar preguntas por sección
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          const trimmedLine = line.trim();
+
+          // Detectar secciones (## Basic, ## Intermediate, etc.)
+          if (trimmedLine.match(/^##\s+[A-Za-z&]/)) {
+            if (currentSection) {
+              result.sections.push(currentSection);
+            }
+
+            const sectionTitle = trimmedLine.replace(/^##\s*/, "").trim();
+            currentSection = {
+              id: `section-${result.sections.length + 1}`,
+              title: sectionTitle,
+              description: `${sectionTitle} level questions`,
+              content: [],
+              questionNumbers: [], // Para rastrear números de preguntas
+            };
+            continue;
+          }
+
+          // Detectar preguntas en formato: "21. **What is reflection in .NET?**"
+          // Solo procesar preguntas que están dentro de una sección
+          const questionMatch = trimmedLine.match(/^(\d+)\.\s*\*\*(.+?)\*\*/);
+          if (questionMatch && currentSection) {
+            const questionNumber = parseInt(questionMatch[1]);
+            const questionText = questionMatch[2];
+
+            // Solo incluir preguntas que están dentro del rango esperado (1-70)
+            if (questionNumber <= 70) {
+              questions.set(questionNumber, {
+                id: `pregunta-${questionNumber}`,
+                question: questionText,
+                context: "",
+                answer: "",
+                section: currentSection.title,
+              });
+
+              currentSection.questionNumbers.push(questionNumber);
+            }
+          }
+        }
+
+        // Agregar la última sección
+        if (currentSection) {
+          result.sections.push(currentSection);
+        }
+
+        // Segunda pasada: recopilar respuestas detalladas
+        currentAnswer = null;
+        currentContent = [];
+        inCodeBlock = false;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          const trimmedLine = line.trim();
+
+          // Detectar bloques de código
+          if (trimmedLine.startsWith("```")) {
+            inCodeBlock = !inCodeBlock;
+            if (currentAnswer) {
+              currentContent.push(line);
+            }
+            continue;
+          }
+
+          if (inCodeBlock) {
+            if (currentAnswer) {
+              currentContent.push(line);
+            }
+            continue;
+          }
+
+          // Detectar respuestas detalladas: "### 21. What is reflection in .NET and how would you use it?"
+          const answerMatch = trimmedLine.match(/^###\s+(\d+)\.\s*(.+)/);
+          if (answerMatch) {
+            // Guardar respuesta anterior
+            if (currentAnswer && currentContent.length > 0) {
+              const question = questions.get(currentAnswer);
+              if (question) {
+                question.answer = currentContent.join("\n").trim();
+              }
+            }
+
+            const questionNumber = parseInt(answerMatch[1]);
+            if (questionNumber <= 70) {
+              currentAnswer = questionNumber;
+              currentContent = [];
+            } else {
+              currentAnswer = null;
+            }
+            continue;
+          }
+
+          // Detectar líneas de **Answer:**
+          if (trimmedLine.startsWith("**Answer:**") && currentAnswer) {
+            const answerText = trimmedLine.replace("**Answer:**", "").trim();
+            if (answerText) {
+              currentContent.push(answerText);
+            }
+            continue;
+          }
+
+          // Agregar contenido de respuesta
+          if (currentAnswer) {
+            // Saltar líneas vacías al inicio, pero mantener las del medio y final
+            if (trimmedLine === "" && currentContent.length === 0) {
+              continue;
+            }
+            currentContent.push(line);
+          }
+        }
+
+        // Guardar última respuesta
+        if (currentAnswer && currentContent.length > 0) {
+          const question = questions.get(currentAnswer);
+          if (question) {
+            question.answer = currentContent.join("\n").trim();
+          }
+        }
+
+        // Asignar preguntas a sus secciones
+        result.sections.forEach((section) => {
+          section.questionNumbers.forEach((questionNumber) => {
+            const question = questions.get(questionNumber);
+            if (question) {
+              section.content.push(question);
+            }
+          });
+          delete section.questionNumbers; // Limpiar propiedad temporal
+        });
+
+        console.log(
+          "Secciones parseadas (English format):",
+          result.sections.map((s) => ({
+            title: s.title,
+            questionsCount: s.content.length,
+            totalQuestions: s.content.length,
+            sampleQuestions: s.content.slice(0, 2).map((q) => ({
+              id: q.id,
+              question: q.question.substring(0, 50) + "...",
+              hasAnswer: !!q.answer,
+              answerLength: q.answer ? q.answer.length : 0,
+            })),
+          }))
+        );
+
+        // Verificar total de preguntas
+        const totalQuestions = result.sections.reduce(
+          (total, section) => total + section.content.length,
+          0
+        );
+        console.log(`Total preguntas parseadas: ${totalQuestions}/70`);
+
+        return result;
+      }
+
+      // Parser para el formato de microservicios (microservicios.md)
+      function parseMicroservicesMarkdown(lines) {
+        const result = {
+          title: "Microservices Architecture Interview Questions",
+          description:
+            "Comprehensive questions about microservices architecture and distributed systems",
+          sections: [],
+        };
+
+        let currentSection = null;
+        let currentQuestion = null;
+        let currentContent = [];
+        let inCodeBlock = false;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          const trimmedLine = line.trim();
+
+          // Detectar bloques de código
+          if (trimmedLine.startsWith("```")) {
+            inCodeBlock = !inCodeBlock;
+            currentContent.push(line);
+            continue;
+          }
+
+          // Si estamos en un bloque de código, solo agregar la línea
+          if (inCodeBlock) {
+            currentContent.push(line);
+            continue;
+          }
+
+          // Detectar títulos de sección SOLO con formato: "# Section Title" (un solo #)
+          const sectionMatch = trimmedLine.match(/^#\s+([^#].+)$/);
+          if (sectionMatch) {
+            // Guardar pregunta anterior si existe
+            if (
+              currentQuestion &&
+              currentContent.length > 0 &&
+              currentSection
+            ) {
+              currentQuestion.answer = currentContent.join("\n").trim();
+              currentSection.content.push(currentQuestion);
+            }
+
+            const sectionTitle = sectionMatch[1];
+            const sectionId = sectionTitle
+              .toLowerCase()
+              .replace(/[^a-z0-9]/g, "-");
+
+            currentSection = {
+              id: sectionId,
+              title: sectionTitle,
+              description: `Questions about ${sectionTitle.toLowerCase()}`,
+              content: [],
+            };
+
+            result.sections.push(currentSection);
+            currentQuestion = null;
+            currentContent = [];
+            continue;
+          }
+
+          // Detectar preguntas con formato: "## 1. What is a _microservice_..."
+          const questionMatch = trimmedLine.match(/^##\s+(\d+)\.\s+(.+)/);
+          if (questionMatch) {
+            // Guardar pregunta anterior si existe
+            if (
+              currentQuestion &&
+              currentContent.length > 0 &&
+              currentSection
+            ) {
+              currentQuestion.answer = currentContent.join("\n").trim();
+              currentSection.content.push(currentQuestion);
+            }
+
+            const questionNumber = parseInt(questionMatch[1]);
+            const questionText = questionMatch[2];
+
+            // Si no hay sección actual, crear una sección por defecto
+            if (!currentSection) {
+              currentSection = {
+                id: "microservices-basics",
+                title: "Microservices Fundamentals",
+                description: "Core microservices concepts and principles",
+                content: [],
+              };
+              result.sections.push(currentSection);
+            }
+
+            currentQuestion = {
+              id: `microservice-${questionNumber}`,
+              question: questionText,
+              context: "",
+              answer: "",
+              section: currentSection.title,
+            };
+
+            currentContent = [];
+            continue;
+          }
+
+          // Agregar contenido de respuesta
+          if (currentQuestion) {
+            // Saltar líneas vacías al inicio, pero mantener las del medio y final
+            if (trimmedLine === "" && currentContent.length === 0) {
+              continue;
+            }
+            currentContent.push(line);
+          }
+        }
+
+        // Guardar última pregunta
+        if (currentQuestion && currentContent.length > 0 && currentSection) {
+          currentQuestion.answer = currentContent.join("\n").trim();
+          currentSection.content.push(currentQuestion);
+        }
+
+        const totalQuestions = result.sections.reduce(
+          (total, section) => total + section.content.length,
+          0
+        );
+        console.log(
+          `Microservices: Total secciones: ${result.sections.length}, Total preguntas: ${totalQuestions}`
+        );
+        return result;
+      }
+
+      // Función para cargar contenido
+      async function loadContent() {
+        if (!selectedFile) return;
+
+        const contentArea = document.getElementById("contentArea");
+        const contentTitle = document.getElementById("contentTitle");
+        const contentDescription =
+          document.getElementById("contentDescription");
+        const sectionsContainer = document.getElementById("sectionsContainer");
+        const tocContainer = document.getElementById("tocContainer");
+        const tocItems = document.getElementById("tocItems");
+
+        // Mostrar loading
+        contentArea.classList.add("active");
+        sectionsContainer.innerHTML = `
+                <div class="loading">
+                  <div class="loader"></div>
+                  Cargando contenido...
+                </div>
+              `;
+
+        try {
+          let response;
+
+          // Manejar casos especiales donde el JSON no existe pero necesitamos cargar markdown
+          if (selectedFile === "microservicios.json") {
+            response = await fetch("../plan/microservicios.md");
+          } else {
+            response = await fetch(selectedFile);
+          }
+
+          // Detectar tipo de archivo por extensión o data-type
+          const selectedOption = document.querySelector(
+            `.json-option[data-file="${selectedFile}"]`
+          );
+          const isMarkdown =
+            selectedFile.endsWith(".md") ||
+            selectedOption?.dataset.type === "markdown" ||
+            selectedFile === "microservicios.json"; // Caso especial para microservicios
+
+          if (isMarkdown) {
+            // Procesar archivo markdown
+            const markdownText = await response.text();
+            loadedData = parseMarkdownToJson(markdownText);
+
+            // Arreglar títulos conocidos si el parsing falló
+            const expectedTitles = [
+              "FUNDAMENTOS .NET",
+              "C# AVANZADO",
+              "ARQUITECTURA Y PATRONES",
+              "APIs Y MICROSERVICIOS",
+              "BASE DE DATOS Y ORM",
+              "PRUEBAS Y CALIDAD",
+              "PERFORMANCE Y OPTIMIZACIÓN",
+              "SEGURIDAD",
+              "DEVOPS",
+              "CI/CD",
+              "BIOGRAFÍA Y CONSEJOS",
+            ];
+
+            loadedData.sections.forEach((section, index) => {
+              if (
+                !section.title ||
+                section.title.trim() === "" ||
+                section.title.length < 3
+              ) {
+                if (expectedTitles[index]) {
+                  section.title = expectedTitles[index];
+                  section.description = `Preguntas sobre ${expectedTitles[
+                    index
+                  ].toLowerCase()}`;
+                }
+              }
+            });
+          } else {
+            // Procesar archivo JSON
+            loadedData = await response.json();
+          }
+
+          contentTitle.textContent = loadedData.title;
+          contentDescription.textContent = loadedData.description;
+
+          // Limpiar contenido anterior
+          sectionsContainer.innerHTML = "";
+          tocItems.innerHTML = "";
+
+          // Detectar estructura del archivo
+          if (loadedData.section && loadedData.section.subsections) {
+            // Estructura de una sola sección (logical-thinking.json y logic-*.json simples)
+            renderLogicalThinking(loadedData);
+          } else if (
+            loadedData.sections &&
+            Array.isArray(loadedData.sections)
+          ) {
+            // Estructura de múltiples secciones (biblia.json, logic-complete.json, y markdown parseado)
+            renderGeneralContent(loadedData);
+          } else {
+            throw new Error("Estructura de archivo no reconocida");
+          }
+
+          // Activar búsqueda después de cargar
+          setTimeout(() => {
+            document.getElementById("searchSection").classList.add("active");
+            indexContentForSearch(loadedData);
+            setAutoFilter(loadedData);
+
+            // Si hay texto en el filtro de búsqueda, aplicarlo automáticamente
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput && searchInput.value.trim()) {
+              performSearch();
+            }
+          }, 500);
+        } catch (error) {
+          sectionsContainer.innerHTML = `
+                  <div class="qa-item">
+                    <div class="qa-title" style="color: var(--danger);">Error al cargar</div>
+                    <div class="qa-content">No se pudo cargar el archivo: ${error.message}</div>
+                  </div>
+                `;
+        }
+      }
+
+      // Manejar carga de contenido (mantener para compatibilidad)
+      document
+        .getElementById("loadButton")
+        .addEventListener("click", async () => {
+          await loadContent();
+        });
+
+      // El resto del código de carga que estaba aquí se movió a loadContent()
+      function renderLogicalThinking(data) {
+        const tocContainer = document.getElementById("tocContainer");
+        const tocItems = document.getElementById("tocItems");
+        const sectionsContainer = document.getElementById("sectionsContainer");
+
+        // Mostrar TOC
+        tocContainer.style.display = "block";
+
+        // Crear TOC para logical thinking
+        data.section.subsections.forEach((item, index) => {
+          const tocItem = document.createElement("div");
+          tocItem.className = "toc-item";
+          tocItem.textContent = `${index + 1}. ${item.title}`;
+          tocItem.onclick = () => scrollToItem(item.id);
+          tocItems.appendChild(tocItem);
+        });
+
+        // Renderizar todas las preguntas
+        data.section.subsections.forEach((item) => {
+          const itemEl = document.createElement("div");
+          itemEl.className = "qa-item";
+          itemEl.id = item.id;
+          itemEl.innerHTML = `
+                          <div class="qa-title">${item.title}</div>
+                          <div class="qa-content">${item.content}</div>
+                      `;
+          sectionsContainer.appendChild(itemEl);
+        });
+
+        applyHighlighting();
+      }
+
+      function renderGeneralContent(data) {
+        const tocContainer = document.getElementById("tocContainer");
+        const sectionsContainer = document.getElementById("sectionsContainer");
+
+        // Detectar si es formato markdown (100 preguntas) o formato JSON tradicional
+        const isMarkdownFormat = data.sections.some(
+          (section) =>
+            section.content &&
+            Array.isArray(section.content) &&
+            section.content.some((item) => item.question && item.answer)
+        );
+
+        if (isMarkdownFormat) {
+          // Renderizar índice para formato markdown (100 preguntas .NET)
+          renderMarkdownIndex(data, tocContainer, sectionsContainer);
+        } else {
+          // Renderizar índice para formato JSON tradicional (biblia, logic-complete, etc.)
+          renderJsonIndex(data, tocContainer, sectionsContainer);
+        }
+
+        applyHighlighting();
+      }
+
+      // Función para renderizar índice de formato markdown (100 preguntas .NET)
+      function renderMarkdownIndex(data, tocContainer, sectionsContainer) {
+        // Ocultar TOC completamente
+        tocContainer.style.display = "none";
+
+        // Determinar el título del índice basándose en el contenido
+        const indexTitle = data.title.includes("100 Preguntas")
+          ? "📋 Índice de las 100 Preguntas para Ingeniero .NET Senior"
+          : "📋 Índice de .NET Interview Questions and Answers";
+
+        let allContent = `
+                <div class="qa-item">
+                  <div class="qa-title">${indexTitle}</div>
+                  <div class="qa-content">
+                    <p style="margin-bottom: 20px;">Usa el buscador de arriba para encontrar preguntas específicas. Aquí tienes el índice completo:</p>
+              `;
+
+        if (data.sections && data.sections.length > 0) {
+          let globalQuestionNumber = 1;
+
+          data.sections.forEach((section, sectionIndex) => {
+            allContent += `
+                    <div style="margin-bottom: 25px;">
+                      <h4 style="color: var(--accent); margin-bottom: 15px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+                        <span style="background: var(--accent); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">
+                          ${section.content ? section.content.length : 0}
+                        </span>
+                        ${section.title || `Sección ${sectionIndex + 1}`}
+                      </h4>
+                      <div style="padding-left: 20px;">
+                  `;
+
+            if (
+              section.content &&
+              Array.isArray(section.content) &&
+              section.content.length > 0
+            ) {
+              section.content.forEach((question, questionIndex) => {
+                if (question.question) {
+                  allContent += `
+                          <div style="margin-bottom: 8px; padding: 10px; background: var(--bg-alt); border-radius: 6px; cursor: pointer; transition: all 0.2s; border-left: 3px solid var(--accent);"
+                               class="question-item"
+                               data-question-id="${question.id}"
+                               data-section-index="${sectionIndex}"
+                               data-question-index="${questionIndex}">
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                              <span style="color: var(--accent); font-weight: 600; font-size: 0.9rem; background: var(--bg-card); padding: 2px 6px; border-radius: 3px; min-width: 32px; text-align: center;">
+                                ${globalQuestionNumber}
+                              </span>
+                              <span style="line-height: 1.4; flex: 1;">${question.question}</span>
+                            </div>
+                          </div>
+                        `;
+                  globalQuestionNumber++;
+                }
+              });
+            } else {
+              // Si no hay preguntas en la sección, mostrar mensaje
+              allContent += `
+                      <div style="padding: 10px; background: var(--bg-alt); border-radius: 6px; color: var(--text-muted); font-style: italic;">
+                        No se encontraron preguntas en esta sección
+                      </div>
+                    `;
+            }
+
+            allContent += `
+                      </div>
+                    </div>
+                  `;
+          });
+        } else {
+          allContent += `
+                  <div style="padding: 20px; background: var(--bg-alt); border-radius: 8px; text-align: center; color: var(--text-muted);">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">📋</div>
+                    <p>No se detectaron secciones en este archivo.</p>
+                    <p style="font-size: 0.9rem;">Usa el buscador de arriba para encontrar contenido específico.</p>
+                  </div>
+                `;
+        }
+
+        allContent += `
+                  </div>
+                </div>
+              `;
+
+        sectionsContainer.innerHTML = allContent;
+
+        // Agregar event listeners para las preguntas markdown
+        document.querySelectorAll(".question-item").forEach((item) => {
+          item.addEventListener("click", () => {
+            const sectionIndex = parseInt(item.dataset.sectionIndex);
+            const questionIndex = parseInt(item.dataset.questionIndex);
+            const question =
+              loadedData.sections[sectionIndex].content[questionIndex];
+            showQuestionDetail(question);
+          });
+
+          // Agregar efecto hover
+          item.addEventListener("mouseenter", () => {
+            item.style.background = "var(--accent-10)";
+            item.style.transform = "translateX(5px)";
+          });
+
+          item.addEventListener("mouseleave", () => {
+            item.style.background = "var(--bg-alt)";
+            item.style.transform = "translateX(0)";
+          });
+        });
+      }
+
+      // Función para renderizar índice de formato JSON tradicional
+      function renderJsonIndex(data, tocContainer, sectionsContainer) {
+        // Ocultar TOC completamente
+        tocContainer.style.display = "none";
+
+        let allContent = `
+                <div class="qa-item">
+                  <div class="qa-title">📋 Índice de Contenido</div>
+                  <div class="qa-content">
+                    <p style="margin-bottom: 20px;">Usa el buscador de arriba para encontrar contenido específico. Aquí tienes el índice completo:</p>
+              `;
+
+        if (data.sections && data.sections.length > 0) {
+          data.sections.forEach((section, sectionIndex) => {
+            allContent += `
+                    <div style="margin-bottom: 25px;">
+                      <h4 style="color: var(--accent); margin-bottom: 15px; font-size: 1.2rem;">${
+                        section.title || `Sección ${sectionIndex + 1}`
+                      }</h4>
+                      <div style="padding-left: 20px;">
+                  `;
+
+            if (section.subsections && Array.isArray(section.subsections)) {
+              section.subsections.forEach((subsection, subsectionIndex) => {
+                allContent += `
+                        <div style="margin-bottom: 8px; padding: 8px; background: var(--bg-alt); border-radius: 6px; cursor: pointer; transition: background 0.2s;"
+                             class="subsection-item"
+                             data-subsection-id="${subsection.id}"
+                             data-section-index="${sectionIndex}"
+                             data-subsection-index="${subsectionIndex}">
+                          <span style="color: var(--accent); font-weight: 500;">${getTypeIcon(
+                            subsection.type
+                          )}</span> ${subsection.title}
+                        </div>
+                      `;
+              });
+            }
+
+            allContent += `
+                      </div>
+                    </div>
+                  `;
+          });
+        }
+
+        allContent += `
+                  </div>
+                </div>
+              `;
+
+        if (data.sections && data.sections.length === 0) {
+          allContent = `
+                  <div class="qa-item">
+                    <div class="qa-title">🔍 Usa el buscador</div>
+                    <div class="qa-content">Escribe en el buscador de arriba para encontrar contenido específico.</div>
+                  </div>
+                `;
+        }
+
+        sectionsContainer.innerHTML = allContent;
+
+        // Agregar event listeners para las subsecciones JSON
+        document.querySelectorAll(".subsection-item").forEach((item) => {
+          item.addEventListener("click", () => {
+            const sectionIndex = parseInt(item.dataset.sectionIndex);
+            const subsectionIndex = parseInt(item.dataset.subsectionIndex);
+            const subsection =
+              loadedData.sections[sectionIndex].subsections[subsectionIndex];
+            showSubsectionDetail(subsection);
+          });
+        });
+      }
+
+      // Función auxiliar para obtener icono según el tipo
+      function getTypeIcon(type) {
+        const icons = {
+          qa: "❓",
+          list: "📝",
+          text: "📄",
+          logical: "🧠",
+          "logic-problem": "🧩",
+        };
+        return icons[type] || "📋";
+      }
+
+      // Función auxiliar para calcular el número de pregunta
+      function getQuestionNumber(sectionIndex, questionIndex) {
+        let number = 1;
+        for (let i = 0; i < sectionIndex; i++) {
+          number += loadedData.sections[i].content.length;
+        }
+        return number + questionIndex;
+      }
+
+      // Función para mostrar detalle de pregunta individual
+      function showQuestionDetail(question) {
+        let modal = document.getElementById("modal");
+        if (!modal) {
+          // Crear modal si no existe
+          createModal();
+          modal = document.getElementById("modal");
+        }
+
+        const modalTitle = document.getElementById("modalTitle");
+        const modalContent = document.getElementById("modalContent");
+
+        if (!modalTitle || !modalContent) {
+          console.error("Modal elements not found after creation");
+          return;
+        }
+
+        modalTitle.textContent = question.question;
+
+        let content = "";
+        if (question.context) {
+          content += `<div style="color: var(--text-muted); margin-bottom: 15px; font-style: italic; padding: 10px; background: var(--bg-alt); border-radius: 6px;"><strong>Contexto:</strong> ${question.context}</div>`;
+        }
+        content += `<div style="line-height: 1.7;">${convertMarkdownToHtml(
+          question.answer
+        )}</div>`;
+
+        modalContent.innerHTML = content;
+        modal.style.display = "flex";
+
+        // Hacer scroll al principio del modal
+        setTimeout(() => {
+          const modalDialog = modal.querySelector(
+            'div[onclick="event.stopPropagation()"]'
+          );
+          if (modalDialog) {
+            modalDialog.scrollTop = 0;
+          }
+        }, 50);
+
+        // Aplicar syntax highlighting
+        setTimeout(() => {
+          applyHighlighting();
+        }, 100);
+      }
+
+      // Función para crear el modal si no existe
+      function createModal() {
+        const modalHtml = `
+                <div id="modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px;" onclick="closeModal(event)">
+                  <div style="background: var(--bg-card); border-radius: var(--radius); max-width: 900px; max-height: 85vh; overflow-y: auto; padding: 30px; box-shadow: var(--shadow);" onclick="event.stopPropagation()">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                      <h3 id="modalTitle" style="color: var(--accent); margin: 0; line-height: 1.4; flex: 1; margin-right: 20px;"></h3>
+                      <button onclick="closeModal()" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; padding: 0; min-width: 30px;">✕</button>
+                    </div>
+                    <div id="modalContent" style="line-height: 1.7; color: var(--text);" class="qa-content"></div>
+                  </div>
+                </div>
+              `;
+
+        document.body.insertAdjacentHTML("beforeend", modalHtml);
+      }
+
+      // Función para cerrar el modal
+      function closeModal(event) {
+        if (event && event.target !== event.currentTarget) return;
+        const modal = document.getElementById("modal");
+        if (modal) {
+          modal.style.display = "none";
+        }
+      }
+
+      // Función para mostrar detalle de subsección (formato JSON tradicional)
+      function showSubsectionDetail(subsection) {
+        let modal = document.getElementById("modal");
+        if (!modal) {
+          // Crear modal si no existe
+          createModal();
+          modal = document.getElementById("modal");
+        }
+
+        const modalTitle = document.getElementById("modalTitle");
+        const modalContent = document.getElementById("modalContent");
+
+        if (!modalTitle || !modalContent) {
+          console.error("Modal elements not found after creation");
+          return;
+        }
+
+        modalTitle.textContent = subsection.title;
+
+        let content = "";
+
+        // Procesar contenido según el tipo
+        if (subsection.type === "qa") {
+          content = `<div style="line-height: 1.7;">${processContent(
+            subsection.content
+          )}</div>`;
+        } else if (subsection.type === "list") {
+          const listItems = Array.isArray(subsection.content)
+            ? subsection.content.map((item) => `<li>${item}</li>`).join("")
+            : `<li>${subsection.content}</li>`;
+          content = `<ul style="padding-left: 20px; line-height: 1.7;">${listItems}</ul>`;
+        } else {
+          content = `<div style="line-height: 1.7;">${processContent(
+            subsection.content || "Contenido no disponible"
+          )}</div>`;
+        }
+
+        modalContent.innerHTML = content;
+        modal.style.display = "flex";
+
+        // Aplicar syntax highlighting
+        setTimeout(() => {
+          applyHighlighting();
+        }, 100);
+      }
+
+      function renderSectionContent(section) {
+        if (section.content && typeof section.content === "string") {
+          return section.content;
+        }
+
+        // Manejar preguntas del formato markdown parseado
+        if (section.content && Array.isArray(section.content)) {
+          return section.content
+            .map((item) => {
+              if (item.question && item.answer) {
+                return `
+                        <div style="margin-bottom: 30px; padding: 20px; background: var(--bg-alt); border-radius: 12px; border: 1px solid var(--border);">
+                          <div style="font-weight: 600; color: var(--accent-light); margin-bottom: 12px; font-size: 1.1rem;">${
+                            item.question
+                          }</div>
+                          ${
+                            item.context
+                              ? `<div style="color: var(--text-muted); margin-bottom: 12px; font-style: italic;">${item.context}</div>`
+                              : ""
+                          }
+                          <div style="line-height: 1.7;">${convertMarkdownToHtml(
+                            item.answer
+                          )}</div>
+                        </div>
+                      `;
+              }
+              return "";
+            })
+            .join("");
+        }
+
+        if (section.subsections) {
+          return section.subsections
+            .map((subsection) => {
+              if (subsection.type === "qa") {
+                return `
+                                  <div style="margin-bottom: 20px; padding: 16px; background: var(--bg-alt); border-radius: 8px; border: 1px solid var(--border);">
+                                      <div style="font-weight: 600; color: var(--accent-light); margin-bottom: 8px;">${subsection.title}</div>
+                                      <div>${subsection.content}</div>
+                                  </div>
+                              `;
+              } else if (subsection.type === "list") {
+                const listItems = Array.isArray(subsection.content)
+                  ? subsection.content
+                      .map((item) => `<li>${item}</li>`)
+                      .join("")
+                  : `<li>${subsection.content}</li>`;
+                return `
+                                  <div style="margin-bottom: 20px; padding: 16px; background: var(--bg-alt); border-radius: 8px; border: 1px solid var(--border);">
+                                      <div style="font-weight: 600; color: var(--accent-light); margin-bottom: 8px;">${subsection.title}</div>
+                                      <ul style="padding-left: 20px;">${listItems}</ul>
+                                  </div>
+                              `;
+              } else {
+                return `
+                                  <div style="margin-bottom: 20px; padding: 16px; background: var(--bg-alt); border-radius: 8px; border: 1px solid var(--border);">
+                                      <div style="font-weight: 600; color: var(--accent-light); margin-bottom: 8px;">${
+                                        subsection.title
+                                      }</div>
+                                      <div>${
+                                        subsection.content ||
+                                        "Contenido no disponible"
+                                      }</div>
+                                  </div>
+                              `;
+              }
+            })
+            .join("");
+        }
+
+        return "Contenido no disponible";
+      }
+
+      // Función para convertir markdown básico a HTML
+      function convertMarkdownToHtml(markdown) {
+        if (!markdown) return "";
+
+        let html = markdown;
+
+        // Helper function to escape HTML entities
+        function escapeHtml(text) {
+          return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+
+        // 1. Convertir bloques de código ```language \n code \n ``` y variantes
+        html = html.replace(
+          /```(\w+)?\s*\n([\s\S]*?)\n```/g,
+          (match, language, code) => {
+            const lang = language || "text";
+            let processedCode = code.trim();
+
+            // Escapar HTML/XML tags first
+            processedCode = escapeHtml(processedCode);
+
+            // Procesar comentarios específicamente para C#
+            if (lang === "csharp") {
+              processedCode = processedCode.replace(
+                /\/\/(.*)$/gm,
+                '<span class="comment-placeholder">//$1</span>'
+              );
+            }
+
+            // Procesar comentarios específicamente para SQL
+            if (lang === "sql") {
+              processedCode = processedCode.replace(
+                /--(.*)$/gm,
+                '<span class="comment-placeholder">--$1</span>'
+              );
+            }
+
+            // Crear bloque de código colapsable
+            const codeId = `code-${Math.random().toString(36).substr(2, 9)}`;
+            const preview =
+              processedCode.length > 100
+                ? processedCode.substring(0, 100) + "..."
+                : processedCode;
+
+            return `
+              <div class="collapsible-code">
+                <div class="code-header" onclick="toggleCode('${codeId}')">
+                  <span class="code-language">${lang.toUpperCase()}</span>
+                  <span class="toggle-icon" id="icon-${codeId}">▼</span>
+                  <span class="code-action">Click para expandir/contraer</span>
+                </div>
+                <div class="code-preview" id="preview-${codeId}">${preview}</div>
+                <div class="code-full" id="${codeId}" style="display: none;">
+                  <pre><code class="language-${lang}">${processedCode}</code></pre>
+                </div>
+              </div>`;
+          }
+        );
+
+        // 1.5. Convertir bloques de código sin salto de línea inicial ``` code ```
+        html = html.replace(/```\s*\n([\s\S]*?)\n```/g, (match, code) => {
+          let processedCode = code.trim();
+
+          // Escapar HTML/XML tags
+          processedCode = escapeHtml(processedCode);
+
+          // Si parece ser un diagrama ASCII, usar estilo especial
+          if (
+            processedCode.includes("┌") ||
+            processedCode.includes("│") ||
+            processedCode.includes("└")
+          ) {
+            return `<pre style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 8px 0; font-family: monospace, 'Courier New'; font-size: 0.85em; line-height: 1.3; overflow-x: auto; white-space: pre;">${processedCode}</pre>`;
+          }
+
+          // Crear bloque de código colapsable normal
+          const codeId = `code-${Math.random().toString(36).substr(2, 9)}`;
+          const preview =
+            processedCode.length > 100
+              ? processedCode.substring(0, 100) + "..."
+              : processedCode;
+
+          return `
+              <div class="collapsible-code">
+                <div class="code-header" onclick="toggleCode('${codeId}')">
+                  <span class="code-language">TEXT</span>
+                  <span class="toggle-icon" id="icon-${codeId}">▼</span>
+                  <span class="code-action">Click para expandir/contraer</span>
+                </div>
+                <div class="code-preview" id="preview-${codeId}">${preview}</div>
+                <div class="code-full" id="${codeId}" style="display: none;">
+                  <pre><code>${processedCode}</code></pre>
+                </div>
+              </div>`;
+        });
+
+        // 2. Convertir bloques de código sin salto de línea inicial ```csharp code ```
+        html = html.replace(
+          /```(\w+)\s+([\s\S]*?)```/g,
+          (match, language, code) => {
+            let processedCode = code.trim();
+
+            // Escapar HTML/XML tags first
+            processedCode = escapeHtml(processedCode);
+
+            // Procesar comentarios específicamente para C#
+            if (language === "csharp") {
+              processedCode = processedCode.replace(
+                /\/\/(.*)$/gm,
+                '<span class="comment-placeholder">//$1</span>'
+              );
+            }
+
+            // Procesar comentarios específicamente para SQL
+            if (language === "sql") {
+              processedCode = processedCode.replace(
+                /--(.*)$/gm,
+                '<span class="comment-placeholder">--$1</span>'
+              );
+            }
+
+            // Crear bloque de código colapsable
+            const codeId = `code-${Math.random().toString(36).substr(2, 9)}`;
+            const preview =
+              processedCode.length > 100
+                ? processedCode.substring(0, 100) + "..."
+                : processedCode;
+
+            return `
+              <div class="collapsible-code">
+                <div class="code-header" onclick="toggleCode('${codeId}')">
+                  <span class="code-language">${language.toUpperCase()}</span>
+                  <span class="toggle-icon" id="icon-${codeId}">▼</span>
+                  <span class="code-action">Click para expandir/contraer</span>
+                </div>
+                <div class="code-preview" id="preview-${codeId}">${preview}</div>
+                <div class="code-full" id="${codeId}" style="display: none;">
+                  <pre><code class="language-${language}">${processedCode}</code></pre>
+                </div>
+              </div>`;
+          }
+        );
+
+        // 3. Manejar bloques de código especiales que empiezan con `csharp
+        html = html.replace(
+          /`(\w+)\s+([\s\S]*?)`/g,
+          (match, language, code) => {
+            if (
+              language === "csharp" ||
+              language === "xml" ||
+              language === "javascript"
+            ) {
+              const escapedCode = escapeHtml(code.trim());
+
+              // Crear bloque de código colapsable
+              const codeId = `code-${Math.random().toString(36).substr(2, 9)}`;
+              const preview =
+                escapedCode.length > 100
+                  ? escapedCode.substring(0, 100) + "..."
+                  : escapedCode;
+
+              return `
+                <div class="collapsible-code">
+                  <div class="code-header" onclick="toggleCode('${codeId}')">
+                    <span class="code-language">${language.toUpperCase()}</span>
+                    <span class="toggle-icon" id="icon-${codeId}">▼</span>
+                    <span class="code-action">Click para expandir/contraer</span>
+                  </div>
+                  <div class="code-preview" id="preview-${codeId}">${preview}</div>
+                  <div class="code-full" id="${codeId}" style="display: none;">
+                    <pre><code class="language-${language}">${escapedCode}</code></pre>
+                  </div>
+                </div>`;
+            }
+            return match; // No es un bloque de código, mantener original
+          }
+        );
+
+        // 4. Convertir código inline `code` (que no sea de bloque)
+        html = html.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+
+        // 5. Convertir títulos markdown
+        html = html.replace(/^#### (.+)$/gm, "<h4>$1</h4>");
+        html = html.replace(/^### (.+)$/gm, "<h3>$1</h3>");
+        html = html.replace(/^## (.+)$/gm, "<h2>$1</h2>");
+        html = html.replace(/^# (.+)$/gm, "<h1>$1</h1>");
+
+        // 6. Convertir subtítulos especiales (**Texto:**)
+        html = html.replace(/\*\*([^*\n]+):\*\*/g, "<h4>$1:</h4>");
+
+        // 7. Convertir texto en negrita **text**
+        html = html.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+
+        // 8. Convertir texto en cursiva *text*
+        html = html.replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
+
+        // 8.5. Detectar párrafos que empiezan con <strong> y convertirlos en su propia línea
+        html = html.replace(
+          /(\n|^)(<strong>[^<]+<\/strong>)([^<\n])/gm,
+          "$1$2\n\n$3"
+        );
+
+        // 8.6. Detectar y procesar bloques ASCII art/diagramas
+        html = html.replace(
+          /(?:\n|^)(┌[┐┌┬─]*┐[\s\S]*?└[┘└┴─]*┘)(?=\n|$)/gm,
+          (match, diagram) => {
+            const trimmedDiagram = diagram.trim();
+            return `<pre style="background: var(--bg-alt); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 8px 0; font-family: monospace, 'Courier New'; font-size: 0.85em; line-height: 1.3; overflow-x: auto; white-space: pre;">${trimmedDiagram}</pre>`;
+          }
+        );
+
+        // 9. Convertir tablas markdown (mejorado para mayor flexibilidad)
+        html = html.replace(
+          /(?:^|\n)(\|[^\n]+\|)\s*\n(\|[-\s:|]+\|)\s*\n((?:\|[^\n]+\|\s*\n?)*)/gm,
+          (match, header, separator, rows) => {
+            // Parse header
+            const headerCells = header
+              .split("|")
+              .slice(1, -1)
+              .map((cell) => cell.trim());
+            const headerHtml = headerCells
+              .map(
+                (cell) =>
+                  `<th style="padding: 8px 12px; border: 1px solid var(--border-color); border-bottom: 2px solid var(--accent); background: var(--card-bg); text-align: left; font-weight: 600; color: var(--accent-light);">${cell}</th>`
+              )
+              .join("");
+
+            // Parse rows
+            const rowsArray = rows
+              .trim()
+              .split("\n")
+              .filter((row) => row.trim() && row.includes("|"));
+            const rowsHtml = rowsArray
+              .map((row) => {
+                const cells = row
+                  .split("|")
+                  .slice(1, -1)
+                  .map((cell) => cell.trim());
+                const cellsHtml = cells
+                  .map(
+                    (cell) =>
+                      `<td style="padding: 8px 12px; border: 1px solid var(--border-color); vertical-align: top;">${cell}</td>`
+                  )
+                  .join("");
+                return `<tr>${cellsHtml}</tr>`;
+              })
+              .join("");
+
+            return `<table style="width: 100%; border-collapse: collapse; margin: 4px 0; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden;">
+      <thead><tr>${headerHtml}</tr></thead>
+      <tbody>${rowsHtml}</tbody>
+      </table>`;
+          }
+        );
+
+        // 10. Convertir listas con guiones (- item)
+        html = html.replace(/^- (.+)$/gm, "<li>$1</li>");
+
+        // 11. Convertir listas numeradas (1. item)
+        html = html.replace(/^\d+\.\s(.+)$/gm, "<li>$1</li>");
+
+        // 12. Agrupar elementos <li> consecutivos en <ul>
+        html = html.replace(/(<li>.*?<\/li>)(\s*<li>.*?<\/li>)*/gs, (match) => {
+          return (
+            '<ul style="margin: 12px 0; padding-left: 24px;">' +
+            match.replace(/\s*\n\s*/g, "") +
+            "</ul>"
+          );
+        });
+
+        // 13. Proteger y procesar párrafos separados por líneas vacías
+        // Primero, proteger bloques de código completos
+        const codeBlocks = [];
+        let codeBlockIndex = 0;
+
+        // Extraer y proteger bloques <pre><code>...</code></pre>
+        html = html.replace(/<pre><code[\s\S]*?<\/code><\/pre>/g, (match) => {
+          const placeholder = `__CODE_BLOCK_${codeBlockIndex}__`;
+          codeBlocks[codeBlockIndex] = match;
+          codeBlockIndex++;
+          return placeholder;
+        });
+
+        // Procesar párrafos normalmente
+        html = html
+          .split("\n\n")
+          .map((paragraph) => {
+            paragraph = paragraph.trim();
+            if (!paragraph) return "";
+
+            // Si es un placeholder de código, no procesar
+            if (paragraph.includes("__CODE_BLOCK_")) {
+              return paragraph;
+            }
+
+            // Si ya es HTML (empieza con <), no envolver en <p>
+            if (paragraph.match(/^<(pre|ul|ol|h[1-6]|div|table)/)) {
+              return paragraph;
+            }
+
+            // Si contiene solo <li>, <code>, etc. internos, envolver en <p>
+            return `<p style="margin: 12px 0; line-height: 1.6;">${paragraph.replace(
+              /\n/g,
+              " "
+            )}</p>`;
+          })
+          .filter((p) => p)
+          .join("\n\n");
+
+        // Restaurar bloques de código
+        html = html.replace(/__CODE_BLOCK_(\d+)__/g, (match, index) => {
+          return codeBlocks[parseInt(index)] || match;
+        });
+
+        // 14. Limpiar espacios extra y saltos de línea innecesarios
+        html = html.replace(/\n{3,}/g, "\n\n");
+        html = html.replace(/\s+<\/li>/g, "</li>");
+        html = html.replace(/<li>\s+/g, "<li>");
+
+        // 15. Convertir placeholders de comentarios a clases CSS correctas
+        html = html.replace(
+          /<span class="comment-placeholder">/g,
+          '<span class="hljs-comment" style="color: #6272a4; font-style: italic;">'
+        );
+
+        return html;
+      }
+
+      function scrollToItem(itemId) {
+        const element = document.getElementById(itemId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      // Variables globales para el buscador
+      let allSearchableContent = [];
+      let currentFilter = "all";
+
+      // Función para procesar contenido y convertir marcado a HTML
+      function processContent(content) {
+        if (!content) return content;
+
+        // Convertir bloques de código ```language<br>code<br>``` a <pre><code>
+        let processed = content.replace(
+          /```(\w+)?<br>(.*?)```/gs,
+          (match, language, code) => {
+            // Limpiar el código de <br> y convertir a saltos de línea
+            const cleanCode = code.replace(/<br>/g, "\n").trim();
+            const lang = language || "javascript";
+            return `<pre><code class="language-${lang}">${cleanCode}</code></pre>`;
+          }
+        );
+
+        // Convertir código inline `code`
+        processed = processed.replace(/`([^`<]+)`/g, "<code>$1</code>");
+
+        return processed;
+      }
+
+      // Función para aplicar syntax highlighting
+      function applyHighlighting() {
+        // Esperar un poco para que el DOM se actualice
+        setTimeout(() => {
+          // Primero procesar todos los elementos con contenido que pueda tener código
+          document
+            .querySelectorAll(".qa-content, .search-result-content")
+            .forEach((element) => {
+              if (element.innerHTML.includes("```")) {
+                element.innerHTML = processContent(element.innerHTML);
+              }
+            });
+
+          // Aplicar highlight.js después del procesamiento
+          if (typeof hljs !== "undefined") {
+            // Limpiar highlighting previo
+            document.querySelectorAll("pre code").forEach((block) => {
+              if (block.classList.length > 0) {
+                block.removeAttribute("data-highlighted");
+                block.className = block.className
+                  .replace(/hljs[^\s]*/g, "")
+                  .trim();
+              }
+            });
+
+            // Aplicar nuevo highlighting
+            document.querySelectorAll("pre code").forEach((block) => {
+              hljs.highlightElement(block);
+
+              // Mejora específica para comentarios en C# si hljs no los detectó bien
+              if (
+                block.classList.contains("language-csharp") &&
+                block.innerHTML.includes("//") &&
+                !block.innerHTML.includes('<span class="hljs-comment">')
+              ) {
+                // Procesar comentarios de línea //
+                block.innerHTML = block.innerHTML.replace(
+                  /\/\/([^<\n]*)/g,
+                  '<span class="hljs-comment">//$1</span>'
+                );
+              }
+
+              // Mejora específica para comentarios en SQL si hljs no los detectó bien
+              if (
+                block.classList.contains("language-sql") &&
+                block.innerHTML.includes("--") &&
+                !block.innerHTML.includes('<span class="hljs-comment">')
+              ) {
+                // Procesar comentarios de línea --
+                block.innerHTML = block.innerHTML.replace(
+                  /--([^<\n]*)/g,
+                  '<span class="hljs-comment">--$1</span>'
+                );
+              }
+            });
+
+            // También aplicar a bloques pre sin code
+            document
+              .querySelectorAll("pre:not(:has(code))")
+              .forEach((block) => {
+                if (!block.querySelector("code")) {
+                  const code = document.createElement("code");
+                  code.innerHTML = block.innerHTML;
+                  block.innerHTML = "";
+                  block.appendChild(code);
+                  hljs.highlightElement(code);
+                }
+              });
+          }
+        }, 100);
+      }
+
+      // Función para manejar el toggle de bloques de código colapsables
+      function toggleCode(codeId) {
+        const codeElement = document.getElementById(codeId);
+        const previewElement = document.getElementById(`preview-${codeId}`);
+        const iconElement = document.getElementById(`icon-${codeId}`);
+
+        if (!codeElement || !previewElement || !iconElement) {
+          return;
+        }
+
+        if (codeElement.style.display === "none") {
+          // Expandir código
+          codeElement.style.display = "block";
+          previewElement.style.display = "none";
+          iconElement.textContent = "▲";
+          iconElement.classList.add("expanded");
+
+          // Aplicar syntax highlighting al código expandido
+          setTimeout(() => {
+            const codeBlocks = codeElement.querySelectorAll("pre code");
+            codeBlocks.forEach((block) => {
+              if (typeof hljs !== "undefined") {
+                hljs.highlightElement(block);
+              }
+            });
+          }, 10);
+        } else {
+          // Contraer código
+          codeElement.style.display = "none";
+          previewElement.style.display = "block";
+          iconElement.textContent = "▼";
+          iconElement.classList.remove("expanded");
+        }
+      }
+
+      // Configurar eventos del buscador
+      document.addEventListener("DOMContentLoaded", () => {
+        // Inicializar highlight.js si está disponible
+        if (typeof hljs !== "undefined") {
+          hljs.configure({
+            languages: [
+              "javascript",
+              "python",
+              "java",
+              "cpp",
+              "c",
+              "csharp",
+              "xml",
+              "html",
+              "css",
+              "sql",
+              "json",
+            ],
+          });
+        }
+
+        // Configurar sidebar móvil
+        const sidebarToggle = document.getElementById("sidebarToggle");
+        const sidebar = document.getElementById("sidebar");
+
+        sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("open");
+        });
+
+        // Cerrar sidebar al hacer clic fuera en móvil
+        document.addEventListener("click", (e) => {
+          if (window.innerWidth <= 768) {
+            if (
+              !sidebar.contains(e.target) &&
+              !sidebarToggle.contains(e.target)
+            ) {
+              sidebar.classList.remove("open");
+            }
+          }
+        });
+
+        // Cerrar sidebar al seleccionar una opción en móvil
+        document.querySelectorAll(".json-option").forEach((option) => {
+          option.addEventListener("click", () => {
+            if (window.innerWidth <= 768) {
+              sidebar.classList.remove("open");
+            }
+          });
+        });
+
+        const searchInput = document.getElementById("searchInput");
+        const searchResults = document.getElementById("searchResults");
+        const filterChips = document.querySelectorAll(".filter-chip");
+        const clearSearchBtn = document.getElementById("clearSearchBtn");
+
+        // Configurar búsqueda en tiempo real
+        searchInput.addEventListener("input", debounce(performSearch, 300));
+
+        // Mostrar/ocultar botón de limpiar según el contenido del input
+        searchInput.addEventListener("input", function () {
+          if (this.value.trim()) {
+            clearSearchBtn.classList.add("visible");
+          } else {
+            clearSearchBtn.classList.remove("visible");
+          }
+        });
+
+        // Funcionalidad del botón de limpiar
+        clearSearchBtn.addEventListener("click", function () {
+          searchInput.value = "";
+          clearSearchBtn.classList.remove("visible");
+          performSearch(); // Ejecutar búsqueda vacía para mostrar todos los resultados
+          searchInput.focus();
+        });
+
+        // Configurar filtros
+        filterChips.forEach((chip) => {
+          chip.addEventListener("click", () => {
+            filterChips.forEach((c) => c.classList.remove("active"));
+            chip.classList.add("active");
+            currentFilter = chip.dataset.filter;
+            performSearch();
+          });
+        });
+      });
+
+      // Función debounce para optimizar la búsqueda
+      function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+      }
+
+      // Establecer filtro automático basado en el contenido cargado
+      function setAutoFilter(data) {
+        const filterChips = document.querySelectorAll(".filter-chip");
+        let targetFilter = "all";
+
+        // Determinar el filtro apropiado según el contenido
+        if (selectedFile === "logical-thinking.json") {
+          targetFilter = "logical";
+        } else if (selectedFile.startsWith("logic-")) {
+          targetFilter = "logic-problem";
+        } else {
+          // Para otros archivos, detectar el tipo más común en el contenido
+          const contentTypes = new Set();
+
+          if (data.section && data.section.subsections) {
+            // Una sola sección
+            data.section.subsections.forEach((item) => {
+              if (item.type) contentTypes.add(item.type);
+            });
+          } else if (data.sections && Array.isArray(data.sections)) {
+            // Múltiples secciones
+            data.sections.forEach((section) => {
+              if (section.subsections) {
+                section.subsections.forEach((subsection) => {
+                  if (subsection.type) contentTypes.add(subsection.type);
+                });
+              }
+            });
+          }
+
+          // Priorizar el filtro basado en los tipos encontrados
+          if (contentTypes.has("logic-problem")) {
+            targetFilter = "logic-problem";
+          } else if (contentTypes.has("logical")) {
+            targetFilter = "logical";
+          } else if (contentTypes.has("qa")) {
+            targetFilter = "qa";
+          } else if (contentTypes.has("list")) {
+            targetFilter = "list";
+          } else if (contentTypes.has("text")) {
+            targetFilter = "text";
+          }
+        }
+
+        // Activar el filtro apropiado
+        filterChips.forEach((chip) => chip.classList.remove("active"));
+        const targetChip = document.querySelector(
+          `[data-filter="${targetFilter}"]`
+        );
+        if (targetChip) {
+          targetChip.classList.add("active");
+          currentFilter = targetFilter;
+
+          // Mostrar mensaje informativo
+          const searchResults = document.getElementById("searchResults");
+          if (targetFilter !== "all") {
+            searchResults.innerHTML = `
+                    <div style="padding: 16px; background: var(--bg-alt); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px;">
+                      <div style="color: var(--accent); font-weight: 600; margin-bottom: 8px;">
+                        🎯 Filtro activado automáticamente
+                      </div>
+                      <div style="color: var(--text-muted); font-size: 0.9rem;">
+                        Se ha seleccionado el filtro "${targetChip.textContent}" basándose en el contenido cargado.
+                        <br>Puedes cambiar el filtro manualmente si lo deseas.
+                      </div>
+                    </div>
+                    <div class="no-results">
+                      Escribe algo en el buscador para ver resultados...
+                    </div>
+                  `;
+          }
+        }
+      }
+
+      // Indexar contenido para búsqueda
+      function indexContentForSearch(data = null) {
+        allSearchableContent = [];
+
+        const dataToIndex = data || loadedData;
+        if (!dataToIndex) return;
+
+        if (dataToIndex.section && dataToIndex.section.subsections) {
+          // Indexar estructura de una sola sección
+          const sectionName =
+            dataToIndex.title || dataToIndex.section?.title || "Logic";
+          dataToIndex.section.subsections.forEach((item) => {
+            allSearchableContent.push({
+              id: item.id,
+              title: item.title,
+              content: item.content,
+              type: item.type || "logical",
+              section: sectionName,
+              searchableText: (item.title + " " + item.content).toLowerCase(),
+            });
+          });
+        } else if (
+          dataToIndex.sections &&
+          Array.isArray(dataToIndex.sections)
+        ) {
+          // Indexar estructura de múltiples secciones
+          dataToIndex.sections.forEach((section) => {
+            // Nuevo: soporte para preguntas individuales (formato markdown)
+            if (section.content && Array.isArray(section.content)) {
+              section.content.forEach((question) => {
+                if (question.question && question.answer) {
+                  allSearchableContent.push({
+                    id:
+                      question.id ||
+                      `${section.id}-${question.question.slice(0, 20)}`,
+                    title: question.question,
+                    content: question.answer,
+                    context: question.context || "",
+                    type: "question",
+                    section: section.title,
+                    searchableText: (
+                      question.question +
+                      " " +
+                      (question.context || "") +
+                      " " +
+                      question.answer
+                    ).toLowerCase(),
+                  });
+                }
+              });
+            }
+            // Mantener soporte para subsecciones existentes
+            else if (section.subsections) {
+              section.subsections.forEach((subsection) => {
+                const contentText = Array.isArray(subsection.content)
+                  ? subsection.content.join(" ")
+                  : subsection.content || "";
+
+                allSearchableContent.push({
+                  id: subsection.id || `${section.id}-${subsection.title}`,
+                  title: subsection.title,
+                  content: contentText,
+                  type: subsection.type || "qa",
+                  section: section.title,
+                  searchableText: (
+                    subsection.title +
+                    " " +
+                    contentText
+                  ).toLowerCase(),
+                });
+              });
+            }
+          });
+        }
+      }
+
+      // Realizar búsqueda
+      function performSearch() {
+        const searchInput = document.getElementById("searchInput");
+        const searchResults = document.getElementById("searchResults");
+        const searchSection = document.getElementById("searchSection");
+
+        const query = searchInput.value.trim().toLowerCase();
+
+        if (!loadedData) {
+          searchResults.innerHTML = `
+                  <div class="no-results">
+                    Primero carga un archivo JSON para poder buscar.
+                  </div>
+                `;
+          return;
+        }
+
+        if (query.length === 0) {
+          searchResults.innerHTML = `
+                  <div class="no-results">
+                    Escribe algo en el buscador para ver resultados...
+                  </div>
+                `;
+          return;
+        }
+
+        // Filtrar y buscar
+        let results = allSearchableContent.filter((item) => {
+          const matchesQuery = item.searchableText.includes(query);
+          const matchesFilter =
+            currentFilter === "all" || item.type === currentFilter;
+          return matchesQuery && matchesFilter;
+        });
+
+        // Ordenar por relevancia
+        results = results.sort((a, b) => {
+          const aTitle = a.title.toLowerCase().includes(query) ? 2 : 0;
+          const bTitle = b.title.toLowerCase().includes(query) ? 2 : 0;
+          return bTitle - aTitle;
+        });
+
+        renderSearchResults(results, query);
+      }
+
+      // Renderizar resultados de búsqueda
+      function renderSearchResults(results, query) {
+        const searchResults = document.getElementById("searchResults");
+
+        if (results.length === 0) {
+          searchResults.innerHTML = `
+                  <div class="no-results">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">🔍</div>
+                    No se encontraron resultados para "<strong>${query}</strong>"
+                    <div style="margin-top: 10px; font-size: 0.9rem;">
+                      Intenta con otras palabras clave o cambia el filtro.
+                    </div>
+                  </div>
+                `;
+          return;
+        }
+
+        const resultsHtml = results
+          .map((result) => {
+            const highlightedTitle = highlightText(result.title, query);
+            const highlightedContent = highlightText(
+              truncateText(result.content, 150),
+              query
+            );
+
+            return `
+                  <div class="search-result-item" onclick="showResultDetail('${
+                    result.id
+                  }', '${result.section}')">
+                    <div class="search-result-title">${highlightedTitle}</div>
+                    <div class="search-result-content">${highlightedContent}</div>
+                    <div class="search-result-meta">
+                      📁 ${result.section} • 🏷️ ${getTypeLabel(result.type)}
+                    </div>
+                  </div>
+                `;
+          })
+          .join("");
+
+        searchResults.innerHTML = `
+                <div style="margin-bottom: 20px; padding: 16px; background: var(--bg-alt); border-radius: 8px; border: 1px solid var(--border);">
+                  <strong style="color: var(--accent);">${results.length}</strong> resultado(s) encontrado(s) para "<strong>${query}</strong>"
+                </div>
+                ${resultsHtml}
+              `;
+
+        applyHighlighting();
+      }
+
+      // Resaltar texto en resultados
+      function highlightText(text, query) {
+        if (!query || !text) return text;
+
+        const regex = new RegExp(`(${escapeRegExp(query)})`, "gi");
+        return text.replace(regex, '<span class="highlight">$1</span>');
+      }
+
+      // Escapar caracteres especiales para regex
+      function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }
+
+      // Truncar texto
+      function truncateText(text, maxLength) {
+        if (!text || text.length <= maxLength) return text;
+        return text.substring(0, maxLength) + "...";
+      }
+
+      // Obtener etiqueta del tipo
+      function getTypeLabel(type) {
+        const labels = {
+          qa: "Pregunta y Respuesta",
+          list: "Lista",
+          text: "Texto",
+          logical: "Logical Thinking",
+          "logic-problem": "Logic Building Problem",
+          question: "Pregunta .NET",
+        };
+        return labels[type] || "Contenido";
+      }
+
+      // Mostrar detalle del resultado
+      function showResultDetail(itemId, sectionName) {
+        const item = allSearchableContent.find((i) => i.id === itemId);
+        if (!item) return;
+
+        const searchResults = document.getElementById("searchResults");
+
+        // Determinar el contenido formateado según el tipo
+        let formattedContent;
+        if (item.type === "question") {
+          // Para preguntas del markdown, usar convertMarkdownToHtml
+          const contextHtml = item.context
+            ? `<div style="color: var(--text-muted); margin-bottom: 16px; font-style: italic; padding: 12px; background: var(--bg-alt); border-radius: 8px; border-left: 3px solid var(--accent);">${item.context}</div>`
+            : "";
+          formattedContent = contextHtml + convertMarkdownToHtml(item.content);
+        } else {
+          // Para otros tipos, usar processContent
+          formattedContent = processContent(item.content);
+        }
+
+        // Crear modal/overlay con el contenido completo
+        const detailHtml = `
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px;" onclick="closeResultDetail(event)">
+                  <div style="background: var(--bg-card); border-radius: var(--radius); max-width: 900px; max-height: 85vh; overflow-y: auto; padding: 30px; box-shadow: var(--shadow);" onclick="event.stopPropagation()">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                      <h3 style="color: var(--accent); margin: 0; line-height: 1.4; flex: 1; margin-right: 20px;">${
+                        item.title
+                      }</h3>
+                      <button onclick="closeResultDetail()" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; padding: 0; min-width: 30px;">✕</button>
+                    </div>
+                    <div style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">
+                      📁 ${sectionName} • 🏷️ ${getTypeLabel(item.type)}
+                    </div>
+                    <div style="line-height: 1.7; color: var(--text);" class="qa-content">
+                      ${formattedContent}
+                    </div>
+                  </div>
+                </div>
+              `;
+
+        // Agregar al body
+        const detailElement = document.createElement("div");
+        detailElement.id = "result-detail-modal";
+        detailElement.innerHTML = detailHtml;
+        document.body.appendChild(detailElement);
+
+        applyHighlighting();
+      }
+
+      // Cerrar detalle del resultado
+      function closeResultDetail(event) {
+        if (event && event.target !== event.currentTarget) return;
+        const modal = document.getElementById("result-detail-modal");
+        if (modal) {
+          modal.remove();
+        }
+      }
+
+      // Cerrar detalle del resultado
+      function closeResultDetail(event) {
+        if (event && event.target !== event.currentTarget) return;
+        const modal = document.getElementById("result-detail-modal");
+        if (modal) {
+          modal.remove();
+        }
+      }
+
+      // Modificar la función de carga para activar la búsqueda
+      const originalLoadButton = document.getElementById("loadButton");
+      originalLoadButton.addEventListener("click", async () => {
+        // ... código existente de carga ...
+
+        // Después de cargar, indexar y mostrar buscador
+        setTimeout(() => {
+          indexContentForSearch();
+          document.getElementById("searchSection").classList.add("active");
+        }, 500);
+      });
+
+      // Event listener para cerrar modal con Escape
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeModal();
+          closeResultDetail();
+        }
+      });
+    </script>
+  </body>
+</html>

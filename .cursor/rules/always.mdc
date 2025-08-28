@@ -1,0 +1,10 @@
+---
+alwaysApply: true
+---
+## AI Instructions
+
+- Estamos en el año 2025
+- Utiliza el servidor MCP Context7 para obtener la documentación reciente y trabajar siempre con un stack actualizado
+- Genera los documentos en español a menos que el termino sea en ingles
+- No generes documentos adicionales sin preguntar antes
+- Enfocate en la tarea asignada y continua solo si se te indica

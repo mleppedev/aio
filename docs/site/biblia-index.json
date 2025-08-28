@@ -1,0 +1,78 @@
+{
+  "title": "Biblia Técnica de Entrevista",
+  "description": "Compendio organizado de Q&A técnicos y contexto de la oferta",
+  "sections": [
+    {
+      "id": "introduccion",
+      "title": "Introducción",
+      "level": 2,
+      "file": "intro.json"
+    },
+    {
+      "id": "fundamentos-http-rest",
+      "title": "Fundamentos HTTP & REST",
+      "level": 2,
+      "file": "http-rest.json"
+    },
+    {
+      "id": "comparativas-arquitectura",
+      "title": "Comparativas Arquitectura",
+      "level": 2,
+      "file": "arquitectura.json"
+    },
+    {
+      "id": "preguntas-rapidas-general",
+      "title": "Preguntas Rápidas Set 1 (General)",
+      "level": 2,
+      "file": "rapidas-general.json"
+    },
+    {
+      "id": "preguntas-rapidas-dotnet-azure",
+      "title": "Preguntas Rápidas Set 2 (.NET & Azure)",
+      "level": 2,
+      "file": "rapidas-dotnet.json"
+    },
+    {
+      "id": "biometrika-preguntas-faciles",
+      "title": "Biometrika - Preguntas Fáciles",
+      "level": 2,
+      "file": "biometrika-faciles.json"
+    },
+    {
+      "id": "dotnet-basico",
+      "title": ".NET - Preguntas Básicas",
+      "level": 2,
+      "file": "dotnet-basico.json"
+    },
+    {
+      "id": "dotnet-intermedio",
+      "title": ".NET - Preguntas Intermedias",
+      "level": 2,
+      "file": "dotnet-intermedio.json"
+    },
+    {
+      "id": "biometrika-preguntas-intermedias",
+      "title": "Biometrika - Preguntas Intermedias",
+      "level": 2,
+      "file": "biometrika-intermedias.json"
+    },
+    {
+      "id": "dotnet-avanzado",
+      "title": ".NET - Preguntas Avanzadas",
+      "level": 2,
+      "file": "dotnet-avanzado.json"
+    },
+    {
+      "id": "biometrika-preguntas-avanzadas",
+      "title": "Biometrika - Preguntas Avanzadas",
+      "level": 2,
+      "file": "biometrika-avanzadas.json"
+    },
+    {
+      "id": "logical-thinking",
+      "title": "Logical Thinking",
+      "level": 2,
+      "file": "logical-thinking.json"
+    }
+  ]
+}

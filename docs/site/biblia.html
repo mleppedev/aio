@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Biblia Técnica – Entrevista</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0c10;
+        --bg-alt: #141721;
+        --bg-card: #1a1d29;
+        --border: #2a3140;
+        --border-light: #384155;
+        --text: #f1f3f8;
+        --text-muted: #a8b3c5;
+        --text-dim: #7a8396;
+        --accent: #4f8ff7;
+        --accent-light: #6ba3f9;
+        --accent-grad: linear-gradient(
+          135deg,
+          #4f8ff7 0%,
+          #7c3aed 50%,
+          #ec4899 100%
+        );
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --radius: 12px;
+        --radius-sm: 8px;
+        --shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.4);
+        --shadow-lg: 0 8px 32px -8px rgba(0, 0, 0, 0.6);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Scrollbar personalizado */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--bg-alt);
+        border-radius: var(--radius-sm);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(
+          135deg,
+          var(--border-light) 0%,
+          var(--accent) 50%,
+          var(--border-light) 100%
+        );
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        transition: all 0.2s ease;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(
+          135deg,
+          var(--accent-light) 0%,
+          var(--accent) 50%,
+          var(--accent-light) 100%
+        );
+        border-color: var(--accent);
+        box-shadow: 0 0 8px rgba(79, 143, 247, 0.3);
+      }
+
+      ::-webkit-scrollbar-corner {
+        background: var(--bg-alt);
+      }
+
+      /* Scrollbar para Firefox */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--border-light) var(--bg-alt);
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        display: flex;
+        min-height: 100vh;
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      }
+
+      nav {
+        width: 320px;
+        max-height: 100vh;
+        overflow: auto;
+        padding: 24px 20px 40px;
+        background: var(--bg-alt);
+        border-right: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(20px);
+        background: linear-gradient(
+          180deg,
+          var(--bg-alt) 0%,
+          rgba(20, 23, 33, 0.95) 100%
+        );
+      }
+
+      main {
+        flex: 1;
+        min-width: 0;
+        padding: 40px 48px 100px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .intro {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-bottom: 2.5rem;
+        line-height: 1.7;
+        font-weight: 400;
+      }
+
+      h1 {
+        font-size: 2.25rem;
+        margin-bottom: 1.5rem;
+        background: var(--accent-grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      h2 {
+        margin: 3rem 0 1.25rem;
+        font-size: 1.5rem;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 8px;
+        scroll-margin-top: 100px;
+        font-weight: 700;
+        position: relative;
+      }
+
+      h2:before {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 60px;
+        height: 2px;
+        background: var(--accent-grad);
+        border-radius: 2px;
+      }
+
+      h3 {
+        margin: 2.5rem 0 1rem;
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+        color: var(--accent-light);
+        scroll-margin-top: 100px;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0.75rem 0;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--text);
+      }
+
+      li {
+        margin: 0.5rem 0;
+        font-size: 0.94rem;
+        line-height: 1.6;
+      }
+
+      ul,
+      ol {
+        padding-left: 1.5rem;
+        margin: 1rem 0 1.5rem;
+      }
+
+      .quick-answers {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        box-shadow: var(--shadow);
+      }
+
+      .quick-answers ol {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 0.75rem;
+        padding-left: 0;
+        list-style: none;
+        counter-reset: qa-counter;
+      }
+
+      .quick-answers li {
+        counter-increment: qa-counter;
+        background: var(--bg-alt);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-sm);
+        padding: 1rem;
+        position: relative;
+        transition: all 0.2s ease;
+        margin: 0;
+      }
+
+      .quick-answers li:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow);
+        border-color: var(--accent);
+      }
+
+      .quick-answers li:before {
+        content: counter(qa-counter);
+        position: absolute;
+        top: -8px;
+        left: 12px;
+        background: var(--accent-grad);
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      code {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        padding: 3px 8px;
+        border-radius: var(--radius-sm);
+        font-size: 0.85rem;
+        font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+        color: var(--accent-light);
+      }
+
+      pre {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        padding: 20px 24px;
+        border-radius: var(--radius);
+        overflow: auto;
+        margin: 1.5rem 0;
+        font-size: 0.875rem;
+        box-shadow: var(--shadow);
+      }
+
+      a {
+        text-decoration: none;
+        color: var(--accent);
+        transition: color 0.2s ease;
+      }
+
+      a:hover {
+        color: var(--accent-light);
+      }
+
+      .search-box {
+        position: sticky;
+        top: 0;
+        background: var(--bg-alt);
+        padding: 12px 0 20px;
+        margin-bottom: 16px;
+        border-radius: var(--radius);
+        z-index: 10;
+      }
+
+      #search {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        background: var(--bg-card);
+        color: var(--text);
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        outline: none;
+      }
+
+      #search:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(79, 143, 247, 0.1);
+      }
+
+      #search::placeholder {
+        color: var(--text-dim);
+      }
+
+      section {
+        margin-bottom: 2rem;
+        opacity: 0;
+        animation: fadeInUp 0.6s ease forwards;
+      }
+
+      section:nth-child(even) {
+        animation-delay: 0.1s;
+      }
+
+      .badge {
+        display: inline-block;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        letter-spacing: 0.5px;
+        margin-left: 8px;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 320px;
+        right: 0;
+        background: linear-gradient(
+          to top,
+          var(--bg) 0%,
+          rgba(10, 12, 16, 0.8) 70%,
+          transparent 100%
+        );
+        backdrop-filter: blur(20px);
+        padding: 16px 48px;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--border);
+      }
+
+      .mark-found {
+        background: linear-gradient(120deg, #fbbf24, #f59e0b);
+        color: #1f2937;
+        border-radius: 4px;
+        padding: 2px 4px;
+        font-weight: 600;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .toc-link {
+        display: block;
+        padding: 8px 12px;
+        margin: 2px 0;
+        border-radius: var(--radius-sm);
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+      }
+
+      .toc-link:hover {
+        background: var(--bg-card);
+        color: var(--accent-light);
+      }
+
+      .toc-level-3 {
+        padding-left: 24px;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      @media (max-width: 1100px) {
+        nav {
+          position: fixed;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          transform: translateX(-100%);
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 999;
+          width: 280px;
+        }
+
+        nav.open {
+          transform: translateX(0);
+        }
+
+        body {
+          flex-direction: column;
+        }
+
+        main {
+          padding: 100px 24px 140px;
+        }
+
+        footer {
+          left: 0;
+          padding: 16px 24px;
+        }
+
+        #tocToggle {
+          position: fixed;
+          top: 20px;
+          left: 20px;
+          z-index: 1000;
+          background: var(--accent-grad);
+          border: none;
+          color: white;
+          padding: 12px 16px;
+          border-radius: var(--radius-sm);
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: var(--shadow-lg);
+          transition: transform 0.2s ease;
+        }
+
+        #tocToggle:active {
+          transform: scale(0.95);
+        }
+
+        h1 {
+          margin-top: 2rem;
+          font-size: 2rem;
+        }
+
+        .quick-answers ol {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button id="tocToggle" style="display: none">📚 Índice</button>
+    <nav id="toc">
+      <div class="search-box">
+        <input
+          id="search"
+          type="search"
+          placeholder="🔍 Buscar conceptos... (Ctrl+/)"
+          autocomplete="off"
+        />
+      </div>
+      <h1>📖 Índice</h1>
+      <div id="toc-content"></div>
+    </nav>
+    <main>
+      <h1>Biblia Técnica de Entrevista</h1>
+      <p class="intro">
+        📚 Compendio organizado de Q&A técnicos y contexto de la oferta laboral.
+        Utiliza el buscador inteligente para filtrar conceptos al instante.
+        Navega por el índice lateral para explorar por temas.
+      </p>
+      <div id="content"></div>
+    </main>
+    <footer>
+      <span
+        >⚡ Carga inteligente (JSON + fallback embebido) – Búsqueda en tiempo
+        real</span
+      >
+      <span id="stats">🎯 Listo para explorar</span>
+    </footer>
+    <!-- Markdown ordenado incrustado desde biblia_ordenada.md -->
+    <script id="ordered-md" type="text/plain">
+      <!-- Generado automáticamente: versión ordenada inteligente a partir de biblia.md -->
+      # Biblia Técnica Ordenada
+
+      > Compendio reorganizado para estudio rápido de entrevista. Incluye índice, agrupación temática y respuestas concisas.
+
+      ---
+
+      ## Introducción
+
+      Las próximas son preguntas típicas de entrevista respondidas de forma acotada desde la perspectiva de un developer senior (.NET / microservicios / Azure / biometría).
+
+      ## Fundamentos HTTP & REST
+
+      ### REST Stateless
+
+      **Pregunta:** ¿How are REST API stateless?
+      **Respuesta:** El servidor no mantiene contexto de cliente; cada petición incluye toda la info necesaria (auth, parámetros, estado derivable) y se procesa de forma independiente.
+
+      ### Métodos HTTP
+
+      GET (lectura, idempotente, seguro)
+      POST (crear recurso / operación no idempotente)
+      PUT (reemplazo total, idempotente)
+      PATCH (actualización parcial)
+      DELETE (elimina)
+      HEAD (solo cabeceras)
+      OPTIONS (capacidades)
+
+      ### Códigos de Estado
+
+      1xx informativo (100 Continue)
+      2xx éxito (200 OK, 201 Created, 204 No Content)
+      3xx redirección (301, 302, 304)
+      4xx error cliente (400, 401, 403, 404)
+      5xx error servidor (500, 502, 503)
+
+      ### URI Definición
+
+      URI identifica un recurso; URL = URI con localización/protocolo (https://api.example.com/users/1); URN = nombre sin localización (urn:isbn:...).
+
+      ### Buenas Prácticas URIs REST
+
+      - Sustantivos plurales: `/users/123/orders/456`
+      - Jerarquía clara; sin verbos (usa métodos HTTP)
+      - minúsculas + guiones: `/user-profiles`
+      - Versionado: `/api/v1/...`
+      - Filtros / paginación en query: `?role=admin&page=2&limit=50`
+      - Evitar endpoints genéricos tipo `/getData`
+
+      ## Comparativas Arquitectura
+
+      ### REST vs SOAP
+
+      REST ligero (JSON común), flexible; SOAP rígido, solo XML, añade WS-* (seguridad, transacciones). SOAP útil en banca/gobierno cuando se exigen contratos estrictos; REST preferido en APIs modernas y microservicios.
+
+      ### REST vs AJAX
+
+      REST: estilo arquitectónico API.
+      AJAX: técnica cliente para peticiones asíncronas sin recargar página.
+      Se combinan: AJAX consume endpoints REST.
+
+      ### API vs Microservicio
+
+      API = contrato/interfaz.
+      Microservicio = unidad desplegable autónoma con lógica y datos.
+      Relación: un microservicio suele exponerse mediante una API, pero no toda API implica microservicios.
+      Cuadro: Definición / Alcance / Despliegue (API no se “despliega” por sí misma, microservicio sí) / Relación (API puerta, microservicio la sala detrás).
+
+      ## Oferta Laboral Biometrika
+
+      ### Empresa
+
+      Tecnológica chilena (desde 2005) enfocada en verificación de identidad biométrica, presencia regional (Perú, Uruguay). Cultura: innovación, honestidad, confianza, mejora continua.
+
+      ### Funciones del Cargo
+
+      - Definir visión estratégica y roadmap de producto.
+      - Soporte pre y post venta técnico (reuniones, defensa propuestas, incidentes escalados).
+
+      ### Requerimientos y Skills
+
+      Core: C#, .NET, Backend/Microservicios, CI/CD, Blazor, APIs REST, Inglés B2, liderazgo y comunicación transversal.
+
+      ### Deseables
+
+      Vue.js, React.js, Biometría, Firma Electrónica, IA, Azure (o similar nube).
+
+      ## Stack & Integración Tecnológica
+
+      ### Vista de Capas
+
+      Backend .NET (microservicios) ⇄ API REST ⇄ Frontend (Blazor principal; React/Vue alternos) ⇄ Infra (Azure: AKS, Functions, ACR, Key Vault).
+      Microservicios especializados para biometría / firma / IA; pipelines CI/CD automatizan build-test-deploy.
+
+      ### Ventajas Backend .NET
+
+      Multiplataforma, alto rendimiento (benchmarks TechEmpower), modular, seguridad integrada (OAuth2/OIDC/JWT), ecosistema maduro, tooling productivo, soporte LTS y compatibilidad migratoria.
+
+      ### CI/CD Ideal
+
+      - Ramas main/develop.
+      - Pipeline: restore → build → tests (unit + integración) → análisis estático (Sonar/CodeQL) → empaquetar imagen Docker (tag semántico).
+      - Despliegue: dev/staging auto, producción con aprobación.
+      - Infra as Code (Bicep/Terraform).
+      - Estrategias: blue/green, canary, rollback rápido.
+      - Observabilidad: App Insights / Prometheus+Grafana, logs centralizados.
+
+      ### Must Know: Mensajería & Infra
+
+      RabbitMQ (colas, work queues), Kafka (event streaming log distribuido), Redis (cache, session store, pub/sub ligero), SQL Server/PostgreSQL (transaccional), Cosmos DB (NoSQL global), OAuth2/OIDC (authn/authz), Kubernetes/AKS (orquestación), Azure Functions (event-driven), CI/CD (GitHub Actions/Azure DevOps).
+
+      ### Kafka + Redis Ventajas
+
+      Kafka: throughput alto, persistencia de eventos, reprocesamiento histórico.
+      Redis: latencia microsegundos, cache & sesiones, simple broker.
+      Combinados: Kafka para flujos/eventos masivos; Redis acelera lecturas críticas y reduce carga a bases relacionales.
+
+      ### Stack con Blazor / Alternativas
+
+      Blazor unifica C# full stack (compartir modelos), reduce duplicidad lógica. React/Vue se usan cuando se prioriza ecosistema JS o UX avanzada. Azure + contenedores → escalabilidad + resiliencia.
+
+      ## Firma Electrónica en Chile
+
+      Ley 19.799. Tipos: FEA (certificado acreditado) y FES (mecanismo identificador).
+      Modelo: Microservicio de firma → recibe documento, genera hash, integra con proveedor (SOAP/REST), firma (XAdES/CAdES/PAdES), almacena firmado + logs auditoría (SQL/Cosmos).
+      Seguridad: certificados en Key Vault, OAuth2/OIDC, logs, opciones serverless (Functions) para callbacks. Escalabilidad: desacople por colas (RabbitMQ/Kafka) para lotes masivos.
+
+      ## Perfil, Capacidades y Ejemplos
+
+      ### Perfil Breve
+
+      Define visión técnica alineada a negocio; arquitectura .NET + microservicios; implementa CI/CD robusto; coordina áreas (comercial/soporte); mentoría técnica; soporte preventa/postventa; foco en resiliencia y performance.
+
+      ### Bullets Estrategia de Producto
+
+      - Arquitectura y roadmap técnico alineado al plan estratégico.
+      - Traducción de requerimientos comerciales a soluciones escalables.
+      - Prototipado para validar valor con stakeholders.
+      - Priorización de backlog con criterios negocio-impacto.
+      - Buenas prácticas (seguridad, mantenibilidad, observabilidad).
+      - Vigilancia tecnológica e innovación continua.
+      - Medición de impacto y reajuste iterativo.
+
+      ### Ejemplos con Métricas (Simulados)
+
+      - Arquitectura microservicios redujo tiempo de despliegue 40%.
+      - Traducción de requerimientos → +25% adopción primer año.
+      - Prototipo biométrico: -60% tiempo validación identidad.
+      - CI/CD disminuyó incidentes prod 35% y aceleró entregas.
+      - Priorización colaborativa → +20% satisfacción interna.
+      - Integración IA automatizó 50% de procesos manuales.
+
+      ## Preguntas Rápidas Set 1 (General)
+
+      1. **SOLID:** SRP, OCP, LSP, ISP, DIP.
+      2. **Interfaz vs Clase Abstracta:** Interfaz = contrato puro; Abstracta = contrato + lógica base compartida.
+      3. **Inyección de dependencias:** Pasar dependencias externas (constructor/prop) para desacoplar/testear.
+      4. **Task vs Thread:** Task abstrae scheduling sobre ThreadPool; Thread es primitivo OS.
+      5. **async/await:** Azúcar sintáctico para tareas asíncronas sin bloquear hilos.
+      6. **DTO:** Contenedor de datos sin lógica para transporte entre capas.
+      7. **Record C#:** Inmutabilidad y comparación estructural.
+      8. **Middleware:** Componente pipeline HTTP (logging, auth).
+      9. **Microservicio:** Servicio autónomo con lógica y almacenamiento propio.
+      10. **Ventaja Blazor:** C# lado cliente y reutilización de modelos.
+      11. **IEnumerable/ICollection/IList:** Enumeración / +operaciones colección / +índice.
+      12. **Value Object DDD:** Inmutable, definido por valor (Email).
+      13. **Swagger:** Documentación y prueba interactiva API.
+      14. **Transacción:** Unidad atómica ACID.
+      15. **SQL vs NoSQL:** Estructura y transacciones vs flexibilidad y escalado horizontal.
+      16. **REST Stateless:** Sin estado servidor entre requests.
+      17. **Idempotencia:** Mismo resultado repitiendo (PUT).
+      18. **JWT:** Token firmado con claims.
+      19. **CORS:** Política de orígenes permitidos.
+      20. **log.Error vs log.Fatal:** Error recuperable vs crítico terminal.
+      21. **Pipeline CI/CD:** Automación build-test-deploy continua.
+      22. **Unit vs Integration Test:** Aislado vs interacción real.
+      23. **TDD:** Test → Código mínimo → Refactor.
+      24. **Clean Architecture:** Separar dominio, casos de uso, interfaces, frameworks.
+      25. **Docker vs VM:** Contenedores ligeros vs virtualización completa.
+      26. **Health Check:** Endpoint estado servicio.
+      27. **Circuit Breaker:** Corta llamadas tras fallos repetidos.
+      28. **Monolito vs Microservicio:** Único despliegue vs múltiples servicios.
+      29. **KISS:** Mantener simple.
+      30. **Pull Request:** Revisión colaborativa antes de merge.
+
+      ## Preguntas Rápidas Set 2 (.NET & Azure)
+
+      1. **.NET Core uso:** Multiplataforma, performante para microservicios.
+      2. **Framework vs Core:** Framework = Windows/monolítico; Core = modular multi-OS.
+      3. **Controller:** Clase endpoints HTTP.
+      4. **DI ASP.NET:** Contenedor nativo de servicios (SCOPES).
+      5. **Ciclo vida (Singleton/Scoped/Transient):** App / Request / Resolución.
+      6. **Hosted Service:** Trabajo background.
+      7. **gRPC vs REST:** Binario, rápido, contratos estrictos.
+      8. **Azure App Service:** PaaS para web/APIs.
+      9. **Azure Functions:** Serverless event-driven.
+      10. **AKS:** Kubernetes gestionado.
+      11. **API Management:** Gateway seguridad/throttling/analytics.
+      12. **Blob vs SQL:** Objetos vs relacional estructurado.
+      13. **Key Vault:** Secretos / llaves seguras.
+      14. **Service Bus:** Mensajería (colas/topics).
+      15. **Queue vs Topic:** 1:1 vs 1:N pub-sub.
+      16. **API Gateway:** Entrada única y políticas.
+      17. **Resiliencia:** Patrones retry, circuit, fallback.
+      18. **Azure Monitor:** Métricas y logs centralizados.
+      19. **Azure DevOps vs GitHub Actions:** Suite integral vs integrado al repo.
+      20. **Container Registry:** Almacén imágenes privadas.
+      21. **Escalado Horizontal/Vertical:** +instancias / +recursos.
+      22. **Polly Retry Policy:** Reintentos controlados.
+      23. **Health Checks ASP.NET:** Endpoint(s) estado dependencias.
+      24. **Circuit Breaker Polly:** Evita cascada de fallos.
+      25. **REST vs GraphQL:** Multiples endpoints y payload fijo vs un endpoint con consulta declarativa.
+      26. **SLA:** Garantía disponibilidad.
+      27. **Application Insights:** Telemetría y trazas.
+      28. **appsettings vs App Configuration:** Local por servicio vs centralizado dinámico.
+      29. **Bounded Context:** Límite semántico de dominio.
+      30. **Dapr:** Sidecar que abstrae pub/sub, state, bindings para microservicios .NET.
+
+      ---
+
+      > Fin de la versión ordenada. Actualiza categorías si se agregan nuevas preguntas en el archivo original.
+    </script>
+    <script>
+      // Estado global
+      let contentData = null;
+      let allSections = [];
+
+      // Carga y renderizado principal
+      async function loadAndRender() {
+        try {
+          showLoader();
+
+          // Intentar cargar desde JSON primero
+          try {
+            const response = await fetch("./biblia.json");
+            contentData = await response.json();
+            updateStats(`📊 Cargado desde JSON`);
+          } catch (fetchError) {
+            console.warn(
+              "No se pudo cargar JSON, usando contenido embebido:",
+              fetchError
+            );
+            // Fallback: usar contenido embebido
+            contentData = parseEmbeddedContent();
+            updateStats(`📊 Cargado desde contenido embebido`);
+          }
+
+          const { html, sections } = renderFromJSON(contentData);
+          allSections = sections;
+
+          const contentEl = document.getElementById("content");
+          contentEl.innerHTML = html;
+
+          buildToc(sections);
+          setupSearch();
+          updateStats(`📊 ${sections.length} secciones cargadas`);
+          hideLoader();
+        } catch (error) {
+          console.error("Error cargando contenido:", error);
+          document.getElementById("content").innerHTML =
+            '<div style="text-align: center; padding: 2rem; color: var(--danger);">❌ Error cargando el contenido. Revisa la consola.</div>';
+        }
+      }
+
+      // Parsea el contenido embebido como fallback
+      function parseEmbeddedContent() {
+        const embeddedContent = document
+          .getElementById("ordered-md")
+          .textContent.trim();
+
+        return {
+          title: "Biblia Técnica de Entrevista",
+          description:
+            "Compendio organizado de Q&A técnicos y contexto de la oferta",
+          sections: [
+            {
+              id: "introduccion",
+              title: "Introducción",
+              level: 2,
+              content:
+                "Las próximas son preguntas típicas de entrevista respondidas de forma acotada desde la perspectiva de un developer senior (.NET / microservicios / Azure / biometría).",
+              type: "text",
+            },
+            {
+              id: "fundamentos-http-rest",
+              title: "Fundamentos HTTP & REST",
+              level: 2,
+              subsections: [
+                {
+                  id: "rest-stateless",
+                  title: "REST Stateless",
+                  level: 3,
+                  content:
+                    "**Pregunta:** ¿How are REST API stateless?\n**Respuesta:** El servidor no mantiene contexto de cliente; cada petición incluye toda la info necesaria (auth, parámetros, estado derivable) y se procesa de forma independiente.",
+                  type: "qa",
+                },
+                {
+                  id: "metodos-http",
+                  title: "Métodos HTTP",
+                  level: 3,
+                  content: [
+                    "GET (lectura, idempotente, seguro)",
+                    "POST (crear recurso / operación no idempotente)",
+                    "PUT (reemplazo total, idempotente)",
+                    "PATCH (actualización parcial)",
+                    "DELETE (elimina)",
+                    "HEAD (solo cabeceras)",
+                    "OPTIONS (capacidades)",
+                  ],
+                  type: "list",
+                },
+                {
+                  id: "codigos-estado",
+                  title: "Códigos de Estado",
+                  level: 3,
+                  content: [
+                    "1xx informativo (100 Continue)",
+                    "2xx éxito (200 OK, 201 Created, 204 No Content)",
+                    "3xx redirección (301, 302, 304)",
+                    "4xx error cliente (400, 401, 403, 404)",
+                    "5xx error servidor (500, 502, 503)",
+                  ],
+                  type: "list",
+                },
+                {
+                  id: "uri-definicion",
+                  title: "URI Definición",
+                  level: 3,
+                  content:
+                    "URI identifica un recurso; URL = URI con localización/protocolo (https://api.example.com/users/1); URN = nombre sin localización (urn:isbn:...).",
+                  type: "text",
+                },
+                {
+                  id: "buenas-practicas-uris",
+                  title: "Buenas Prácticas URIs REST",
+                  level: 3,
+                  content: [
+                    "Sustantivos plurales: `/users/123/orders/456`",
+                    "Jerarquía clara; sin verbos (usa métodos HTTP)",
+                    "minúsculas + guiones: `/user-profiles`",
+                    "Versionado: `/api/v1/...`",
+                    "Filtros / paginación en query: `?role=admin&page=2&limit=50`",
+                    "Evitar endpoints genéricos tipo `/getData`",
+                  ],
+                  type: "list",
+                },
+              ],
+            },
+            {
+              id: "preguntas-rapidas-general",
+              title: "Preguntas Rápidas Set 1 (General)",
+              level: 2,
+              content: [
+                "**SOLID:** SRP, OCP, LSP, ISP, DIP.",
+                "**Interfaz vs Clase Abstracta:** Interfaz = contrato puro; Abstracta = contrato + lógica base compartida.",
+                "**Inyección de dependencias:** Pasar dependencias externas (constructor/prop) para desacoplar/testear.",
+                "**Task vs Thread:** Task abstrae scheduling sobre ThreadPool; Thread es primitivo OS.",
+                "**async/await:** Azúcar sintáctico para tareas asíncronas sin bloquear hilos.",
+                "**DTO:** Contenedor de datos sin lógica para transporte entre capas.",
+                "**Record C#:** Inmutabilidad y comparación estructural.",
+                "**Middleware:** Componente pipeline HTTP (logging, auth).",
+                "**Microservicio:** Servicio autónomo con lógica y almacenamiento propio.",
+                "**Ventaja Blazor:** C# lado cliente y reutilización de modelos.",
+                "**IEnumerable/ICollection/IList:** Enumeración / +operaciones colección / +índice.",
+                "**Value Object DDD:** Inmutable, definido por valor (Email).",
+                "**Swagger:** Documentación y prueba interactiva API.",
+                "**Transacción:** Unidad atómica ACID.",
+                "**SQL vs NoSQL:** Estructura y transacciones vs flexibilidad y escalado horizontal.",
+                "**REST Stateless:** Sin estado servidor entre requests.",
+                "**Idempotencia:** Mismo resultado repitiendo (PUT).",
+                "**JWT:** Token firmado con claims.",
+                "**CORS:** Política de orígenes permitidos.",
+                "**log.Error vs log.Fatal:** Error recuperable vs crítico terminal.",
+                "**Pipeline CI/CD:** Automación build-test-deploy continua.",
+                "**Unit vs Integration Test:** Aislado vs interacción real.",
+                "**TDD:** Test → Código mínimo → Refactor.",
+                "**Clean Architecture:** Separar dominio, casos de uso, interfaces, frameworks.",
+                "**Docker vs VM:** Contenedores ligeros vs virtualización completa.",
+                "**Health Check:** Endpoint estado servicio.",
+                "**Circuit Breaker:** Corta llamadas tras fallos repetidos.",
+                "**Monolito vs Microservicio:** Único despliegue vs múltiples servicios.",
+                "**KISS:** Mantener simple.",
+                "**Pull Request:** Revisión colaborativa antes de merge.",
+              ],
+              type: "ordered_list",
+            },
+            {
+              id: "preguntas-rapidas-dotnet-azure",
+              title: "Preguntas Rápidas Set 2 (.NET & Azure)",
+              level: 2,
+              content: [
+                "**.NET Core uso:** Multiplataforma, performante para microservicios.",
+                "**Framework vs Core:** Framework = Windows/monolítico; Core = modular multi-OS.",
+                "**Controller:** Clase endpoints HTTP.",
+                "**DI ASP.NET:** Contenedor nativo de servicios (SCOPES).",
+                "**Ciclo vida (Singleton/Scoped/Transient):** App / Request / Resolución.",
+                "**Hosted Service:** Trabajo background.",
+                "**gRPC vs REST:** Binario, rápido, contratos estrictos.",
+                "**Azure App Service:** PaaS para web/APIs.",
+                "**Azure Functions:** Serverless event-driven.",
+                "**AKS:** Kubernetes gestionado.",
+                "**API Management:** Gateway seguridad/throttling/analytics.",
+                "**Blob vs SQL:** Objetos vs relacional estructurado.",
+                "**Key Vault:** Secretos / llaves seguras.",
+                "**Service Bus:** Mensajería (colas/topics).",
+                "**Queue vs Topic:** 1:1 vs 1:N pub-sub.",
+                "**API Gateway:** Entrada única y políticas.",
+                "**Resiliencia:** Patrones retry, circuit, fallback.",
+                "**Azure Monitor:** Métricas y logs centralizados.",
+                "**Azure DevOps vs GitHub Actions:** Suite integral vs integrado al repo.",
+                "**Container Registry:** Almacén imágenes privadas.",
+                "**Escalado Horizontal/Vertical:** +instancias / +recursos.",
+                "**Polly Retry Policy:** Reintentos controlados.",
+                "**Health Checks ASP.NET:** Endpoint(s) estado dependencias.",
+                "**Circuit Breaker Polly:** Evita cascada de fallos.",
+                "**REST vs GraphQL:** Multiples endpoints y payload fijo vs un endpoint con consulta declarativa.",
+                "**SLA:** Garantía disponibilidad.",
+                "**Application Insights:** Telemetría y trazas.",
+                "**appsettings vs App Configuration:** Local por servicio vs centralizado dinámico.",
+                "**Bounded Context:** Límite semántico de dominio.",
+                "**Dapr:** Sidecar que abstrae pub/sub, state, bindings para microservicios .NET.",
+              ],
+              type: "ordered_list",
+            },
+          ],
+        };
+      }
+
+      // Renderiza desde estructura JSON
+      function renderFromJSON(data) {
+        let html = "";
+        let sections = [];
+
+        data.sections.forEach((section) => {
+          const sectionData = {
+            level: section.level,
+            title: section.title,
+            slug: slugify(section.title),
+            type: section.type || "text",
+          };
+
+          sections.push(sectionData);
+
+          const tag =
+            section.level === 1 ? "h1" : section.level === 2 ? "h2" : "h3";
+          html += `<section id="${sectionData.slug}" data-type="${sectionData.type}">`;
+          html += `<${tag}>${escapeHtml(section.title)}</${tag}>`;
+
+          if (section.content) {
+            if (section.type === "ordered_list") {
+              html += '<div class="quick-answers">';
+              html += "<ol>";
+              section.content.forEach((item) => {
+                html += `<li>${formatInlineMarkdown(item)}</li>`;
+              });
+              html += "</ol>";
+              html += "</div>";
+            } else if (section.type === "list") {
+              html += "<ul>";
+              section.content.forEach((item) => {
+                html += `<li>${formatInlineMarkdown(item)}</li>`;
+              });
+              html += "</ul>";
+            } else {
+              html += `<p>${formatInlineMarkdown(section.content)}</p>`;
+            }
+          }
+
+          // Renderizar subsecciones
+          if (section.subsections) {
+            section.subsections.forEach((subsection) => {
+              const subData = {
+                level: subsection.level,
+                title: subsection.title,
+                slug: slugify(subsection.title),
+                type: subsection.type || "text",
+              };
+
+              sections.push(subData);
+
+              html += `<section id="${subData.slug}" data-type="${subData.type}">`;
+              html += `<h3>${escapeHtml(subsection.title)}</h3>`;
+
+              if (subsection.content) {
+                if (Array.isArray(subsection.content)) {
+                  html += "<ul>";
+                  subsection.content.forEach((item) => {
+                    html += `<li>${formatInlineMarkdown(item)}</li>`;
+                  });
+                  html += "</ul>";
+                } else {
+                  html += `<p>${formatInlineMarkdown(subsection.content)}</p>`;
+                }
+              }
+
+              html += "</section>";
+            });
+          }
+
+          html += "</section>";
+        });
+
+        return { html, sections };
+      }
+
+      // Formato de markdown inline (negritas, código, etc.)
+      function formatInlineMarkdown(text) {
+        return text
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/\*(.*?)\*/g, "<em>$1</em>")
+          .replace(/`([^`]+)`/g, "<code>$1</code>")
+          .replace(/\n/g, "<br>");
+      }
+
+      // Utilidades
+      function escapeHtml(s) {
+        return s.replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[c])
+        );
+      }
+
+      function slugify(t) {
+        return t
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[^a-z0-9\s-]/g, "")
+          .trim()
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-");
+      }
+
+      // Construcción del TOC
+      function buildToc(sections) {
+        const tocEl = document.getElementById("toc-content");
+        tocEl.innerHTML = "";
+
+        sections.forEach((s) => {
+          if (s.level <= 3) {
+            const link = document.createElement("a");
+            link.href = `#${s.slug}`;
+            link.textContent = s.title;
+            link.className = `toc-link toc-level-${s.level}`;
+
+            // Añadir emoji según el tipo
+            const emoji =
+              s.type === "ordered_list"
+                ? "📝 "
+                : s.type === "list"
+                ? "📋 "
+                : s.type === "qa"
+                ? "❓ "
+                : "📄 ";
+            link.textContent = emoji + s.title;
+
+            tocEl.appendChild(link);
+          }
+        });
+      }
+
+      // Sistema de búsqueda mejorado
+      function setupSearch() {
+        const searchInput = document.getElementById("search");
+
+        // Preindexar contenido para búsqueda
+        const searchIndex = allSections.map((section) => {
+          const element = document.getElementById(section.slug);
+          return {
+            section,
+            element,
+            text: element ? element.textContent.toLowerCase() : "",
+            keywords: extractKeywords(element ? element.textContent : ""),
+          };
+        });
+
+        let searchTimeout;
+
+        function performSearch(query) {
+          clearTimeout(searchTimeout);
+
+          searchTimeout = setTimeout(() => {
+            query = query.trim().toLowerCase();
+
+            if (!query) {
+              showAllSections();
+              updateStats(`📊 ${allSections.length} secciones visibles`);
+              return;
+            }
+
+            const results = searchSections(searchIndex, query);
+            displaySearchResults(results, query);
+            updateStats(`🔍 ${results.length} resultados para "${query}"`);
+          }, 150);
+        }
+
+        searchInput.addEventListener("input", (e) =>
+          performSearch(e.target.value)
+        );
+
+        // Atajos de teclado
+        window.addEventListener("keydown", (e) => {
+          if ((e.key === "/" && !e.ctrlKey) || (e.key === "/" && e.ctrlKey)) {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+          }
+          if (e.key === "Escape" && document.activeElement === searchInput) {
+            searchInput.value = "";
+            showAllSections();
+            updateStats(`📊 ${allSections.length} secciones visibles`);
+          }
+        });
+      }
+
+      function extractKeywords(text) {
+        return text
+          .toLowerCase()
+          .split(/[^a-z0-9áéíóúüñ]+/)
+          .filter((word) => word.length > 2)
+          .slice(0, 20); // Limitar palabras clave
+      }
+
+      function searchSections(index, query) {
+        const queryTerms = query.split(/\s+/).filter((t) => t.length > 0);
+
+        return index
+          .map((item) => {
+            let score = 0;
+            const lowerTitle = item.section.title.toLowerCase();
+            const lowerText = item.text;
+
+            // Búsqueda exacta en título (mayor peso)
+            if (lowerTitle.includes(query)) {
+              score += 20;
+            }
+
+            // Búsqueda exacta en contenido completo
+            if (lowerText.includes(query)) {
+              score += 10;
+            }
+
+            // Búsqueda por términos individuales (solo si la consulta tiene múltiples palabras)
+            if (queryTerms.length > 1) {
+              queryTerms.forEach((term) => {
+                if (term.length > 1) {
+                  if (lowerTitle.includes(term)) {
+                    score += 5;
+                  }
+                  if (lowerText.includes(term)) {
+                    score += 3;
+                  }
+                  if (item.keywords.some((kw) => kw.includes(term))) {
+                    score += 1;
+                  }
+                }
+              });
+            }
+
+            return { ...item, score };
+          })
+          .filter((item) => item.score > 0)
+          .sort((a, b) => b.score - a.score);
+      }
+
+      function displaySearchResults(results, query) {
+        // Ocultar todas las secciones primero
+        allSections.forEach((section) => {
+          const el = document.getElementById(section.slug);
+          if (el) el.style.display = "none";
+        });
+
+        // Mostrar resultados y resaltar
+        results.forEach((result) => {
+          if (result.element) {
+            result.element.style.display = "block";
+            highlightText(result.element, query);
+          }
+        });
+      }
+
+      function showAllSections() {
+        allSections.forEach((section) => {
+          const el = document.getElementById(section.slug);
+          if (el) {
+            el.style.display = "block";
+            // Limpiar resaltados usando la nueva función
+            clearHighlights(el);
+          }
+        });
+      }
+
+      function highlightText(element, query) {
+        // Limpiar resaltados previos
+        clearHighlights(element);
+
+        if (!query) return;
+
+        // Función recursiva para resaltar solo en nodos de texto
+        function highlightInTextNodes(node, searchText) {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+            const regex = new RegExp(
+              `(${searchText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+              "gi"
+            );
+
+            if (regex.test(text)) {
+              const highlightedText = text.replace(
+                regex,
+                '<mark class="mark-found">$1</mark>'
+              );
+
+              // Crear un elemento temporal para reemplazar el nodo de texto
+              const temp = document.createElement("span");
+              temp.innerHTML = highlightedText;
+
+              // Reemplazar el nodo de texto con los nuevos nodos
+              const parent = node.parentNode;
+              while (temp.firstChild) {
+                parent.insertBefore(temp.firstChild, node);
+              }
+              parent.removeChild(node);
+            }
+          } else if (
+            node.nodeType === Node.ELEMENT_NODE &&
+            node.tagName !== "MARK" &&
+            node.tagName !== "SCRIPT" &&
+            node.tagName !== "STYLE"
+          ) {
+            // Procesar hijos del elemento (evitar tags mark, script, style)
+            const children = Array.from(node.childNodes);
+            children.forEach((child) =>
+              highlightInTextNodes(child, searchText)
+            );
+          }
+        }
+
+        highlightInTextNodes(element, query);
+      }
+
+      function clearHighlights(element) {
+        const marks = element.querySelectorAll("mark.mark-found");
+        marks.forEach((mark) => {
+          const parent = mark.parentNode;
+          parent.replaceChild(document.createTextNode(mark.textContent), mark);
+          parent.normalize(); // Combinar nodos de texto adyacentes
+        });
+      }
+
+      function updateStats(message) {
+        document.getElementById("stats").textContent = message;
+      }
+
+      function showLoader() {
+        document.getElementById("content").innerHTML =
+          '<div style="text-align: center; padding: 3rem; color: var(--text-muted);">⏳ Cargando contenido...</div>';
+      }
+
+      function hideLoader() {
+        // Animación de entrada para las secciones
+        setTimeout(() => {
+          document.querySelectorAll("section").forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.05}s`;
+          });
+        }, 100);
+      }
+
+      // Mobile TOC toggle
+      function setupMobileNavigation() {
+        const toc = document.getElementById("toc");
+        const btn = document.getElementById("tocToggle");
+
+        function checkWidth() {
+          if (window.innerWidth < 1100) {
+            btn.style.display = "block";
+          } else {
+            btn.style.display = "none";
+            toc.classList.remove("open");
+          }
+        }
+
+        btn.addEventListener("click", () => toc.classList.toggle("open"));
+        window.addEventListener("resize", checkWidth);
+        checkWidth();
+
+        // Cerrar TOC al hacer click en un enlace (móvil)
+        document.addEventListener("click", (e) => {
+          if (e.target.matches("nav a") && window.innerWidth < 1100) {
+            toc.classList.remove("open");
+          }
+        });
+      }
+
+      // Inicialización
+      document.addEventListener("DOMContentLoaded", () => {
+        loadAndRender();
+        setupMobileNavigation();
+      });
+    </script>
+  </body>
+</html>

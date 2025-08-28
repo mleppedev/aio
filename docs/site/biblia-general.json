@@ -1,0 +1,258 @@
+{
+  "title": "Biblia Técnica de Entrevista - General",
+  "description": "Compendio organizado de Q&A técnicos sin preguntas de Logical Thinking",
+  "sections": [
+    {
+      "id": "introduccion",
+      "title": "Introducción",
+      "level": 2,
+      "content": "Las próximas son preguntas típicas de entrevista respondidas de forma acotada desde la perspectiva de un developer senior (.NET / microservicios / Azure / biometría).",
+      "type": "text"
+    },
+    {
+      "id": "fundamentos-http-rest",
+      "title": "Fundamentos HTTP & REST",
+      "level": 2,
+      "subsections": [
+        {
+          "id": "rest-stateless",
+          "title": "REST Stateless",
+          "level": 3,
+          "content": "**Pregunta:** ¿How are REST API stateless?\n**Respuesta:** El servidor no mantiene contexto de cliente; cada petición incluye toda la info necesaria (auth, parámetros, estado derivable) y se procesa de forma independiente.",
+          "type": "qa"
+        },
+        {
+          "id": "metodos-http",
+          "title": "Métodos HTTP",
+          "level": 3,
+          "content": [
+            "GET (lectura, idempotente, seguro)",
+            "POST (crear recurso / operación no idempotente)",
+            "PUT (reemplazo total, idempotente)",
+            "PATCH (actualización parcial)",
+            "DELETE (elimina)",
+            "HEAD (solo cabeceras)",
+            "OPTIONS (capacidades)"
+          ],
+          "type": "list"
+        },
+        {
+          "id": "codigos-estado",
+          "title": "Códigos de Estado",
+          "level": 3,
+          "content": [
+            "1xx informativo (100 Continue)",
+            "2xx éxito (200 OK, 201 Created, 204 No Content)",
+            "3xx redirección (301, 302, 304)",
+            "4xx error cliente (400, 401, 403, 404)",
+            "5xx error servidor (500, 502, 503)"
+          ],
+          "type": "list"
+        },
+        {
+          "id": "uri-definicion",
+          "title": "URI Definición",
+          "level": 3,
+          "content": "URI identifica un recurso; URL = URI con localización/protocolo (https://api.example.com/users/1); URN = nombre sin localización (urn:isbn:...).",
+          "type": "text"
+        },
+        {
+          "id": "buenas-practicas-uris",
+          "title": "Buenas Prácticas URIs REST",
+          "level": 3,
+          "content": [
+            "Sustantivos plurales: `/users/123/orders/456`",
+            "Jerarquía clara; sin verbos (usa métodos HTTP)",
+            "minúsculas + guiones: `/user-profiles`",
+            "Versionado: `/api/v1/...`",
+            "Filtros / paginación en query: `?role=admin&page=2&limit=50`",
+            "Evitar endpoints genéricos tipo `/getData`"
+          ],
+          "type": "list"
+        }
+      ]
+    },
+    {
+      "id": "comparativas-arquitectura",
+      "title": "Comparativas Arquitectura",
+      "level": 2,
+      "subsections": [
+        {
+          "id": "rest-vs-soap",
+          "title": "REST vs SOAP",
+          "level": 3,
+          "content": "REST ligero (JSON común), flexible; SOAP rígido, solo XML, añade WS-* (seguridad, transacciones). SOAP útil en banca/gobierno cuando se exigen contratos estrictos; REST preferido en APIs modernas y microservicios.",
+          "type": "text"
+        },
+        {
+          "id": "rest-vs-ajax",
+          "title": "REST vs AJAX",
+          "level": 3,
+          "content": "REST: estilo arquitectónico API.\nAJAX: técnica cliente para peticiones asíncronas sin recargar página.\nSe combinan: AJAX consume endpoints REST.",
+          "type": "text"
+        },
+        {
+          "id": "api-vs-microservicio",
+          "title": "API vs Microservicio",
+          "level": 3,
+          "content": "API = contrato/interfaz.\nMicroservicio = unidad desplegable autónoma con lógica y datos.\nRelación: un microservicio suele exponerse mediante una API, pero no toda API implica microservicios.\nCuadro: Definición / Alcance / Despliegue (API no se \"despliega\" por sí misma, microservicio sí) / Relación (API puerta, microservicio la sala detrás).",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "id": "preguntas-rapidas-general",
+      "title": "Preguntas Rápidas Set 1 (General)",
+      "level": 2,
+      "subsections": [
+        {
+          "id": "solid-principios",
+          "title": "Principios SOLID",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué son los principios SOLID?\n**Respuesta:** SRP (Single Responsibility), OCP (Open/Closed), LSP (Liskov Substitution), ISP (Interface Segregation), DIP (Dependency Inversion). Principios fundamentales para diseño de software orientado a objetos mantenible y escalable.",
+          "type": "qa"
+        },
+        {
+          "id": "interfaz-vs-clase-abstracta-rapido",
+          "title": "Interfaz vs Clase Abstracta",
+          "level": 3,
+          "content": "**Pregunta:** ¿Diferencia rápida entre interfaz y clase abstracta?\n**Respuesta:** Interfaz = contrato puro sin implementación; Clase abstracta = contrato + lógica base compartida que puede heredarse.",
+          "type": "qa"
+        },
+        {
+          "id": "inyeccion-dependencias-concepto",
+          "title": "Inyección de Dependencias",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es la inyección de dependencias?\n**Respuesta:** Patrón donde dependencias externas se pasan (constructor/propiedades) en lugar de crearlas internamente, para desacoplar componentes y facilitar testing.",
+          "type": "qa"
+        },
+        {
+          "id": "task-vs-thread-diferencia",
+          "title": "Task vs Thread",
+          "level": 3,
+          "content": "**Pregunta:** ¿Diferencia entre Task y Thread?\n**Respuesta:** Task abstrae scheduling sobre ThreadPool (alto nivel); Thread es primitivo del OS (bajo nivel). Task es preferido para operaciones asíncronas.",
+          "type": "qa"
+        },
+        {
+          "id": "async-await-concepto",
+          "title": "async/await",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es async/await?\n**Respuesta:** Azúcar sintáctico para tareas asíncronas que permite escribir código secuencial sin bloquear hilos de ejecución.",
+          "type": "qa"
+        },
+        {
+          "id": "dto-definicion",
+          "title": "Data Transfer Object (DTO)",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es un DTO?\n**Respuesta:** Contenedor de datos sin lógica de negocio, usado para transporte de información entre capas o servicios.",
+          "type": "qa"
+        },
+        {
+          "id": "record-csharp",
+          "title": "Record en C#",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es un Record en C#?\n**Respuesta:** Tipo de referencia con inmutabilidad por defecto y comparación estructural automática, ideal para DTOs y value objects.",
+          "type": "qa"
+        },
+        {
+          "id": "middleware-concepto",
+          "title": "Middleware",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es un middleware?\n**Respuesta:** Componente en el pipeline HTTP que procesa requests/responses (logging, autenticación, autorización, etc.).",
+          "type": "qa"
+        },
+        {
+          "id": "microservicio-definicion",
+          "title": "Microservicio",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es un microservicio?\n**Respuesta:** Servicio autónomo con lógica de negocio específica y almacenamiento propio, desplegable independientemente.",
+          "type": "qa"
+        },
+        {
+          "id": "blazor-ventajas",
+          "title": "Ventajas de Blazor",
+          "level": 3,
+          "content": "**Pregunta:** ¿Ventaja principal de Blazor?\n**Respuesta:** Permite usar C# en el lado cliente y reutilización de modelos/lógica entre frontend y backend.",
+          "type": "qa"
+        }
+      ]
+    },
+    {
+      "id": "preguntas-rapidas-dotnet-azure",
+      "title": "Preguntas Rápidas Set 2 (.NET & Azure)",
+      "level": 2,
+      "subsections": [
+        {
+          "id": "dotnet-core-uso",
+          "title": ".NET Core Uso",
+          "level": 3,
+          "content": "**Pregunta:** ¿Por qué usar .NET Core?\n**Respuesta:** Multiplataforma, alto rendimiento, ideal para microservicios, modular y ligero.",
+          "type": "qa"
+        },
+        {
+          "id": "framework-vs-core",
+          "title": "Framework vs Core",
+          "level": 3,
+          "content": "**Pregunta:** ¿Diferencia .NET Framework vs .NET Core?\n**Respuesta:** Framework = Windows/monolítico; Core = modular, multiplataforma, contenedores.",
+          "type": "qa"
+        },
+        {
+          "id": "controller-definicion",
+          "title": "Controller",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es un Controller?\n**Respuesta:** Clase que define endpoints HTTP y maneja requests/responses en ASP.NET.",
+          "type": "qa"
+        },
+        {
+          "id": "di-aspnet",
+          "title": "DI en ASP.NET",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es DI en ASP.NET?\n**Respuesta:** Contenedor nativo de servicios con scopes (Singleton/Scoped/Transient).",
+          "type": "qa"
+        },
+        {
+          "id": "ciclos-vida-di",
+          "title": "Ciclos de Vida DI",
+          "level": 3,
+          "content": "**Pregunta:** ¿Ciclos de vida en DI?\n**Respuesta:** Singleton (toda la app) / Scoped (por request) / Transient (por resolución).",
+          "type": "qa"
+        },
+        {
+          "id": "hosted-service",
+          "title": "Hosted Service",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es un Hosted Service?\n**Respuesta:** Servicio para trabajos en background que se ejecutan durante la vida de la aplicación.",
+          "type": "qa"
+        },
+        {
+          "id": "grpc-vs-rest",
+          "title": "gRPC vs REST",
+          "level": 3,
+          "content": "**Pregunta:** ¿gRPC vs REST?\n**Respuesta:** gRPC: binario, más rápido, contratos estrictos; REST: texto, más flexible, ampliamente adoptado.",
+          "type": "qa"
+        },
+        {
+          "id": "azure-app-service",
+          "title": "Azure App Service",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es Azure App Service?\n**Respuesta:** PaaS de Microsoft para hospedar aplicaciones web y APIs sin gestionar infraestructura.",
+          "type": "qa"
+        },
+        {
+          "id": "azure-functions",
+          "title": "Azure Functions",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué son Azure Functions?\n**Respuesta:** Computación serverless event-driven que escala automáticamente según demanda.",
+          "type": "qa"
+        },
+        {
+          "id": "aks-definicion",
+          "title": "Azure Kubernetes Service (AKS)",
+          "level": 3,
+          "content": "**Pregunta:** ¿Qué es AKS?\n**Respuesta:** Kubernetes gestionado por Azure que simplifica despliegue y administración de contenedores.",
+          "type": "qa"
+        }
+      ]
+    }
+  ]
+}

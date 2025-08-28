@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Biblia Técnica – Entrevista (Optimizada)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0a0c10;
+        --bg-alt: #141721;
+        --bg-card: #1a1d29;
+        --border: #2a3140;
+        --border-light: #384155;
+        --text: #f1f3f8;
+        --text-muted: #a8b3c5;
+        --text-dim: #7a8396;
+        --accent: #4f8ff7;
+        --accent-light: #6ba3f9;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --radius: 12px;
+        --shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.4);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 40px 20px;
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .header h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 700;
+        background: linear-gradient(
+          135deg,
+          #4f8ff7 0%,
+          #7c3aed 50%,
+          #ec4899 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 16px;
+      }
+
+      .toc {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: var(--shadow);
+      }
+
+      .toc h2 {
+        color: var(--accent);
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+      }
+
+      .toc-item {
+        display: block;
+        padding: 12px 16px;
+        margin: 8px 0;
+        background: var(--bg-alt);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .toc-item:hover {
+        background: var(--border);
+        border-color: var(--accent);
+        transform: translateY(-2px);
+      }
+
+      .section {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        margin-bottom: 30px;
+        box-shadow: var(--shadow);
+        display: none;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      .section-header {
+        padding: 24px 30px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-alt);
+        border-radius: var(--radius) var(--radius) 0 0;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+
+      .section-content {
+        padding: 30px;
+      }
+
+      .qa-item {
+        margin-bottom: 24px;
+        padding: 20px;
+        background: var(--bg-alt);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+      }
+
+      .qa-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--accent-light);
+        margin-bottom: 12px;
+      }
+
+      .qa-content {
+        line-height: 1.7;
+      }
+
+      .qa-content strong {
+        color: var(--accent);
+      }
+
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-muted);
+      }
+
+      .loader {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid var(--border);
+        border-radius: 50%;
+        border-top-color: var(--accent);
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        box-shadow: var(--shadow);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+
+      .back-to-top.visible {
+        opacity: 1;
+      }
+
+      .back-to-top:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px -8px rgba(79, 143, 247, 0.4);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+
+        .section-content {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>📚 Biblia Técnica de Entrevista</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem">
+          Compendio organizado de Q&A técnicos optimizado para carga rápida
+        </p>
+      </div>
+
+      <div class="toc">
+        <h2>📋 Índice de Contenidos</h2>
+        <div id="tocContainer">
+          <div class="loading">
+            <div class="loader"></div>
+            Cargando índice...
+          </div>
+        </div>
+      </div>
+
+      <div id="contentContainer">
+        <!-- Las secciones se cargarán aquí dinámicamente -->
+      </div>
+    </div>
+
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+      let currentSection = null;
+      let biblia = null;
+
+      // Función para cargar el JSON principal solo una vez
+      async function loadBiblia() {
+        if (biblia) return biblia;
+
+        try {
+          const response = await fetch("biblia.json");
+          biblia = await response.json();
+          return biblia;
+        } catch (error) {
+          console.error("Error cargando biblia:", error);
+          return null;
+        }
+      }
+
+      // Cargar el índice
+      async function loadTOC() {
+        const data = await loadBiblia();
+        if (!data) return;
+
+        const tocContainer = document.getElementById("tocContainer");
+        tocContainer.innerHTML = "";
+
+        data.sections.forEach((section) => {
+          const item = document.createElement("div");
+          item.className = "toc-item";
+          item.textContent = section.title;
+          item.onclick = () => loadSection(section.id);
+          tocContainer.appendChild(item);
+        });
+      }
+
+      // Cargar una sección específica
+      async function loadSection(sectionId) {
+        const contentContainer = document.getElementById("contentContainer");
+
+        // Ocultar sección actual
+        if (currentSection) {
+          currentSection.style.display = "none";
+        }
+
+        // Mostrar loading
+        contentContainer.innerHTML = `
+                <div class="section active">
+                    <div class="loading">
+                        <div class="loader"></div>
+                        Cargando sección...
+                    </div>
+                </div>
+            `;
+
+        const data = await loadBiblia();
+        if (!data) return;
+
+        const section = data.sections.find((s) => s.id === sectionId);
+        if (!section) return;
+
+        // Crear elemento de sección
+        const sectionEl = document.createElement("div");
+        sectionEl.className = "section active";
+        sectionEl.id = sectionId;
+
+        sectionEl.innerHTML = `
+                <div class="section-header">
+                    <div class="section-title">${section.title}</div>
+                </div>
+                <div class="section-content">
+                    ${renderSectionContent(section)}
+                </div>
+            `;
+
+        contentContainer.innerHTML = "";
+        contentContainer.appendChild(sectionEl);
+        currentSection = sectionEl;
+
+        // Scroll suave al contenido
+        sectionEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      // Renderizar contenido de sección
+      function renderSectionContent(section) {
+        if (section.content && typeof section.content === "string") {
+          return `<div class="qa-item">
+                    <div class="qa-content">${section.content}</div>
+                </div>`;
+        }
+
+        if (section.subsections) {
+          return section.subsections
+            .map((subsection) => {
+              if (subsection.type === "qa") {
+                return `<div class="qa-item">
+                            <div class="qa-title">${subsection.title}</div>
+                            <div class="qa-content">${subsection.content}</div>
+                        </div>`;
+              } else if (subsection.type === "list") {
+                const listItems = Array.isArray(subsection.content)
+                  ? subsection.content
+                      .map((item) => `<li>${item}</li>`)
+                      .join("")
+                  : `<li>${subsection.content}</li>`;
+                return `<div class="qa-item">
+                            <div class="qa-title">${subsection.title}</div>
+                            <div class="qa-content"><ul>${listItems}</ul></div>
+                        </div>`;
+              } else {
+                return `<div class="qa-item">
+                            <div class="qa-title">${subsection.title}</div>
+                            <div class="qa-content">${
+                              subsection.content || "Contenido no disponible"
+                            }</div>
+                        </div>`;
+              }
+            })
+            .join("");
+        }
+
+        return '<div class="qa-item"><div class="qa-content">Contenido no disponible</div></div>';
+      }
+
+      // Botón back to top
+      function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Mostrar/ocultar botón back to top
+      window.addEventListener("scroll", () => {
+        const backToTop = document.querySelector(".back-to-top");
+        if (window.pageYOffset > 300) {
+          backToTop.classList.add("visible");
+        } else {
+          backToTop.classList.remove("visible");
+        }
+      });
+
+      // Cargar TOC al iniciar
+      loadTOC();
+    </script>
+  </body>
+</html>

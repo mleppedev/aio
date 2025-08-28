@@ -1,0 +1,389 @@
+{
+  "title": "Logical Thinking - Preguntas de Entrevista",
+  "description": "54 preguntas de pensamiento lógico para entrevistas técnicas",
+  "section": {
+    "id": "logical-thinking",
+    "title": "Logical Thinking",
+    "level": 2,
+    "subsections": [
+      {
+        "id": "sogas-tiempo-1",
+        "title": "Medición con Sogas",
+        "level": 3,
+        "content": "**Pregunta:** Si tienes 2 sogas que tardan 1 hora en quemarse, pero no lo hacen de forma uniforme, ¿cómo medirías 45 minutos?\n**Respuesta:** Enciendes la primera por ambos extremos y la segunda por un extremo. Cuando la primera se consuma (30 min), enciendes el otro extremo de la segunda. Esa segunda parte se quema en 15 min → total 45 min.",
+        "type": "qa"
+      },
+      {
+        "id": "velocidad-tren-2",
+        "title": "Velocidad del Tren",
+        "level": 3,
+        "content": "**Pregunta:** Un tren tarda 1 hora en recorrer 60 km. ¿Cuál es su velocidad promedio?\n**Respuesta:** 60 km/h.",
+        "type": "qa"
+      },
+      {
+        "id": "bolas-balanza-3",
+        "title": "Problema de las 8 Bolas",
+        "level": 3,
+        "content": "**Pregunta:** Tienes 8 bolas, una es más pesada. ¿Cómo la identificas en solo 2 pesadas con balanza?\n**Respuesta:** Divides en 3 grupos (3, 3, 2). Primera pesada: comparas 3 vs 3. Si iguales, la pesada está en las 2 restantes → comparas esas 2. Si diferentes, tomas las 3 más pesadas y comparas 1 vs 1.",
+        "type": "qa"
+      },
+      {
+        "id": "induccion-deduccion-4",
+        "title": "Inducción vs Deducción",
+        "level": 3,
+        "content": "**Pregunta:** Explica la diferencia entre inducción y deducción en razonamiento lógico.\n**Respuesta:** Inducción: parte de casos específicos para inferir una regla general. Deducción: parte de una regla general para derivar casos específicos.",
+        "type": "qa"
+      },
+      {
+        "id": "maquinas-productos-5",
+        "title": "Máquinas y Productos",
+        "level": 3,
+        "content": "**Pregunta:** Si 5 máquinas hacen 5 productos en 5 minutos, ¿cuánto tardan 100 máquinas en hacer 100 productos?\n**Respuesta:** 5 minutos (todas producen en paralelo).",
+        "type": "qa"
+      },
+      {
+        "id": "escalera-fibonacci-6",
+        "title": "Escalera de 10 Peldaños",
+        "level": 3,
+        "content": "**Pregunta:** Si subes una escalera de 10 peldaños y puedes avanzar 1 o 2 cada vez, ¿cuántas formas hay?\n**Respuesta:** Es la serie de Fibonacci. Para 10 → 89 formas.",
+        "type": "qa"
+      },
+      {
+        "id": "complejidad-algoritmica-7",
+        "title": "Complejidad de Algoritmos",
+        "level": 3,
+        "content": "**Pregunta:** Un programador tiene que procesar 1M registros. Opción A: O(n). Opción B: O(n log n). ¿Cuál es mejor?\n**Respuesta:** O(n) → escala lineal, más eficiente que O(n log n).",
+        "type": "qa"
+      },
+      {
+        "id": "serie-numerica-8",
+        "title": "Serie Numérica",
+        "level": 3,
+        "content": "**Pregunta:** Encuentra el siguiente número en la serie: 2, 6, 12, 20, 30, ?\n**Respuesta:** Diferencias: +4, +6, +8, +10… Siguiente = 30 + 12 = 42.",
+        "type": "qa"
+      },
+      {
+        "id": "probabilidad-moneda-9",
+        "title": "Probabilidad con Monedas",
+        "level": 3,
+        "content": "**Pregunta:** Si lanzas una moneda justa 3 veces, ¿probabilidad de obtener exactamente 2 caras?\n**Respuesta:** Combinaciones: 3. Total posibles: 8. Probabilidad = 3/8.",
+        "type": "qa"
+      },
+      {
+        "id": "interruptores-ampolleta-10",
+        "title": "Problema de los Interruptores",
+        "level": 3,
+        "content": "**Pregunta:** Tienes 3 interruptores y 1 ampolleta en otra habitación. ¿Cómo identificas cuál enciende la ampolleta entrando una sola vez?\n**Respuesta:** Enciendes el 1° un rato y lo apagas. Dejas el 2° encendido. Entras: Encendida → 2°. Apagada pero caliente → 1°. Apagada y fría → 3°.",
+        "type": "qa"
+      },
+      {
+        "id": "ecuacion-simple-11",
+        "title": "Ecuación Simple",
+        "level": 3,
+        "content": "**Pregunta:** Si duplicas un número y luego le sumas 10, obtienes 30. ¿Cuál es el número?\n**Respuesta:** 2x + 10 = 30 → x = 10.",
+        "type": "qa"
+      },
+      {
+        "id": "programadores-modulo-12",
+        "title": "Programadores y Módulos",
+        "level": 3,
+        "content": "**Pregunta:** Si 3 programadores hacen un módulo en 6 días, ¿cuántos programadores necesitas para hacerlo en 2 días?\n**Respuesta:** Trabajo total = 18 jornadas. En 2 días → 9 programadores.",
+        "type": "qa"
+      },
+      {
+        "id": "grafo-bipartito-13",
+        "title": "Grafo Bipartito",
+        "level": 3,
+        "content": "**Pregunta:** ¿Por qué un grafo bipartito no puede tener ciclos impares?\n**Respuesta:** Porque se alternan 2 colores. Un ciclo impar rompe la alternancia → contradicción.",
+        "type": "qa"
+      },
+      {
+        "id": "botellas-veneno-14",
+        "title": "Problema de las Botellas",
+        "level": 3,
+        "content": "**Pregunta:** Tienes 1000 botellas, una con veneno. Un ratón muere en 24h al beber. ¿Cómo encuentras la botella en 10 días con el menor número de ratones?\n**Respuesta:** Usas codificación binaria. Con 10 ratones puedes identificar hasta 2^10 = 1024 botellas.",
+        "type": "qa"
+      },
+      {
+        "id": "api-rate-limiting-15",
+        "title": "Estrategia API",
+        "level": 3,
+        "content": "**Pregunta:** En una API REST, si recibes demasiadas requests, ¿qué estrategia aplicarías para evitar caída?\n**Respuesta:** Rate limiting, throttling, circuit breakers.",
+        "type": "qa"
+      },
+      {
+        "id": "acertijo-retrato-16",
+        "title": "Acertijo del Retrato",
+        "level": 3,
+        "content": "**Pregunta:** Un hombre mira un retrato y dice: \"No tengo hermanos ni hermanas, pero el padre de ese hombre es el hijo de mi padre\". ¿Quién está en el retrato?\n**Respuesta:** Su hijo.",
+        "type": "qa"
+      },
+      {
+        "id": "hash-dictionary-17",
+        "title": "Diccionario Hash",
+        "level": 3,
+        "content": "**Pregunta:** Explica por qué un diccionario hash promedio tiene O(1) en búsqueda.\n**Respuesta:** Distribuye claves en buckets con hash function. Acceso directo → O(1) promedio. Peor caso O(n).",
+        "type": "qa"
+      },
+      {
+        "id": "red-colisiones-18",
+        "title": "Colisiones en Red",
+        "level": 3,
+        "content": "**Pregunta:** En una red, ¿qué pasa si todos los nodos intentan transmitir al mismo tiempo?\n**Respuesta:** Colisión. Se usan algoritmos como CSMA/CD o colas para resolver.",
+        "type": "qa"
+      },
+      {
+        "id": "recipientes-agua-19",
+        "title": "Problema de los Recipientes",
+        "level": 3,
+        "content": "**Pregunta:** Tienes 3 recipientes de 8, 5 y 3 litros. ¿Cómo obtienes 4 litros exactos?\n**Respuesta:** Llena el de 5 → pásalo al de 3 (quedan 2). Vacía el de 3. Pasa los 2 al de 3. Llena el de 5 otra vez. Vierte en el de 3 (queda con 1 espacio). Quedan 4 exactos en el de 5.",
+        "type": "qa"
+      },
+      {
+        "id": "bug-intermitente-20",
+        "title": "Debug de Bug Intermitente",
+        "level": 3,
+        "content": "**Pregunta:** ¿Qué estrategia usarías para depurar un bug intermitente en producción?\n**Respuesta:** Logging detallado con correlación, monitoreo en tiempo real, feature flags para aislar casos, reproducción controlada.",
+        "type": "qa"
+      },
+      {
+        "id": "sewer-covers-21",
+        "title": "Tapas de Alcantarilla",
+        "level": 3,
+        "content": "**Pregunta:** ¿Por qué las tapas de alcantarilla son redondas?\n**Respuesta:** Las tapas redondas son más fáciles de usar y seguras. No necesitas rotarlas para colocarlas y no pueden caer en el agujero si se voltean, mientras que una tapa cuadrada podría caer diagonalmente.",
+        "type": "qa"
+      },
+      {
+        "id": "light-bulbs-22",
+        "title": "Bombillas y Interruptores",
+        "level": 3,
+        "content": "**Pregunta:** Estás en una habitación con tres interruptores. Cada uno corresponde a una bombilla diferente en otra habitación que no puedes ver. Si todos los interruptores están apagados, ¿cómo averiguas cuál enciende cuál bombilla?\n**Respuesta:** Encendería un interruptor y lo dejaría unos minutos. Cuando lo apague, rápidamente encendería otro interruptor. Iría a la habitación para ver qué luz se encendió del segundo interruptor y tocaría las otras bombillas para sentir cuál está más caliente (el primer interruptor). El tercer interruptor pertenece a la bombilla que está apagada y fría.",
+        "type": "qa"
+      },
+      {
+        "id": "four-names-23",
+        "title": "Cuatro Nombres",
+        "level": 3,
+        "content": "**Pregunta:** La madre de Jane tiene cuatro hijos. Sus nombres son Primavera, Verano y Otoño. ¿Cuál es el nombre del cuarto hijo?\n**Respuesta:** Es Jane, porque se menciona al inicio de la pregunta.",
+        "type": "qa"
+      },
+      {
+        "id": "weather-forecast-24",
+        "title": "Pronóstico del Tiempo",
+        "level": 3,
+        "content": "**Pregunta:** Viajas a Jaipur a visitar amigos y llamas a los tres para preguntar si está lloviendo en la ciudad. ¿Cuál es la probabilidad de que realmente esté lloviendo en Jaipur?\n**Respuesta:** Solo un amigo necesita ser honesto para que esté lloviendo, así que es más fácil calcular la probabilidad de que los tres amigos mientan sobre la lluvia, que es un tercio. Multiplicando eso obtengo una probabilidad de un veintisieteavo de que los tres mientan, lo que significa que hay un 96% de probabilidad de que realmente esté lloviendo.",
+        "type": "qa"
+      },
+      {
+        "id": "dice-rolling-25",
+        "title": "Dados",
+        "level": 3,
+        "content": "**Pregunta:** Lanzas dos dados. ¿Cuál es la probabilidad de obtener un dos en el segundo lanzamiento?\n**Respuesta:** La probabilidad de sacar un dos en cualquier dado es 1/6. Esa sería la misma para el segundo lanzamiento también, independiente del primer resultado. La respuesta es 1/6.",
+        "type": "qa"
+      },
+      {
+        "id": "water-jugs-26",
+        "title": "Jarras de Agua",
+        "level": 3,
+        "content": "**Pregunta:** Tienes jarras de agua, una de 3 galones y otra de 5 galones. ¿Cómo puedes medir exactamente 4 galones de agua?\n**Respuesta:** Llenaría la jarra de 3 galones y la vertería en la de 5 galones. Llenaría la de 3 galones otra vez y la vertería en la de 5 galones hasta llenarla, dejando 1 galón en la jarra de 3 galones. Vaciaría la jarra de 5 galones, vertería el 1 galón en ella, luego llenaría la jarra de 3 galones y la agregaría a la de 5 galones que ahora tiene 4 galones en total.",
+        "type": "qa"
+      },
+      {
+        "id": "airplane-pingpong-27",
+        "title": "Pelotas de Ping Pong en Avión",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuántas pelotas de ping pong caben en un avión?\n**Respuesta:** Necesito conocer primero el volumen de una pelota de ping pong y el volumen interior del avión específico en cuestión. Luego puedo dividir el volumen del avión por el volumen de una pelota para obtener una estimación de cuántas pelotas caben adentro.",
+        "type": "qa"
+      },
+      {
+        "id": "stacking-coins-28",
+        "title": "Apilando Monedas",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuántas rupias apiladas una encima de otra se necesitan para alcanzar la cima del Palacio Real?\n**Respuesta:** Necesitaría saber qué tan alto es el Palacio Real y qué tan alta es una rupia cuando está acostada. Asumiendo que es medio centímetro de alto, dividiría la altura del Palacio Real por la altura de una rupia para obtener el número que necesitaría apilar.",
+        "type": "qa"
+      },
+      {
+        "id": "fruit-prices-29",
+        "title": "Precios de Frutas",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuánto cuesta una pera si una manzana cuesta 40 rupias, un plátano 60 rupias y una toronja 80 rupias?\n**Respuesta:** Contando las vocales de cada palabra de fruta, parece que cada vocal vale 20 rupias, así que una pera cuesta 40 rupias.",
+        "type": "qa"
+      },
+      {
+        "id": "sum-1-to-100-30",
+        "title": "Suma de 1 a 100",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuál es la suma cuando totalizas los números del 1 al 100?\n**Respuesta:** Usando la fórmula n(n+1)/2: 100×101/2 = 5050.",
+        "type": "qa"
+      },
+      {
+        "id": "clock-angle-31",
+        "title": "Ángulo del Reloj",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuál es el ángulo entre la manecilla de la hora y el minuto en un reloj a las 9 a.m.?\n**Respuesta:** A las 9:00, la manecilla de la hora está en 9 y la del minuto en 12. Cada hora representa 30° (360°/12). El ángulo es 3×30° = 90°.",
+        "type": "qa"
+      },
+      {
+        "id": "number-series-1-32",
+        "title": "Serie Numérica 1",
+        "level": 3,
+        "content": "**Pregunta:** En esta serie, ¿qué número sigue: 2, 1, 3, 2, 4, 3?\n**Respuesta:** El patrón es: número par, número par-1, número par+1, número par, etc. Siguiente sería 5.",
+        "type": "qa"
+      },
+      {
+        "id": "number-series-2-33",
+        "title": "Serie Numérica 2",
+        "level": 3,
+        "content": "**Pregunta:** En esta serie, ¿qué número sigue: 2, 1, 1/2, 1/4?\n**Respuesta:** Cada número se divide por 2. Siguiente sería 1/8.",
+        "type": "qa"
+      },
+      {
+        "id": "letter-series-34",
+        "title": "Serie de Letras",
+        "level": 3,
+        "content": "**Pregunta:** En esta serie, ¿qué letra sigue: Y, Z, V, W, S, T, P, Q?\n**Respuesta:** Patrón: retrocede 3, avanza 1, retrocede 3, avanza 1. Después de Q vendría M (retrocede 3), luego N (avanza 1).",
+        "type": "qa"
+      },
+      {
+        "id": "verb-odd-out-35",
+        "title": "Verbo Diferente",
+        "level": 3,
+        "content": "**Pregunta:** ¿Qué verbo no pertenece a esta lista: Pelear, Enseñar, Pensar, Dibujar, Atrapar, Comprar?\n**Respuesta:** 'Pensar' es el único que no requiere acción física visible o interacción con objetos externos.",
+        "type": "qa"
+      },
+      {
+        "id": "climbing-wall-36",
+        "title": "Escalar Pared",
+        "level": 3,
+        "content": "**Pregunta:** Imagina que estás al pie de una pared de 6 metros. Cada hora subes un metro pero te deslizas dos hacia abajo. ¿Cuánto tiempo hasta llegar a la cima?\n**Respuesta:** Nunca llegarías a la cima porque cada hora retrocedes 1 metro neto (subes 1, bajas 2 = -1 metro neto).",
+        "type": "qa"
+      },
+      {
+        "id": "farmer-river-37",
+        "title": "Granjero y el Río",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cómo puede un granjero cruzar el río de forma segura con un zorro, un pollo y una bolsa de maíz si solo puede llevar un artículo a la vez?\n**Respuesta:** 1) Lleva el pollo primero. 2) Regresa solo. 3) Lleva el zorro, pero trae de vuelta el pollo. 4) Deja el pollo, lleva el maíz. 5) Regresa solo. 6) Lleva el pollo.",
+        "type": "qa"
+      },
+      {
+        "id": "test-calculator-38",
+        "title": "Probar Calculadora",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cómo probarías mejor una calculadora?\n**Respuesta:** Probaría operaciones básicas (+, -, ×, ÷), casos extremos (división por cero, números muy grandes), funciones especiales, precisión decimal, y usabilidad de la interfaz.",
+        "type": "qa"
+      },
+      {
+        "id": "traffic-lights-india-39",
+        "title": "Semáforos en India",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuántos semáforos hay en total en India?\n**Respuesta:** Estimaría basándome en: número de ciudades principales, intersecciones por ciudad, densidad urbana. Aproximadamente 500,000-1,000,000 semáforos considerando todas las ciudades.",
+        "type": "qa"
+      },
+      {
+        "id": "barbers-mumbai-40",
+        "title": "Peluqueros en Mumbai",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuántos peluqueros hay en Mumbai?\n**Respuesta:** Mumbai tiene ~20 millones de habitantes. Asumiendo 1 peluquero por cada 500-1000 personas, estimaría entre 20,000-40,000 peluqueros.",
+        "type": "qa"
+      },
+      {
+        "id": "goats-delhi-41",
+        "title": "Cabras en Nueva Delhi",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuántas cabras hay en Nueva Delhi?\n**Respuesta:** Delhi es mayormente urbano. Estimando granjas periféricas y algunas urbanas, quizás 50,000-100,000 cabras en toda la región metropolitana.",
+        "type": "qa"
+      },
+      {
+        "id": "trees-gir-park-42",
+        "title": "Árboles en Parque Gir",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuántos árboles hay en el Parque Nacional Gir?\n**Respuesta:** Gir tiene ~1400 km². Asumiendo densidad de bosque seco con ~200-500 árboles por hectárea, estimaría 28-70 millones de árboles.",
+        "type": "qa"
+      },
+      {
+        "id": "paint-taj-mahal-43",
+        "title": "Pintar el Taj Mahal",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuántos litros se necesitan para pintar el Taj Mahal?\n**Respuesta:** Calculando superficie total (paredes, cúpulas, minaretes) ~50,000 m². Con 2-3 capas a 1 litro por 10m², necesitaríamos aproximadamente 10,000-15,000 litros.",
+        "type": "qa"
+      },
+      {
+        "id": "fast-meal-44",
+        "title": "Comida FAST",
+        "level": 3,
+        "content": "**Pregunta:** ¿Qué comida representa esto: FAST?\n**Respuesta:** Breakfast (desayuno) - porque breaking (romper) the FAST (ayuno) de la noche.",
+        "type": "qa"
+      },
+      {
+        "id": "doctor-son-45",
+        "title": "Hijo del Doctor",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cómo es posible que el padre del hijo de un doctor no sea doctor?\n**Respuesta:** El doctor es mujer. El padre del hijo del doctor sería el esposo de la doctora, quien no necesariamente es doctor.",
+        "type": "qa"
+      },
+      {
+        "id": "goats-remain-46",
+        "title": "Cabras que Quedan",
+        "level": 3,
+        "content": "**Pregunta:** Un granjero tiene 15 cabras y todas menos nueve mueren. ¿Cuántas quedan?\n**Respuesta:** Nueve cabras quedan vivas ('todas menos nueve' significa que 9 sobreviven).",
+        "type": "qa"
+      },
+      {
+        "id": "three-pills-47",
+        "title": "Tres Pastillas",
+        "level": 3,
+        "content": "**Pregunta:** Un doctor dice toma estas tres pastillas, una cada media hora. ¿Cuántos minutos en total hasta terminar?\n**Respuesta:** 60 minutos. Tomas la primera ahora (0 min), la segunda a los 30 min, y la tercera a los 60 min.",
+        "type": "qa"
+      },
+      {
+        "id": "dead-field-48",
+        "title": "Hombre Muerto en Campo",
+        "level": 3,
+        "content": "**Pregunta:** Un hombre está muerto en medio de un campo, en un charco, usando un traje de buzo. ¿Cómo murió?\n**Respuesta:** Fue recogido accidentalmente por un helicóptero contra incendios que recolectaba agua del mar/lago y fue arrojado durante la extinción del incendio.",
+        "type": "qa"
+      },
+      {
+        "id": "woman-age-49",
+        "title": "Mujer de 30 Años",
+        "level": 3,
+        "content": "**Pregunta:** Una mujer nacida en 1945 tiene solo 30 años ahora, ¿cómo es posible?\n**Respuesta:** Nació en la habitación 1945 del hospital, no en el año 1945.",
+        "type": "qa"
+      },
+      {
+        "id": "four-legs-one-foot-50",
+        "title": "Cuatro Patas Un Pie",
+        "level": 3,
+        "content": "**Pregunta:** ¿Qué tiene cuatro patas pero solo un pie?\n**Respuesta:** Una cama (tiene cuatro patas y un pie de medida de longitud).",
+        "type": "qa"
+      },
+      {
+        "id": "basketballs-school-bus-51",
+        "title": "Balones en Autobús",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuántos balones de básquetbol caben en un autobús escolar?\n**Respuesta:** Autobús escolar ~250m³, balón de básquetbol ~0.007m³. Aproximadamente 35,000 balones considerando espacio y empaque eficiente.",
+        "type": "qa"
+      },
+      {
+        "id": "scissors-pizza-delivery-52",
+        "title": "Tijeras Repartidor Pizza",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cómo te beneficiarías de llevar tijeras como repartidor de pizza?\n**Respuesta:** Para cortar cintas de empaque, abrir cajas difíciles, cortar hilos de bolsas de entrega, y en emergencias para liberar cinturones de seguridad.",
+        "type": "qa"
+      },
+      {
+        "id": "potatoes-french-fries-53",
+        "title": "Papas para Papas Fritas",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cuántos kilogramos de papas venden las cadenas de comida rápida en India al año para papas fritas?\n**Respuesta:** Estimando consumo per cápita, número de restaurantes, y frecuencia de compra, aproximadamente 500,000-1,000,000 toneladas anuales.",
+        "type": "qa"
+      },
+      {
+        "id": "refrigerator-light-54",
+        "title": "Luz del Refrigerador",
+        "level": 3,
+        "content": "**Pregunta:** ¿Cómo puedes saber si la luz dentro de un refrigerador está encendida o apagada?\n**Respuesta:** Colocar una cámara dentro antes de cerrar, usar un espejo pequeño para ver dentro mientras se cierra lentamente, o verificar el interruptor de la puerta.",
+        "type": "qa"
+      }
+    ]
+  }
+}
