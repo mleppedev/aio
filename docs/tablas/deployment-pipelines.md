@@ -1,6 +1,14 @@
 # Deployment Pipelines - Microservices & APIs
 
+**Guía completa para implementar pipelines de deployment optimizados para microservicios y APIs en .NET.**
+Este documento cubre desde la comparación de plataformas CI/CD hasta estrategias avanzadas de deployment y monitoring.
+Esencial para establecer procesos de deployment robustos, automatizados y enterprise-grade.
+
 ## Comparación de Plataformas CI/CD
+
+**Análisis comparativo de las principales plataformas de CI/CD para proyectos .NET con focus en características enterprise.**
+Esta tabla evalúa costos, facilidad de uso, integración con Azure y curva de aprendizaje de cada plataforma.
+Fundamental para seleccionar la plataforma de CI/CD más apropiada según el tamaño del equipo y requerimientos del proyecto.
 
 | **Aspecto**             | **Azure DevOps**   | **GitHub Actions**       | **GitLab CI**            | **Jenkins**       |
 | ----------------------- | ------------------ | ------------------------ | ------------------------ | ----------------- |
@@ -11,6 +19,10 @@
 | **Enterprise Features** | ✅ Advanced        | ✅ Good                  | ✅ Advanced              | ✅ Extensible     |
 
 ## Pipeline Stages Overview
+
+**Desglose detallado de las etapas típicas en un pipeline de CI/CD con tiempos estimados y artifacts generados.**
+Esta tabla define cada stage del pipeline, desde source control hasta deployment, con herramientas recomendadas para cada fase.
+Crítica para diseñar pipelines eficientes y establecer expectations realistas sobre tiempos de deployment.
 
 | **Stage**                | **Propósito**               | **Herramientas Típicas** | **Tiempo Estimado** | **Artifacts**          |
 | ------------------------ | --------------------------- | ------------------------ | ------------------- | ---------------------- |

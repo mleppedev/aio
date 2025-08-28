@@ -1,6 +1,14 @@
 # Performance & Optimization
 
+**Guía completa de optimización de performance para aplicaciones .NET con técnicas de memory management, async programming y caching.**
+Este documento presenta estrategias prácticas para mejorar el rendimiento, desde garbage collection hasta database optimization.
+Esencial para desarrollar aplicaciones .NET de alto rendimiento que escalen eficientemente bajo carga.
+
 ## Memory Management & Garbage Collection
+
+**Análisis detallado del Garbage Collector de .NET con estrategias de optimización para cada generación de memoria.**
+Esta tabla explica cómo funciona el GC en diferentes generaciones y técnicas para minimizar su impacto en performance.
+Fundamental para escribir código memory-efficient y evitar problemas de performance relacionados con gestión de memoria.
 
 | **Generación**              | **Propósito**             | **Frecuencia de GC** | **Tipos de Objetos**                  | **Optimización**                 |
 | --------------------------- | ------------------------- | -------------------- | ------------------------------------- | -------------------------------- |
@@ -10,6 +18,10 @@
 | **LOH (Large Object Heap)** | Objetos > 85KB            | Solo Gen 2 GC        | Arrays grandes, strings grandes       | Object pooling                   |
 
 ## Async/Await Best Practices
+
+**Mejores prácticas para programación asíncrona en .NET con ejemplos de uso correcto e incorrecto del patrón async/await.**
+Esta tabla presenta errores comunes en código asíncrono y sus soluciones, con explicaciones del impacto en performance.
+Crítica para escribir código asíncrono eficiente que no bloquee threads y maximice el throughput de la aplicación.
 
 | **Escenario**          | **Incorrecto**                  | **Correcto**                                    | **Motivo**                |
 | ---------------------- | ------------------------------- | ----------------------------------------------- | ------------------------- |

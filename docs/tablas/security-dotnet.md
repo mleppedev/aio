@@ -1,6 +1,14 @@
 # Security for .NET Applications
 
+**Guía completa de seguridad para aplicaciones .NET con focus en OWASP Top 10, autenticación, autorización y mejores prácticas.**
+Este documento cubre desde vulnerabilidades comunes hasta implementación de sistemas de autenticación enterprise-grade.
+Esencial para desarrollar aplicaciones .NET seguras que protejan datos sensibles y cumplan con estándares de seguridad.
+
 ## OWASP Top 10 for .NET Applications
+
+**Análisis de las 10 vulnerabilidades más críticas en aplicaciones web según OWASP con mitigaciones específicas para .NET.**
+Esta tabla presenta cada vulnerabilidad con su impacto potencial y técnicas concretas de prevención en el ecosistema .NET.
+Fundamental para implementar security-by-design y proteger aplicaciones contra los ataques más comunes.
 
 | **Vulnerabilidad**            | **Descripción**               | **Impacto**                 | **Mitigación en .NET**                      |
 | ----------------------------- | ----------------------------- | --------------------------- | ------------------------------------------- |

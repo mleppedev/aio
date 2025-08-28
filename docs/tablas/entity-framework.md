@@ -1,6 +1,14 @@
 # Entity Framework Core Reference
 
+**Guía completa de Entity Framework Core para desarrolladores .NET con patrones, performance tips y mejores prácticas.**
+Este documento cubre desde migraciones y configuración hasta optimización de queries y troubleshooting común.
+Esencial para trabajar eficientemente con datos en aplicaciones .NET modernas.
+
 ## Code First vs Database First
+
+**Comparación de enfoques Code First y Database First en Entity Framework Core con recomendaciones por escenario.**
+Esta tabla analiza las ventajas y desventajas de cada approach para ayudar en la decisión arquitectónica.
+Fundamental para elegir la estrategia de modelado de datos más apropiada según el contexto del proyecto.
 
 | **Aspecto**        | **Code First**                 | **Database First**     | **Recomendación**                   |
 | ------------------ | ------------------------------ | ---------------------- | ----------------------------------- |
@@ -11,6 +19,10 @@
 | **Performance**    | Optimizable desde código       | Optimizado desde BD    | Database First para DBA teams       |
 
 ## Migration Commands
+
+**Comandos esenciales de Entity Framework para gestionar migraciones y evolución del esquema de base de datos.**
+Esta tabla presenta los comandos más utilizados en el ciclo de vida de desarrollo con ejemplos prácticos.
+Crítica para mantener sincronizados los modelos de datos entre diferentes entornos y versiones de la aplicación.
 
 | **Comando**        | **Propósito**             | **Ejemplo**                                 | **Cuándo usar**                |
 | ------------------ | ------------------------- | ------------------------------------------- | ------------------------------ |

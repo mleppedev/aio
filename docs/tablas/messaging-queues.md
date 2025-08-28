@@ -1,6 +1,14 @@
 # Messaging & Queues
 
+**Guía completa de sistemas de messaging y queues para arquitecturas distribuidas en .NET con comparativas y implementaciones.**
+Este documento cubre desde brokers tradicionales hasta event streaming con ejemplos prácticos y patrones de implementación.
+Esencial para diseñar sistemas distribuidos resilientes con comunicación asíncrona y event-driven architecture.
+
 ## Message Brokers Comparison
+
+**Comparación detallada de message brokers populares con análisis de throughput, garantías de entrega y integración .NET.**
+Esta tabla ayuda a seleccionar el broker más apropiado según requerimientos de rendimiento, ordering y durabilidad.
+Fundamental para tomar decisiones arquitectónicas informadas sobre la infraestructura de messaging.
 
 | **Broker**            | **Type**        | **Delivery Guarantee**      | **Ordering**          | **Throughput**          | **.NET Integration**         |
 | --------------------- | --------------- | --------------------------- | --------------------- | ----------------------- | ---------------------------- |
@@ -11,6 +19,10 @@
 | **Redis Streams**     | In-memory       | At-least-once               | Per stream            | Very high               | StackExchange.Redis          |
 
 ## Message Patterns
+
+**Patrones de messaging más comunes en sistemas distribuidos con casos de uso específicos y estrategias de implementación.**
+Esta tabla presenta los patrones fundamentales de comunicación asíncrona con ejemplos prácticos de cuándo usar cada uno.
+Crítica para diseñar la arquitectura de comunicación entre microservicios y sistemas distribuidos.
 
 | **Patrón**              | **Descripción**                                   | **Casos de Uso**                    | **Implementación**           |
 | ----------------------- | ------------------------------------------------- | ----------------------------------- | ---------------------------- |

@@ -1,6 +1,14 @@
 # Comandos SQL Esenciales
 
+**Referencia completa de comandos SQL fundamentales organizados por categoría con ejemplos prácticos y casos de uso.**
+Esta guía cubre desde DDL y DML hasta optimización de queries y mejores prácticas para bases de datos relacionales.
+Esencial para desarrolladores .NET que trabajan con Entity Framework, Dapper, o ADO.NET directo.
+
 ## Comandos DDL (Data Definition Language)
+
+**Comandos para definir y modificar la estructura de bases de datos y tablas con ejemplos prácticos de sintaxis.**
+Esta tabla presenta los comandos fundamentales para crear, modificar y eliminar objetos de base de datos.
+Fundamental para gestionar schemas de base de datos y realizar cambios estructurales durante el desarrollo.
 
 | **Comando**       | **Propósito**       | **Ejemplo**                                                       | **Descripción**                     |
 | ----------------- | ------------------- | ----------------------------------------------------------------- | ----------------------------------- |
@@ -11,6 +19,10 @@
 | `DROP DATABASE`   | Eliminar BD         | `DROP DATABASE ecommerce;`                                        | Elimina base de datos completa      |
 
 ## Comandos DML (Data Manipulation Language)
+
+**Comandos para manipular datos dentro de las tablas incluyendo inserción, actualización, eliminación y consulta.**
+Esta tabla muestra la sintaxis esencial para operaciones CRUD con ejemplos que cubren los casos más comunes.
+Crítica para desarrolladores que necesitan dominar la manipulación de datos en aplicaciones .NET.
 
 | **Comando** | **Propósito**    | **Ejemplo**                                                               | **Descripción**                       |
 | ----------- | ---------------- | ------------------------------------------------------------------------- | ------------------------------------- |

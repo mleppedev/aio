@@ -1,6 +1,14 @@
 # Design Patterns for .NET
 
+**Guía completa de patrones de diseño aplicados específicamente a desarrollo .NET con ejemplos prácticos.**
+Este documento cubre desde principios SOLID hasta patrones GoF con implementaciones idiomáticas en C#.
+Fundamental para escribir código mantenible, extensible y que siga las mejores prácticas de ingeniería de software.
+
 ## SOLID Principles Examples
+
+**Ejemplos prácticos de los principios SOLID con violaciones comunes y sus soluciones en aplicaciones .NET.**
+Esta tabla muestra cómo aplicar cada principio SOLID con casos específicos de violación y refactoring.
+Esencial para escribir código limpio, testeable y que cumpla con los fundamentos de la programación orientada a objetos.
 
 | **Principio**             | **Descripción**                                   | **Violación**                                                                        | **Solución**                                                 |
 | ------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -11,6 +19,10 @@
 | **Dependency Inversion**  | Depender de abstracciones, no implementaciones    | `OrderService` instancia directamente `EmailService`                                 | Inyectar `IEmailService`                                     |
 
 ## Creational Patterns
+
+**Patrones creacionales implementados en .NET para gestionar la creación de objetos de manera flexible y reutilizable.**
+Esta tabla presenta los patrones más importantes para la creación de objetos con ejemplos específicos de implementación en C#.
+Fundamental para desacoplar la creación de objetos del código cliente y facilitar la extensibilidad del sistema.
 
 | **Patrón**               | **Propósito**                              | **Implementación .NET**                          | **Cuándo usar**            |
 | ------------------------ | ------------------------------------------ | ------------------------------------------------ | -------------------------- |

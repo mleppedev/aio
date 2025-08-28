@@ -1,6 +1,14 @@
 # Testing Strategies
 
+**Estrategias completas de testing para aplicaciones .NET desde unit tests hasta E2E con frameworks, mocking y mejores prácticas.**
+Este documento cubre la pirámide de testing, comparación de frameworks y patrones de testing para diferentes tipos de aplicaciones.
+Esencial para establecer una estrategia de testing robusta que balancee velocidad, confiabilidad y mantenibilidad.
+
 ## Testing Pyramid for .NET
+
+**Distribución recomendada de tipos de tests en aplicaciones .NET con análisis de costos, velocidad y confiabilidad.**
+Esta tabla define la proporción óptima de cada tipo de test y las herramientas más apropiadas para cada nivel.
+Fundamental para diseñar una suite de tests eficiente que proporcione feedback rápido y cobertura completa.
 
 | **Nivel**             | **Proporción** | **Velocidad**       | **Costo** | **Confiabilidad** | **Herramientas**                |
 | --------------------- | -------------- | ------------------- | --------- | ----------------- | ------------------------------- |
@@ -9,6 +17,10 @@
 | **End-to-End Tests**  | 10%            | Lenta (minutos)     | Alto      | Muy alta          | Selenium, Playwright            |
 
 ## Unit Testing Frameworks Comparison
+
+**Comparación de frameworks de unit testing para .NET con análisis de sintaxis, características y ecosistema.**
+Esta tabla evalúa xUnit, NUnit y MSTest para ayudar en la selección del framework más apropiado.
+Importante para establecer estándares de testing consistentes en equipos de desarrollo .NET.
 
 | **Framework** | **Sintaxis**    | **Assertions**      | **Parallel**      | **Ecosystem**        |
 | ------------- | --------------- | ------------------- | ----------------- | -------------------- |

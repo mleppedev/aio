@@ -1,6 +1,14 @@
 # Arquitecturas de Microservicios
 
+**Guía completa para diseñar e implementar arquitecturas de microservicios robustas en .NET con patrones y mejores prácticas.**
+Este documento cubre desde patrones fundamentales hasta estrategias de testing y deployment para sistemas distribuidos.
+Esencial para arquitectos y desarrolladores que construyen sistemas escalables y resilientes.
+
 ## Patrones de Diseño Fundamentales
+
+**Patrones esenciales para construir microservicios resilientes con implementaciones específicas en el ecosistema .NET.**
+Esta tabla presenta los patrones más importantes para manejar fallos, latencia y comunicación entre servicios.
+Fundamental para diseñar sistemas distribuidos que puedan manejar failures gracefully y mantener alta disponibilidad.
 
 | **Patrón**          | **Propósito**                     | **Cuándo usar**                     | **Ejemplo en .NET**    |
 | ------------------- | --------------------------------- | ----------------------------------- | ---------------------- |
@@ -11,6 +19,10 @@
 | **Timeout Pattern** | Evitar esperas indefinidas        | Servicios lentos                    | HttpClient.Timeout     |
 
 ## Estrategias de Comunicación
+
+**Comparación de estrategias de comunicación entre microservicios con análisis de ventajas, desventajas y casos de uso óptimos.**
+Esta tabla evalúa diferentes protocolos y patrones de comunicación desde HTTP hasta event-driven messaging.
+Crítica para elegir la estrategia de comunicación más apropiada según latencia, throughput y requerimientos de consistencia.
 
 | **Tipo**      | **Protocolo**   | **Ventajas**                   | **Desventajas**                   | **Caso de Uso**      |
 | ------------- | --------------- | ------------------------------ | --------------------------------- | -------------------- |

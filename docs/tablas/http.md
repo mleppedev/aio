@@ -1,3 +1,9 @@
+# HTTP Status Codes for .NET APIs
+
+**Códigos de estado HTTP esenciales para APIs REST en .NET con ejemplos de uso específicos y mejores prácticas.**
+Esta tabla presenta los códigos más importantes para APIs, cuándo usarlos y cómo implementarlos correctamente.
+Fundamental para diseñar APIs REST que comuniquen correctamente el resultado de las operaciones a los clientes.
+
 | **Código**                     | **Nombre**                    | **Uso típico en APIs .NET**                                                                  |
 | ------------------------------ | ----------------------------- | -------------------------------------------------------------------------------------------- |
 | **200 OK**                     | Éxito                         | Respuesta estándar a una petición GET/POST exitosa.                                          |

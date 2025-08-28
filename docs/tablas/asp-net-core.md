@@ -2,6 +2,10 @@
 
 ## Middleware Pipeline Components
 
+**Componentes esenciales del pipeline de middleware en ASP.NET Core y su orden de configuración recomendado.**
+Esta tabla muestra los middleware más importantes con ejemplos de configuración y su ubicación óptima en el pipeline.
+Crítico para configurar correctamente el flujo de processing de requests HTTP en aplicaciones ASP.NET Core.
+
 | **Middleware**        | **Propósito**                       | **Orden Recomendado** | **Ejemplo de Configuración**         |
 | --------------------- | ----------------------------------- | --------------------- | ------------------------------------ |
 | **ExceptionHandler**  | Manejo global de errores            | 1°                    | `app.UseExceptionHandler("/Error");` |
@@ -14,6 +18,10 @@
 
 ## Dependency Injection Lifetimes
 
+**Comparación de los diferentes lifetimes de Dependency Injection en ASP.NET Core y sus casos de uso óptimos.**
+Esta tabla explica cuándo usar cada lifetime, con ejemplos prácticos y los riesgos asociados a cada configuración.
+Fundamental para evitar memory leaks y optimizar el rendimiento de la aplicación.
+
 | **Lifetime**  | **Descripción**                | **Cuándo usar**                      | **Ejemplo**                              | **Riesgo**                          |
 | ------------- | ------------------------------ | ------------------------------------ | ---------------------------------------- | ----------------------------------- |
 | **Singleton** | Una instancia para toda la app | Servicios sin estado, caché          | `services.AddSingleton<ICacheService>()` | Memory leaks si guarda referencias  |
@@ -21,6 +29,10 @@
 | **Transient** | Nueva instancia cada vez       | Servicios ligeros, helpers           | `services.AddTransient<IEmailSender>()`  | Overhead si es usado frecuentemente |
 
 ## Controllers vs Minimal APIs
+
+**Comparación detallada entre Controllers tradicionales y Minimal APIs introducidas en .NET 6.**
+Esta tabla ayuda a decidir qué enfoque usar según el tipo de aplicación, complejidad y requerimientos específicos.
+Esencial para elegir la arquitectura de API más apropiada para cada escenario.
 
 | **Aspecto**         | **Controllers**                | **Minimal APIs**              | **Recomendación**                          |
 | ------------------- | ------------------------------ | ----------------------------- | ------------------------------------------ |
@@ -32,6 +44,10 @@
 
 ## Authentication & Authorization Strategies
 
+**Estrategias de autenticación y autorización disponibles en ASP.NET Core con sus casos de uso específicos.**
+Esta tabla compara los diferentes métodos de autenticación, desde JWT hasta Azure AD, con pros y contras de cada uno.
+Crítica para implementar seguridad robusta y elegir la estrategia de autenticación más apropiada.
+
 | **Método**      | **Caso de Uso**            | **Implementación**             | **Pros**                  | **Contras**          |
 | --------------- | -------------------------- | ------------------------------ | ------------------------- | -------------------- |
 | **JWT Bearer**  | APIs, SPAs                 | `AddJwtBearer()`               | Stateless, escalable      | Revocación compleja  |
@@ -41,6 +57,10 @@
 | **OAuth2**      | Integración terceros       | `AddOAuth()`                   | Estándar, flexible        | Complejidad de setup |
 
 ## Configuration Sources Priority
+
+**Orden de prioridad de las fuentes de configuración en ASP.NET Core y cuándo usar cada una.**
+Esta tabla muestra cómo ASP.NET Core resuelve conflictos de configuración y las mejores prácticas para cada fuente.
+Fundamental para gestionar configuraciones complejas en diferentes entornos (dev, staging, production).
 
 | **Fuente**                 | **Prioridad** | **Ejemplo**                              | **Cuándo usar**           |
 | -------------------------- | ------------- | ---------------------------------------- | ------------------------- |
@@ -52,6 +72,10 @@
 
 ## Health Checks Implementation
 
+**Implementación de health checks para monitoreo y observabilidad en aplicaciones ASP.NET Core.**
+Esta tabla muestra los diferentes tipos de health checks, sus propósitos específicos y cómo implementarlos.
+Esencial para sistemas distribuidos y deployment en contenedores donde el monitoreo automático es crítico.
+
 | **Tipo**      | **Propósito**              | **Endpoint**       | **Implementación**                                                               |
 | ------------- | -------------------------- | ------------------ | -------------------------------------------------------------------------------- |
 | **Liveness**  | ¿La app está viva?         | `/health/live`     | `services.AddHealthChecks().AddCheck("self", () => HealthCheckResult.Healthy())` |
@@ -59,6 +83,10 @@
 | **Custom**    | Verificaciones específicas | `/health/detailed` | `AddCheck<DatabaseHealthCheck>()`                                                |
 
 ## Logging Levels & Best Practices
+
+**Niveles de logging en ASP.NET Core con guías sobre cuándo usar cada uno y su impacto en performance.**
+Esta tabla ayuda a elegir el nivel de logging apropiado para diferentes tipos de información y eventos.
+Fundamental para implementar logging efectivo sin impactar significativamente el rendimiento de la aplicación.
 
 | **Level**       | **Cuándo usar**           | **Ejemplo**          | **Performance Impact** |
 | --------------- | ------------------------- | -------------------- | ---------------------- |
@@ -121,6 +149,10 @@ graph TB
 
 ## Performance Monitoring
 
+**Métricas clave para monitorear el rendimiento de aplicaciones ASP.NET Core y sus umbrales recomendados.**
+Esta tabla define qué métricas monitorear, las herramientas apropiadas y las acciones correctivas cuando se superan los umbrales.
+Esencial para mantener aplicaciones performantes y detectar problemas antes de que afecten a los usuarios.
+
 | **Métrica**        | **Herramienta**      | **Threshold** | **Acción**              |
 | ------------------ | -------------------- | ------------- | ----------------------- |
 | **Response Time**  | Application Insights | > 500ms       | Optimizar queries       |
@@ -130,6 +162,10 @@ graph TB
 | **Throughput**     | Load testing         | < 1000 RPS    | Scaling horizontal      |
 
 ## Security Headers Configuration
+
+**Middleware personalizado para configurar headers de seguridad esenciales en respuestas HTTP.**
+Este código muestra cómo implementar headers de seguridad críticos para proteger contra ataques comunes como XSS, clickjacking y MIME sniffing.
+Fundamental para cumplir con estándares de seguridad web y proteger aplicaciones contra vulnerabilidades del lado cliente.
 
 ```csharp
 app.Use(async (context, next) =>

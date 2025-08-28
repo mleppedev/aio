@@ -2,6 +2,10 @@
 
 ## Compute Services Comparison
 
+**Comparación de servicios de compute de Azure para aplicaciones .NET con análisis de costo, escalabilidad y casos de uso.**
+Esta tabla ayuda a seleccionar el servicio de compute más apropiado según los requerimientos de la aplicación.
+Fundamental para tomar decisiones arquitectónicas informadas sobre donde hospedar aplicaciones .NET en Azure.
+
 | **Servicio**            | **Tipo**                | **Escalabilidad** | **Costo**          | **Casos de Uso**                 | **SDK/Integración**     |
 | ----------------------- | ----------------------- | ----------------- | ------------------ | -------------------------------- | ----------------------- |
 | **App Service**         | PaaS                    | Auto-scaling      | Medio              | Web apps, APIs                   | Deploy directo desde VS |
@@ -11,6 +15,10 @@
 | **Virtual Machines**    | IaaS                    | Manual/VMSS       | Variable           | Legacy apps, custom requirements | RDP/SSH access          |
 
 ## Data Services for .NET Applications
+
+**Servicios de datos de Azure optimizados para aplicaciones .NET con soporte para Entity Framework y diferentes modelos de consistencia.**
+Esta tabla compara las opciones de persistencia disponibles, desde bases de datos relacionales hasta NoSQL y caché.
+Esencial para elegir la solución de datos más apropiada según los patrones de acceso y requerimientos de consistencia.
 
 | **Servicio**                      | **Tipo**          | **Consistencia**      | **Escalabilidad**        | **Pricing Model** | **Entity Framework Support** |
 | --------------------------------- | ----------------- | --------------------- | ------------------------ | ----------------- | ---------------------------- |
@@ -22,6 +30,10 @@
 
 ## Messaging & Event Services
 
+**Servicios de messaging y eventos de Azure para arquitecturas distribuidas y event-driven con aplicaciones .NET.**
+Esta tabla compara throughput, ordering guarantees y durabilidad de cada servicio de messaging disponible.
+Crítica para diseñar sistemas distribuidos resilientes y elegir el patrón de comunicación más apropiado.
+
 | **Servicio**       | **Patrón**           | **Throughput** | **Ordering**    | **Durabilidad** | **.NET Integration**       |
 | ------------------ | -------------------- | -------------- | --------------- | --------------- | -------------------------- |
 | **Service Bus**    | Message queue/topics | Alto           | FIFO guaranteed | Persistent      | Azure.Messaging.ServiceBus |
@@ -30,6 +42,10 @@
 | **Storage Queues** | Simple queuing       | Medio          | No garantizado  | Persistent      | Azure.Storage.Queues       |
 
 ## Security & Identity Services
+
+**Servicios de identidad y seguridad de Azure para autenticación y autorización en aplicaciones .NET empresariales.**
+Esta tabla presenta las opciones disponibles para gestión de identidades, desde clientes externos hasta usuarios empresariales.
+Fundamental para implementar autenticación segura y cumplir con requerimientos de compliance corporativo.
 
 | **Servicio**          | **Propósito**            | **Integración .NET**                                     | **Casos de Uso**        | **Pricing**   |
 | --------------------- | ------------------------ | -------------------------------------------------------- | ----------------------- | ------------- |
