@@ -281,7 +281,7 @@ Este diagrama ilustra el balance óptimo entre unit tests (70%), integration tes
 Fundamental para establecer una estrategia de testing efectiva que combine rapidez de feedback con confianza en el sistema completo.
 
 ```mermaid
-pyramid TB
+graph TB
     subgraph "E2E Tests (10%)"
         A[Selenium/Playwright<br/>Full User Journeys<br/>Critical Business Flows]
     end

@@ -272,26 +272,51 @@ Este diagrama de flujo te ayuda a elegir entre los patrones GoF más comunes bas
 
 ```mermaid
 graph TD
-    A[Need to Create Objects?] --> B{Single or Multiple Types?}
-    B --> C[Single] --> D[Factory Method]
-    B --> E[Multiple/Families] --> F[Abstract Factory]
+    Start([What's your Design Problem?]) --> A{Creating Objects?}
 
-    G[Need to Add Behavior?] --> H{Static or Dynamic?}
-    H --> I[Static] --> J[Inheritance]
-    H --> K[Dynamic] --> L[Decorator]
+    A -->|Yes| B{How many types?}
+    B -->|Single Instance| C[Singleton]
+    B -->|Single Type| D[Factory Method]
+    B -->|Related Families| E[Abstract Factory]
+    B -->|Complex Construction| F[Builder]
+    B -->|Dependency Management| G[Dependency Injection]
 
-    M[Need to Handle Requests?] --> N{One or Chain?}
-    N --> O[One Handler] --> P[Command]
-    N --> Q[Chain] --> R[Chain of Responsibility]
+    A -->|No| H{Structural Problem?}
 
-    S[Need Algorithm Variations?] --> T[Strategy]
+    H -->|Yes| I{Need to?}
+    I -->|Make Incompatible Compatible| J[Adapter]
+    I -->|Add Behavior Dynamically| K[Decorator]
+    I -->|Simplify Complex Subsystem| L[Facade]
+    I -->|Abstract Data Access| M[Repository]
+    I -->|Coordinate Transactions| N[Unit of Work]
 
+    H -->|No| O{Behavioral Problem?}
+
+    O -->|Yes| P{Need to?}
+    P -->|Notify Multiple Objects| Q[Observer]
+    P -->|Encapsulate Requests| R[Command]
+    P -->|Switch Algorithms| S[Strategy]
+    P -->|Define Algorithm Skeleton| T[Template Method]
+    P -->|Pass Request Through Chain| U[Chain of Responsibility]
+
+    O -->|No| V[Consider SOLID Principles]
+
+    style C fill:#4f8ff7
     style D fill:#4f8ff7
+    style E fill:#4f8ff7
     style F fill:#4f8ff7
+    style G fill:#4f8ff7
+    style J fill:#22c55e
+    style K fill:#22c55e
     style L fill:#22c55e
-    style P fill:#f59e0b
+    style M fill:#22c55e
+    style N fill:#22c55e
+    style Q fill:#f59e0b
     style R fill:#f59e0b
-    style T fill:#ec4899
+    style S fill:#f59e0b
+    style T fill:#f59e0b
+    style U fill:#f59e0b
+    style V fill:#ec4899
 ```
 
 ## Anti-Patterns to Avoid

@@ -194,3 +194,76 @@ SELECT
 FROM ventas_trimestre
 ORDER BY total_ventas DESC;
 ```
+
+## Tipos de Bases de Datos según Requerimientos
+
+**Comparación de diferentes tipos de bases de datos y cuándo usar cada una según patrones de acceso y requerimientos.**
+Esta tabla ayuda a elegir la tecnología de persistencia más apropiada para cada caso de uso específico.
+Fundamental para arquitectos y desarrolladores que diseñan sistemas con múltiples tipos de datos y patrones de acceso.
+
+| **Tipo**             | **Tecnologías**               | **Casos de Uso**                        | **Ventajas**                            | **Desventajas**                   | **.NET Integration**       |
+| -------------------- | ----------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------- | -------------------------- |
+| **SQL (Relacional)** | SQL Server, PostgreSQL, MySQL | Transacciones ACID, datos estructurados | Consistencia fuerte, ACID, SQL familiar | Escalabilidad horizontal limitada | Entity Framework, Dapper   |
+| **Document NoSQL**   | MongoDB, CosmosDB             | Datos semi-estructurados, JSON          | Flexible schema, escalabilidad          | Eventual consistency              | MongoDB.Driver, Cosmos SDK |
+| **Key-Value Cache**  | Redis, Memcached              | Cache, sesiones, rate limiting          | Muy rápido, simple                      | Solo in-memory, volatilidad       | StackExchange.Redis        |
+| **Graph Database**   | Neo4j, CosmosDB Graph         | Relaciones complejas, redes sociales    | Queries de grafos eficientes            | Curva de aprendizaje              | Neo4j.Driver               |
+| **Time Series**      | InfluxDB, TimeScale           | Métricas, IoT, monitoring               | Optimizado para time-based data         | Casos de uso específicos          | InfluxDB.Client            |
+| **Search Engine**    | Elasticsearch, Azure Search   | Full-text search, analytics             | Búsquedas complejas, análisis           | Overhead operacional              | Elasticsearch.Net          |
+
+## Patrones de Persistencia Híbrida
+
+**Estrategias para combinar múltiples tipos de bases de datos en una misma solución según diferentes necesidades.**
+Esta tabla presenta patrones comunes de arquitectura polyglot persistence con ejemplos de implementación.
+Esencial para diseñar sistemas que optimicen cada tipo de dato con la tecnología más apropiada.
+
+| **Patrón**                | **Combinación**                 | **Caso de Uso**                    | **Beneficios**                    | **Complejidad** |
+| ------------------------- | ------------------------------- | ---------------------------------- | --------------------------------- | --------------- |
+| **SQL + Redis Cache**     | SQL Server + Redis              | E-commerce con cache de productos  | Performance + ACID transactions   | Media           |
+| **SQL + Document Store**  | PostgreSQL + MongoDB            | CRM con datos estructurados y docs | Flexibilidad + consistencia       | Media-Alta      |
+| **Event Sourcing**        | SQL + Event Store + Read Models | Banking, audit trails              | Auditabilidad completa            | Alta            |
+| **CQRS + Multiple DBs**   | Write SQL + Read NoSQL          | Reporting con alta concurrencia    | Optimización por patrón de acceso | Alta            |
+| **Microservices Pattern** | Cada servicio su BD             | Architecture distribuida           | Independencia de servicios        | Muy Alta        |
+
+## Optimización según Patrones de Acceso
+
+**Selección de tecnología de base de datos basada en patrones específicos de lectura y escritura.**
+Esta tabla analiza diferentes patrones de acceso y recomienda la tecnología más eficiente para cada uno.
+Crítica para optimizar performance y costos según el comportamiento real de la aplicación.
+
+| **Patrón de Acceso**    | **Características**          | **Tecnología Recomendada**  | **Ejemplo de Uso**               | **Consideraciones**         |
+| ----------------------- | ---------------------------- | --------------------------- | -------------------------------- | --------------------------- |
+| **Read-Heavy**          | 90% lecturas, 10% escrituras | SQL + Redis Cache           | Catálogo de productos            | Cache invalidation strategy |
+| **Write-Heavy**         | 70% escrituras, 30% lecturas | Document DB + Time Series   | Logging, IoT data                | Eventual consistency        |
+| **Complex Queries**     | JOINs complejos, analytics   | SQL (PostgreSQL/SQL Server) | Reporting, BI                    | Indexes, query optimization |
+| **Simple Key-Value**    | Acceso directo por ID        | Redis, DynamoDB             | User sessions, feature flags     | Memory limits, persistence  |
+| **Full-Text Search**    | Búsquedas de texto, filtros  | Elasticsearch + SQL         | Product search, documentation    | Index maintenance           |
+| **Real-time Analytics** | Aggregaciones en tiempo real | InfluxDB, TimeStream        | Monitoring dashboards            | Data retention policies     |
+| **Graph Relationships** | Navegación de relaciones     | Neo4j, CosmosDB Graph       | Social networks, recommendations | Query complexity            |
+
+## Estrategias de Migración de Datos
+
+**Enfoques para migrar entre diferentes tipos de bases de datos con mínimo downtime.**
+Esta tabla presenta estrategias de migración desde sistemas legacy hacia arquitecturas modernas polyglot.
+Fundamental para evolucionar sistemas existentes sin disrumpir operaciones críticas del negocio.
+
+| **Estrategia**             | **Enfoque**                         | **Downtime** | **Complejidad** | **Casos de Uso**                             |
+| -------------------------- | ----------------------------------- | ------------ | --------------- | -------------------------------------------- |
+| **Big Bang Migration**     | Migración completa en un evento     | Alto         | Media           | Sistemas pequeños, ventanas de mantenimiento |
+| **Strangler Fig Pattern**  | Migración gradual por funcionalidad | Mínimo       | Alta            | Sistemas legacy complejos                    |
+| **Database Replication**   | Sync continuo durante transición    | Muy bajo     | Media           | Datos críticos, zero-downtime                |
+| **Event-Driven Migration** | CDC (Change Data Capture) + Events  | Muy bajo     | Alta            | Sistemas distribuidos                        |
+| **Dual Write Pattern**     | Escribir a ambos sistemas           | Zero         | Media-Alta      | Validación gradual de nuevo sistema          |
+
+## Monitoreo y Observabilidad por Tipo de BD
+
+**Métricas clave a monitorear según el tipo de base de datos para mantener performance óptimo.**
+Esta tabla define qué métricas son críticas para cada tecnología y herramientas de monitoreo recomendadas.
+Esencial para mantener systems de persistencia saludables y detectar problemas antes de que afecten usuarios.
+
+| **Tipo de BD**    | **Métricas Críticas**                    | **Herramientas**                 | **Alertas Importantes**           |
+| ----------------- | ---------------------------------------- | -------------------------------- | --------------------------------- |
+| **SQL Server**    | CPU, Memory, Disk I/O, Lock waits        | SQL Server Profiler, PerfMon     | Blocking processes, deadlocks     |
+| **Redis**         | Memory usage, Hit ratio, Connections     | Redis INFO, Application Insights | Memory eviction, connection limit |
+| **MongoDB**       | Query performance, Replica lag, Sharding | MongoDB Compass, Ops Manager     | Slow queries, replica set issues  |
+| **Elasticsearch** | Heap usage, Search latency, Index size   | Kibana, Elastic APM              | Heap pressure, cluster health     |
+| **CosmosDB**      | RU consumption, Throttling, Latency      | Azure Monitor, Cosmos insights   | RU limits, geo-replication lag    |

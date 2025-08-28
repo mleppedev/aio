@@ -3020,68 +3020,46 @@
       function applyHighlighting() {
         // Esperar un poco para que el DOM se actualice
         setTimeout(() => {
-          // Primero procesar todos los elementos con contenido que pueda tener código
-          document
-            .querySelectorAll(".qa-content, .search-result-content")
-            .forEach((element) => {
-              if (element.innerHTML.includes("```")) {
-                element.innerHTML = processContent(element.innerHTML);
-              }
-            });
-
-          // Aplicar highlight.js después del procesamiento
+          // Aplicar highlight.js de forma segura
           if (typeof hljs !== "undefined") {
-            // Limpiar highlighting previo
-            document.querySelectorAll("pre code").forEach((block) => {
-              if (block.classList.length > 0) {
-                block.removeAttribute("data-highlighted");
-                block.className = block.className
-                  .replace(/hljs[^\s]*/g, "")
-                  .trim();
-              }
-            });
+            // Aplicar highlighting solo a elementos pre code que no han sido procesados y son seguros
+            document
+              .querySelectorAll(
+                "pre code:not([data-highlighted]):not([class*='comment-placeholder'])"
+              )
+              .forEach((block) => {
+                try {
+                  // Verificar que el contenido no tenga HTML complejo antes de procesar
+                  const content = block.textContent || block.innerText || "";
+                  if (!content.includes("<span") && !content.includes("<div")) {
+                    hljs.highlightElement(block);
+                  }
+                } catch (error) {
+                  console.warn("Error aplicando highlighting:", error);
+                }
+              });
 
-            // Aplicar nuevo highlighting
-            document.querySelectorAll("pre code").forEach((block) => {
-              hljs.highlightElement(block);
-
-              // Mejora específica para comentarios en C# si hljs no los detectó bien
-              if (
-                block.classList.contains("language-csharp") &&
-                block.innerHTML.includes("//") &&
-                !block.innerHTML.includes('<span class="hljs-comment">')
-              ) {
-                // Procesar comentarios de línea //
-                block.innerHTML = block.innerHTML.replace(
-                  /\/\/([^<\n]*)/g,
-                  '<span class="hljs-comment">//$1</span>'
-                );
-              }
-
-              // Mejora específica para comentarios en SQL si hljs no los detectó bien
-              if (
-                block.classList.contains("language-sql") &&
-                block.innerHTML.includes("--") &&
-                !block.innerHTML.includes('<span class="hljs-comment">')
-              ) {
-                // Procesar comentarios de línea --
-                block.innerHTML = block.innerHTML.replace(
-                  /--([^<\n]*)/g,
-                  '<span class="hljs-comment">--$1</span>'
-                );
-              }
-            });
-
-            // También aplicar a bloques pre sin code
+            // Procesar bloques pre sin code de forma segura
             document
               .querySelectorAll("pre:not(:has(code))")
               .forEach((block) => {
-                if (!block.querySelector("code")) {
-                  const code = document.createElement("code");
-                  code.innerHTML = block.innerHTML;
-                  block.innerHTML = "";
-                  block.appendChild(code);
-                  hljs.highlightElement(code);
+                if (!block.querySelector("code") && block.textContent.trim()) {
+                  const content = block.textContent.trim();
+                  // Solo procesar si no contiene HTML
+                  if (!content.includes("<") && !content.includes(">")) {
+                    const code = document.createElement("code");
+                    code.textContent = content;
+                    block.textContent = "";
+                    block.appendChild(code);
+                    try {
+                      hljs.highlightElement(code);
+                    } catch (error) {
+                      console.warn(
+                        "Error aplicando highlighting a bloque pre:",
+                        error
+                      );
+                    }
+                  }
                 }
               });
           }
@@ -3719,6 +3697,10 @@
 
           // Performance
           {
+            name: "big-o-notation.md",
+            title: "ALGORITHMS - 📈 Big O Notation & Complexity",
+          },
+          {
             name: "performance.md",
             title: "PERFORMANCE - ⚡ Optimización General",
           },
@@ -3817,16 +3799,52 @@
           `;
 
           // Aplicar highlighting primero, luego inicializar Mermaid
-          setTimeout(() => {
+          setTimeout(async () => {
             applyHighlighting();
 
             // Inicializar Mermaid después de que el contenido esté renderizado
             if (typeof mermaid !== "undefined") {
               try {
+                // Validar y limpiar diagramas Mermaid antes de procesar
+                document.querySelectorAll(".mermaid").forEach((element) => {
+                  const content = element.textContent.trim();
+                  // Corregir sintaxis común incorrecta
+                  if (content.startsWith("pyramid TB")) {
+                    element.textContent = content.replace(
+                      "pyramid TB",
+                      "graph TB"
+                    );
+                  }
+                });
+
                 // Reinicializar Mermaid para los nuevos diagramas
-                mermaid.init(undefined, ".mermaid");
+                await mermaid.run({
+                  querySelector: ".mermaid",
+                });
               } catch (error) {
                 console.warn("Error inicializando Mermaid:", error);
+
+                // Si hay error, intentar procesar individualmente
+                document
+                  .querySelectorAll(".mermaid")
+                  .forEach(async (element, index) => {
+                    try {
+                      await mermaid.run({
+                        querySelector: `#${element.id || "mermaid-" + index}`,
+                      });
+                    } catch (individualError) {
+                      console.warn(
+                        `Error en diagrama individual ${index}:`,
+                        individualError
+                      );
+                      element.innerHTML = `<div style="color: var(--danger); padding: 10px; border: 1px solid var(--danger); border-radius: 4px;">
+                      ❌ Error en diagrama Mermaid<br>
+                      <small>${
+                        individualError.message || "Sintaxis inválida"
+                      }</small>
+                    </div>`;
+                    }
+                  });
               }
             }
           }, 100);
@@ -3866,9 +3884,9 @@
       }
 
       // Event listener para el selector de tablas
-      document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener("DOMContentLoaded", async () => {
         // Cargar tablas disponibles al inicializar
-        loadAvailableTables();
+        await loadAvailableTables();
 
         // Manejar selección de tabla
         const tablesSelect = document.getElementById("tablesSelect");
