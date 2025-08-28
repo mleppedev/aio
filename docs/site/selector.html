@@ -779,6 +779,18 @@
       /* Estilos para el selector de tablas */
       .tables-selector select {
         transition: all 0.3s ease;
+        /* Forzar que el dropdown no tenga scroll interno */
+        overflow-y: visible !important;
+      }
+
+      /* Estilos específicos para WebKit browsers (Chrome, Safari, Edge) */
+      .tables-selector select::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tables-selector select {
+        -ms-overflow-style: none; /* IE y Edge */
+        scrollbar-width: none; /* Firefox */
       }
 
       .tables-selector select:hover {
@@ -3653,8 +3665,17 @@
             title: "ASP.NET - 🌐 ASP.NET Core Pipeline & DI",
           },
 
+          // Authentication & Authorization
+          {
+            name: "auth-patterns.md",
+            title: "AUTH - 🔐 Authentication & Authorization",
+          },
+
           // Caching
-          { name: "caching-strategies.md", title: "CACHE - ⚡ Caching Strategies" },
+          {
+            name: "caching-strategies.md",
+            title: "CACHE - ⚡ Caching Strategies",
+          },
 
           // Cloud y Azure
           { name: "azure.md", title: "AZURE - ☁️ Servicios de Azure" },
@@ -3664,8 +3685,17 @@
           },
           { name: "aws.md", title: "AWS - 🚀 Servicios de AWS" },
 
+          // Concurrency
+          {
+            name: "concurrency-dotnet.md",
+            title: "CONCURRENCY - ⚡ Concurrency in .NET",
+          },
+
           // Bases de Datos
-          { name: "database-optimization.md", title: "DB - 🚀 Database Optimization" },
+          {
+            name: "database-optimization.md",
+            title: "DB - 🚀 Database Optimization",
+          },
           { name: "nosql.md", title: "DB - 🍃 Bases de Datos NoSQL" },
           {
             name: "entity-framework.md",
@@ -3682,7 +3712,16 @@
           { name: "kubernetes.md", title: "K8S - ⚓ Kubernetes" },
 
           // Distributed Systems
-          { name: "distributed-systems.md", title: "DISTRIBUTED - 🌐 Distributed Systems" },
+          {
+            name: "distributed-systems.md",
+            title: "DISTRIBUTED - 🌐 Distributed Systems",
+          },
+
+          // Event-Driven Architecture
+          {
+            name: "event-driven-architecture.md",
+            title: "EVENTS - 📡 Event-Driven Architecture",
+          },
 
           // Messaging
           {
@@ -3690,10 +3729,14 @@
             title: "MESSAGING - 📨 Messaging & Queues",
           },
 
-          // Monitoring
+          // Monitoring & Observability
           {
             name: "monitoring.md",
             title: "MONITORING - 📊 Monitoreo y Observabilidad",
+          },
+          {
+            name: "observability.md",
+            title: "OBSERVABILITY - 👁️ Observability in .NET",
           },
 
           // Patrones de Diseño
@@ -3702,6 +3745,10 @@
             title: "PATTERNS - 🎯 Patrones de Diseño .NET",
           },
           { name: "patrones.md", title: "PATTERNS - 🎯 Patrones de Diseño" },
+          {
+            name: "resilience-patterns.md",
+            title: "PATTERNS - 🛡️ Resilience Patterns",
+          },
           {
             name: "solid-principles.md",
             title: "SOLID - 🏗️ Principios SOLID .NET",
