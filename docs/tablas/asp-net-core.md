@@ -71,6 +71,10 @@
 
 ## ASP.NET Core Pipeline Flow
 
+**Flujo del pipeline de middleware en ASP.NET Core mostrando el orden de ejecución de cada componente.**
+Este diagrama ilustra cómo las requests HTTP pasan por cada middleware en secuencia antes de llegar al controlador.
+La comprensión de este flujo es crucial para el debugging y la configuración correcta de middleware personalizado.
+
 ```mermaid
 graph TB
     subgraph "Request Pipeline"
@@ -149,6 +153,10 @@ app.Use(async (context, next) =>
 | **Accept Header** | `Accept: application/vnd.api.v1+json` | RESTful             | Complejo           |
 
 ## Environment-Specific Configuration
+
+**Configuración específica por ambiente mostrando las diferencias entre Development, Staging y Production.**
+Este diagrama ilustra cómo cambian los servicios y configuraciones según el entorno de ejecución.
+Es fundamental para entender cómo ASP.NET Core maneja diferentes configuraciones por ambiente usando `appsettings.{Environment}.json`.
 
 ```mermaid
 graph LR

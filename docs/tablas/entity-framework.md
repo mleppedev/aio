@@ -111,6 +111,10 @@ modelBuilder.Entity<User>()
 
 ## Database Context Lifecycle
 
+**Ciclo de vida del DbContext mostrando las fases desde creación hasta disposal, incluyendo change tracking.**
+Este diagrama ilustra cómo EF Core rastrea cambios y genera SQL durante el ciclo de vida de una instancia de contexto.
+Fundamental para entender el rendimiento y la gestión correcta de memoria en aplicaciones que usan Entity Framework Core.
+
 ```mermaid
 graph TB
     subgraph "DbContext Lifecycle"

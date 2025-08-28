@@ -272,6 +272,10 @@ public class DatabaseService
 
 ## Deployment Architecture Patterns
 
+**Arquitectura de referencia para aplicaciones .NET en Azure mostrando las mejores prácticas de deployment.**
+Este diagrama presenta un patrón típico de 3 capas con frontend, API y datos, incluyendo servicios de monitoreo y seguridad.
+Es ideal para aplicaciones empresariales que requieren alta disponibilidad, escalabilidad y observabilidad completa.
+
 ```mermaid
 graph TB
     subgraph "Frontend Tier"

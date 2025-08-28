@@ -49,6 +49,10 @@
 
 ## Arquitectura de Referencia
 
+**Arquitectura completa de microservicios con API Gateway, servicios de dominio y infraestructura compartida.**
+Este diagrama muestra una implementación típica con Ocelot/YARP como gateway, servicios independientes por dominio de negocio.
+Incluye patrones esenciales como service discovery, circuit breaker, y observabilidad distribuida para sistemas enterprise.
+
 ```mermaid
 graph TB
     subgraph "Frontend"
@@ -152,6 +156,10 @@ graph TB
 | **Load Tests**        | Performance             | NBomber, k6          | 🐌 Lenta      | ⭐⭐⭐⭐          |
 
 ## Flujo de Eventos en Sistema E-commerce
+
+**Diagrama de secuencia mostrando la comunicación entre microservicios durante el proceso de creación de una orden.**
+Este ejemplo ilustra cómo los eventos fluyen asincrónicamente entre servicios usando un event bus (RabbitMQ/Kafka).
+Demuestra patrones como saga, eventual consistency y compensating actions en un escenario real de e-commerce.
 
 ```mermaid
 sequenceDiagram

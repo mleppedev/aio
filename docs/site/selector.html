@@ -3614,15 +3614,18 @@
         const tablesSelect = document.getElementById("tablesSelect");
 
         try {
-          // Lista de archivos de tablas conocidos con títulos personalizados
+          // Lista de archivos de tablas conocidos con títulos personalizados (ordenados alfabéticamente)
           const knownTables = [
-            { name: "http.md", title: "📡 Códigos de Estado HTTP" },
-            { name: "sql.md", title: "🗄️ Comandos SQL Esenciales" },
+            {
+              name: "arquitecturas.md",
+              title: "ARCHITECTURE - 🏛️ Patrones Arquitectónicos",
+            },
+            { name: "http.md", title: "HTTP - 🌐 Códigos de Estado HTTP" },
             {
               name: "microservicios-arquitectura.md",
-              title: "🏗️ Arquitecturas de Microservicios",
+              title: "MICROSERVICES - 🏗️ Arquitecturas de Microservicios",
             },
-            { name: "arquitecturas.md", title: "🏛️ Patrones Arquitectónicos" },
+            { name: "sql.md", title: "SQL - 🗄️ Comandos SQL Esenciales" },
           ];
 
           // Limpiar opciones existentes (excepto la primera)
@@ -3662,39 +3665,80 @@
 
       // Función para intentar cargar archivos adicionales de la carpeta tablas
       async function loadAdditionalTables() {
-        // Lista de posibles archivos que podrían existir
+        // Lista de posibles archivos que podrían existir (ordenados alfabéticamente)
         const potentialFiles = [
-          // Tablas .NET Core de Referencia
-          { name: "asp-net-core.md", title: "🌐 ASP.NET Core" },
-          { name: "entity-framework.md", title: "📊 Entity Framework Core" },
-          { name: "design-patterns.md", title: "🎯 Patrones de Diseño .NET" },
+          // APIs y Servicios Web
+          { name: "apis.md", title: "API - 🌐 Diseño de APIs REST" },
           {
-            name: "performance-optimization.md",
-            title: "⚡ Optimización de Performance .NET",
+            name: "asp-net-core.md",
+            title: "ASP.NET - 🌐 ASP.NET Core Pipeline & DI",
           },
-          {
-            name: "testing-strategies.md",
-            title: "🧪 Estrategias de Testing .NET",
-          },
-          { name: "security-dotnet.md", title: "🔒 Seguridad en .NET" },
+
+          // Cloud y Azure
+          { name: "azure.md", title: "AZURE - ☁️ Servicios de Azure" },
           {
             name: "azure-services.md",
-            title: "☁️ Servicios de Azure para .NET",
+            title: "AZURE - ☁️ Servicios Azure para .NET",
           },
-          { name: "messaging-queues.md", title: "📨 Messaging & Queues" },
-          // Otras tablas generales
-          { name: "nosql.md", title: "🍃 Bases de Datos NoSQL" },
-          { name: "patrones.md", title: "🎯 Patrones de Diseño" },
-          { name: "testing.md", title: "🧪 Estrategias de Testing" },
-          { name: "performance.md", title: "⚡ Optimización de Performance" },
-          { name: "security.md", title: "🔒 Seguridad en Aplicaciones" },
-          { name: "azure.md", title: "☁️ Servicios de Azure" },
-          { name: "aws.md", title: "🚀 Servicios de AWS" },
-          { name: "docker.md", title: "🐳 Docker y Contenedores" },
-          { name: "kubernetes.md", title: "⚓ Kubernetes" },
-          { name: "devops.md", title: "🔄 DevOps y CI/CD" },
-          { name: "apis.md", title: "🌐 Diseño de APIs REST" },
-          { name: "monitoring.md", title: "📊 Monitoreo y Observabilidad" },
+          { name: "aws.md", title: "AWS - 🚀 Servicios de AWS" },
+
+          // Bases de Datos
+          { name: "nosql.md", title: "DB - 🍃 Bases de Datos NoSQL" },
+          {
+            name: "entity-framework.md",
+            title: "DB - 📊 Entity Framework Core",
+          },
+
+          // DevOps y Contenedores
+          { name: "devops.md", title: "DEVOPS - � DevOps y CI/CD" },
+          { name: "docker.md", title: "DOCKER - 🐳 Docker y Contenedores" },
+          { name: "kubernetes.md", title: "K8S - ⚓ Kubernetes" },
+
+          // Messaging
+          {
+            name: "messaging-queues.md",
+            title: "MESSAGING - 📨 Messaging & Queues",
+          },
+
+          // Monitoring
+          {
+            name: "monitoring.md",
+            title: "MONITORING - 📊 Monitoreo y Observabilidad",
+          },
+
+          // Patrones de Diseño
+          {
+            name: "design-patterns.md",
+            title: "PATTERNS - 🎯 Patrones de Diseño .NET",
+          },
+          { name: "patrones.md", title: "PATTERNS - 🎯 Patrones de Diseño" },
+
+          // Performance
+          {
+            name: "performance.md",
+            title: "PERFORMANCE - ⚡ Optimización General",
+          },
+          {
+            name: "performance-optimization.md",
+            title: "PERFORMANCE - ⚡ Optimización .NET",
+          },
+
+          // Seguridad
+          {
+            name: "security.md",
+            title: "SECURITY - � Seguridad en Aplicaciones",
+          },
+          {
+            name: "security-dotnet.md",
+            title: "SECURITY - � Seguridad en .NET",
+          },
+
+          // Testing
+          { name: "testing.md", title: "TESTING - 🧪 Estrategias de Testing" },
+          {
+            name: "testing-strategies.md",
+            title: "TESTING - 🧪 Estrategias Testing .NET",
+          },
         ];
 
         const tablesSelect = document.getElementById("tablesSelect");

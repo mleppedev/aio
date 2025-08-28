@@ -254,6 +254,10 @@ public class EmailNotificationService
 
 ## Pattern Selection Flow
 
+**Árbol de decisión para seleccionar el patrón de diseño más apropiado según el problema a resolver.**
+Este diagrama de flujo te ayuda a elegir entre los patrones GoF más comunes basándose en preguntas clave sobre tu escenario.
+Útil durante el diseño arquitectónico para tomar decisiones informadas sobre qué patrón implementar.
+
 ```mermaid
 graph TD
     A[Need to Create Objects?] --> B{Single or Multiple Types?}

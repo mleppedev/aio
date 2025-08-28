@@ -264,6 +264,10 @@ public class UsersControllerTests : IClassFixture<WebApplicationFactory<Program>
 
 ## Testing Pyramid Implementation
 
+**Pirámide de testing mostrando la distribución recomendada de tipos de pruebas y las herramientas específicas para .NET.**
+Este diagrama ilustra el balance óptimo entre unit tests (70%), integration tests (20%) y E2E tests (10%) para maximizar cobertura y velocidad.
+Fundamental para establecer una estrategia de testing efectiva que combine rapidez de feedback con confianza en el sistema completo.
+
 ```mermaid
 pyramid TB
     subgraph "E2E Tests (10%)"

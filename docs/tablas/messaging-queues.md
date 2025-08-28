@@ -344,6 +344,10 @@ public class OrderSaga : MassTransitStateMachine<OrderSagaState>
 
 ## Message Flow Architecture
 
+**Arquitectura típica de messaging mostrando el flujo de mensajes entre producers, brokers y consumers.**
+Este diagrama representa un patrón común de event-driven architecture con topics separados por dominio y dead letter queue para errores.
+Esencial para entender cómo diseñar sistemas distribuidos resilientes con patrones de messaging asíncrono.
+
 ```mermaid
 graph LR
     subgraph "Producers"

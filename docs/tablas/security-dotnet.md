@@ -173,6 +173,10 @@ services.AddCors(options =>
 
 ## Authentication Flow Security
 
+**Flujo completo de autenticación OAuth2/OpenID Connect mostrando la interacción segura entre client, servidor de autorización y API.**
+Este diagrama secuencial ilustra el intercambio seguro de tokens, incluyendo authorization code flow y validación de tokens.
+Esencial para implementar autenticación enterprise-grade con Identity Server, Azure AD, o Auth0 en aplicaciones .NET.
+
 ```mermaid
 sequenceDiagram
     participant C as Client

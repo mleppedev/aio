@@ -60,6 +60,10 @@
 
 ## Diagrama de Arquitectura de Base de Datos
 
+**Arquitectura típica de acceso a datos en aplicaciones .NET mostrando las capas desde la aplicación hasta la base de datos.**
+Este diagrama ilustra cómo Entity Framework, connection pooling y caching se integran para optimizar el acceso a datos.
+Fundamental para entender el flujo de datos y los puntos de optimización en aplicaciones que requieren alto rendimiento de base de datos.
+
 ```mermaid
 graph TB
     subgraph "Aplicación"
@@ -112,7 +116,11 @@ graph TB
 
 ## Transacciones ACID
 
-**Las transacciones ACID son un conjunto de cuatro propiedades—Atomicidad, Consistencia, Aislamiento y Durabilidad—que garantizan la integridad, fiabilidad y consistencia de las transacciones en bases de datos, asegurando que una transacción se complete en su totalidad o no se realice en absoluto. Estas propiedades son fundamentales para sistemas donde la precisión de los datos es crucial, como en las operaciones bancarias y el comercio electrónico. **
+**Las transacciones ACID son un conjunto de cuatro propiedades—Atomicidad, Consistencia, Aislamiento y Durabilidad—que garantizan la integridad, fiabilidad y consistencia de las transacciones en bases de datos, asegurando que una transacción se complete en su totalidad o no se realice en absoluto. Estas propiedades son fundamentales para sistemas donde la precisión de los datos es crucial, como en las operaciones bancarias y el comercio electrónico.**
+
+**Diagrama de las propiedades ACID y los niveles de aislamiento de transacciones en bases de datos SQL.**
+Este diagrama conceptual muestra cómo cada propiedad ACID contribuye a la integridad transaccional y los diferentes niveles de aislamiento disponibles.
+Esencial para diseñar aplicaciones que manejan datos críticos donde la consistencia y concurrencia son fundamentales.
 
 ```mermaid
 flowchart LR

@@ -132,6 +132,10 @@ public class ExpensiveObjectPool : IObjectPool<ExpensiveObject>
 
 ## Response Time Optimization
 
+**Desglose del tiempo de respuesta de una request HTTP típica y sus puntos de optimización más críticos.**
+Este diagrama identifica los cuellos de botella más comunes en aplicaciones .NET y las técnicas específicas para optimizar cada fase.
+Fundamental para el performance tuning sistemático, mostrando donde invertir tiempo de optimización para máximo impacto.
+
 ```mermaid
 graph TB
     subgraph "Request Processing Time"
