@@ -2847,7 +2847,7 @@
         );
 
         // 4. Convertir código inline `code` (que no sea de bloque)
-        html = html.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+        html = html.replace(/`([^`<]+)`/g, "<code>$1</code>");
 
         // 5. Convertir títulos markdown
         html = html.replace(/^#### (.+)$/gm, "<h4>$1</h4>");
@@ -3701,6 +3701,11 @@
             name: "entity-framework.md",
             title: "DB - 📊 Entity Framework Core",
           },
+          { name: "plsql-tsql.md", title: "DB - 🧩 PL/SQL vs T-SQL" },
+          {
+            name: "postgresql-azure.md",
+            title: "DB - 🐘 PostgreSQL with .NET & Azure",
+          },
 
           // DevOps y Contenedores
           { name: "devops.md", title: "DEVOPS - � DevOps y CI/CD" },
@@ -3724,6 +3729,10 @@
           {
             name: "event-driven-architecture.md",
             title: "EVENTS - 📡 Event-Driven Architecture",
+          },
+          {
+            name: "event-driven-examples.md",
+            title: "EVENTS - 🎯 Event-Driven Cases & Flows",
           },
 
           // Messaging
