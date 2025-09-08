@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+ASP.NET Core es un framework modular y multiplataforma para construir aplicaciones web, APIs y microservicios de alto rendimiento. Su diseño incluye un pipeline de middleware configurable, inyección de dependencias nativa, integración con contenedores, y soporte para autenticación moderna (JWT, OAuth, Azure AD). No es solo una evolución de .NET Framework, sino una plataforma pensada para cloud-native y escenarios de alta escalabilidad.
+
+## ¿Por qué?
+Porque en el desarrollo real no basta con que una aplicación "funcione"; debe ser mantenible, segura y performante en producción. ASP.NET Core resuelve problemas comunes que antes requerían librerías externas o soluciones ad-hoc: versionado de APIs, health checks, logging estructurado, caching distribuido y configuración por ambiente. En mi experiencia, estas capacidades han permitido entregar soluciones robustas tanto en banca como en municipalidades y retail, donde la resiliencia y la trazabilidad son críticas.
+
+## ¿Para qué?
+- **Construir APIs modernas** con control total del pipeline y soporte de documentación automática con OpenAPI.  
+- **Implementar microservicios escalables** con inyección de dependencias, lifetimes claros y soporte nativo para contenedores/Docker.  
+- **Asegurar aplicaciones** con middleware de seguridad, autenticación centralizada y autorización granular basada en policies y claims.  
+- **Facilitar el monitoreo y la operación** en entornos distribuidos con health checks, métricas de performance y logging estructurado.  
+
+## Valor agregado desde la experiencia
+- Usar **health checks con readiness/liveness** permitió desplegar en Kubernetes servicios municipales que se auto-recuperaban ante fallos de BD o mensajería.  
+- Configurar **pipelines de middleware** de forma ordenada redujo tiempos de respuesta y simplificó debugging en APIs de scoring de fraude.  
+- La **inyección de dependencias por scope** fue clave en servicios con EF Core, evitando memory leaks en operaciones de alto volumen.  
+- Integrar **logging estructurado + Application Insights** en proyectos de retail dio visibilidad en tiempo real de problemas que antes se detectaban tarde.  
+
 # ASP.NET Core Features & Best Practices
 
 ## Middleware Pipeline Components

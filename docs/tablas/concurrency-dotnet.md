@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La concurrencia en .NET es la capacidad de ejecutar múltiples tareas de forma paralela o asíncrona para aprovechar recursos multi-core y evitar bloqueos en operaciones de I/O. Se implementa con Threads, Tasks, async/await, Parallel, ThreadPool, Channels y colecciones thread-safe.
+
+## ¿Por qué?
+Porque el rendimiento de aplicaciones modernas depende de manejar miles de requests concurrentes o procesar grandes volúmenes de datos en paralelo. En mi experiencia, elegir mal entre concurrencia y paralelismo llevó a bloqueos y sobrecarga, mientras que aplicar patrones correctos habilitó arquitecturas resilientes y de alto throughput.
+
+## ¿Para qué?
+- **Escalar APIs y microservicios** sin bloquear threads en operaciones de red o BD.  
+- **Procesar datos intensivos en CPU** con paralelismo de datos (Parallel.ForEach, PLINQ).  
+- **Coordinar flujos producer-consumer** con Channels y BlockingCollection.  
+- **Proteger recursos compartidos** con primitivas de sincronización como SemaphoreSlim o ReaderWriterLock.  
+
+## Valor agregado desde la experiencia
+- Aplicar **async/await con CancellationToken** evitó fugas de recursos en integraciones externas.  
+- Usar **Parallel.ForEach** procesó grandes volúmenes de datos municipales en segundos en vez de minutos.  
+- Implementar **BlockingCollection** simplificó pipelines producer-consumer en servicios de logística.  
+- **Channels con backpressure** permitieron manejar streams IoT sin pérdida de datos ni sobrecarga en memoria.  
+
 # Concurrency in .NET
 
 **Guía completa de programación concurrente en .NET con Task, async/await, Parallel y collections thread-safe.**

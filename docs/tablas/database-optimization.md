@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La optimización de bases de datos consiste en aplicar estrategias de indexación, consultas, particionado y monitoreo para garantizar que los sistemas manejen grandes volúmenes de datos con la menor latencia posible. En .NET se apoya en Entity Framework (EF) Core, consultas SQL optimizadas y configuraciones de pooling para maximizar rendimiento.
+
+## ¿Por qué?
+Porque la mayoría de cuellos de botella en aplicaciones empresariales no están en el código, sino en la base de datos. Una query mal diseñada puede tumbar un sistema entero. En mi experiencia en banca, retail y municipalidades, invertir en índices adecuados, query splitting y caching redujo costos de infraestructura y mejoró la experiencia de usuario.
+
+## ¿Para qué?
+- **Acelerar consultas críticas** con índices clusterizados, no-clustered y columnstore.  
+- **Reducir latencia en ORMs** aplicando técnicas de proyección, compiled queries y `AsNoTracking`.  
+- **Escalar horizontalmente** mediante particionado (sharding, geográfico, temporal).  
+- **Monitorear y prevenir** degradación de rendimiento con logging y health checks.  
+
+## Valor agregado desde la experiencia
+- Usar **columnstore indexes** permitió procesar reportes analíticos en segundos en retail.  
+- Con **query splitting** en EF Core evitamos explosiones cartesianas en joins complejos.  
+- Estrategias de **sharding horizontal** permitieron manejar millones de registros en sistemas municipales.  
+- Configurar **pooling de conexiones** en Azure SQL redujo errores de timeout en picos bancarios.  
+
 # Database Optimization for .NET
 
 **Guía completa de optimización de bases de datos para aplicaciones .NET de alto rendimiento.**

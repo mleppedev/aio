@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Los ejemplos de Event-Driven Architecture muestran cómo aplicar los patrones en casos reales como e-commerce, banca, inventario en tiempo real y delivery. A través de flujos prácticos y diagramas, permiten ver cómo múltiples servicios colaboran mediante eventos.
+
+## ¿Por qué?
+Porque los equipos suelen entender mejor con casos aplicados que con teoría abstracta. En mi experiencia, usar ejemplos concretos aceleró la adopción de patrones event-driven en equipos municipales y de retail, reduciendo errores de diseño y mejorando comunicación entre áreas.
+
+## ¿Para qué?
+- **Ilustrar coordinación** entre servicios con eventos.  
+- **Visualizar flujos completos** como pedidos, pagos y envíos.  
+- **Explicar patrones Saga y Event Sourcing** en contextos prácticos.  
+- **Guiar aprendizaje de equipos** con implementaciones paso a paso.  
+
+## Valor agregado desde la experiencia
+- Un **flujo de e-commerce** permitió entrenar equipos en retail para integrar pagos, inventario y envíos.  
+- Con **Sagas en banca**, se implementaron transferencias consistentes con rollback automático.  
+- **Event Sourcing en inventario** facilitó proyecciones para auditorías y reportes analíticos.  
+- **Patrones Pub/Sub en delivery** habilitaron notificaciones en tiempo real a clientes y conductores.  
+
 # Event-Driven Architecture - Casos de Uso y Flujos Prácticos
 
 **Guía didáctica de Event-Driven Architecture con casos de uso reales, flujos visuales y ejemplos paso a paso.**

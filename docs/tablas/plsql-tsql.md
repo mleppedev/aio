@@ -1,3 +1,22 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+PL/SQL (Oracle) y T-SQL (SQL Server) son extensiones procedimentales de SQL que permiten programar lógica compleja en la base de datos mediante procedimientos, funciones y triggers. Son fundamentales para entornos donde la lógica de negocio reside cerca de los datos.
+
+## ¿Por qué?
+Porque cada motor tiene particularidades de sintaxis, manejo de transacciones y paquetes. En mi experiencia, conocer ambos permitió diseñar sistemas portables y migraciones más rápidas entre Oracle y SQL Server en proyectos bancarios y de retail.
+
+## ¿Para qué?
+- **Comparar diferencias** clave en variables, cursores, control de flujo y paquetes.  
+- **Diseñar migraciones** entre motores reduciendo riesgos.  
+- **Optimizar lógica de negocio** con procedimientos almacenados robustos.  
+- **Dominar transacciones** y manejo de errores según motor.  
+
+## Valor agregado desde la experiencia
+- Migraciones de **Oracle a SQL Server** en banca fueron exitosas al mapear excepciones y cursores correctamente.  
+- **Paquetes en PL/SQL** facilitaron modularidad que replicamos con esquemas en T-SQL.  
+- Conocer **MERGE/UPSERT** en ambos motores evitó duplicidad de lógica de inserción y actualización.  
+
 # 🧩 PL/SQL vs T-SQL — Guía de Referencia
 
 Comparativa práctica entre PL/SQL (Oracle) y T‑SQL (SQL Server) para escribir procedimientos, funciones, triggers y scripts portables.

@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La autenticación y autorización en .NET son el conjunto de patrones y mecanismos que permiten validar la identidad de los usuarios y controlar qué recursos pueden acceder. Incluyen estrategias modernas como JWT (JSON Web Tokens), OAuth2, OpenID Connect, RBAC (Role-Based Access Control), ABAC (Attribute-Based Access Control) y Zero Trust. No se trata solo de “loguear” usuarios, sino de establecer confianza en entornos distribuidos, APIs públicas y aplicaciones empresariales.
+
+## ¿Por qué?
+Porque la seguridad es el eje de cualquier sistema expuesto a internet o con datos sensibles. En la práctica, errores de diseño en autenticación generan brechas críticas, mientras que un esquema de autorización mal definido bloquea la operación del negocio. En mi experiencia en banca, retail y municipalidades, aplicar patrones robustos evitó tanto accesos no autorizados como sobrecarga administrativa de permisos.
+
+## ¿Para qué?
+- **Proteger APIs y microservicios** con tokens firmados, policies y claims claros.  
+- **Implementar SSO (Single Sign-On) y federación** con identity providers externos (Azure AD, Google, etc.).  
+- **Controlar accesos granulares** con RBAC (Role-Based Access Control) y ABAC (Attribute-Based Access Control) según roles, atributos y reglas de negocio.  
+- **Aplicar principios Zero Trust**, evaluando riesgo en cada request con factores como IP, hora o MFA (Multi-Factor Authentication).  
+
+## Valor agregado desde la experiencia
+- **JWT (JSON Web Tokens) con refresh tokens** permitió manejar millones de sesiones en aplicaciones móviles municipales sin depender de estado en servidor.  
+- Con **OAuth2/OpenID Connect**, logramos SSO (Single Sign-On) en banca integrando Azure AD y Google, reduciendo fricción para usuarios corporativos.  
+- **Policies basadas en permisos y claims** facilitaron que el mismo sistema de órdenes distinguiera entre clientes, operadores y administradores.  
+- Al aplicar **Conditional Access con evaluación de riesgo**, fue posible bloquear accesos sospechosos en tiempo real (ej. intentos desde IPs anómalas).  
+
 # Authentication & Authorization Patterns
 
 **Patrones de autenticación y autorización en .NET con JWT, OAuth2, RBAC y Zero Trust.**

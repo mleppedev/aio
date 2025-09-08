@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Docker es una plataforma de contenedores que permite empaquetar aplicaciones con todas sus dependencias. Kubernetes (K8s) es un orquestador de contenedores que gestiona despliegue, escalado, redes y almacenamiento en clústeres distribuidos. Juntos forman la base de aplicaciones cloud-native y microservicios en producción.
+
+## ¿Por qué?
+Porque las aplicaciones modernas requieren portabilidad, escalabilidad automática y resiliencia. En mi experiencia, pasar de entornos tradicionales a contenedores y Kubernetes redujo inconsistencias entre ambientes, aceleró despliegues y facilitó escalar servicios críticos en banca y retail.
+
+## ¿Para qué?
+- **Estandarizar entornos** con imágenes reproducibles y portables.  
+- **Desplegar y escalar** microservicios automáticamente en clústeres.  
+- **Asegurar disponibilidad** con health checks, auto-healing y rolling updates.  
+- **Gestionar redes y seguridad** con Ingress, RBAC (Role-Based Access Control) y network policies.  
+
+## Valor agregado desde la experiencia
+- Usar **multi-stage Dockerfiles** redujo tamaño de imágenes y aceleró builds.  
+- Con **Kubernetes HPA (Horizontal Pod Autoscaler)** manejamos picos de tráfico sin downtime en retail.  
+- **ConfigMaps y Secrets** simplificaron gestión de configuraciones seguras en banca.  
+- Integrar **Service Mesh (Istio)** en proyectos municipales mejoró trazabilidad y seguridad de microservicios.  
+
 # 🐳 Docker & Kubernetes - Guía de Referencia Completa
 
 ## 📋 Tabla de Contenidos

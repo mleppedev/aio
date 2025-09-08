@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Los principios SOLID son cinco guías de diseño orientado a objetos aplicables en .NET para escribir código mantenible y extensible:contentReference[oaicite:3]{index=3}. Incluyen SRP (Single Responsibility), OCP (Open/Closed), LSP (Liskov Substitution), ISP (Interface Segregation) y DIP (Dependency Inversion).
+
+## ¿Por qué?
+Porque proyectos grandes se vuelven inmanejables sin un diseño limpio. En mi experiencia, aplicar SOLID en banca y retail redujo deuda técnica y aceleró el onboarding de nuevos desarrolladores.
+
+## ¿Para qué?
+- **Mejorar mantenibilidad** separando responsabilidades.  
+- **Facilitar extensibilidad** con código abierto a extensión pero cerrado a modificación.  
+- **Asegurar polimorfismo confiable** evitando violaciones de sustitución.  
+- **Reducir acoplamiento** con inversión de dependencias.  
+
+## Valor agregado desde la experiencia
+- Aplicar **SRP** en servicios de usuario redujo errores en validaciones y persistencia.  
+- Con **OCP**, nuevos métodos de pago se agregaron sin tocar código existente.  
+- **ISP** evitó interfaces “gordas” que generaban implementaciones innecesarias.  
+- **DIP + IoC containers** mejoraron testabilidad y velocidad de despliegue en municipalidades.  
+
 # SOLID Principles for .NET
 
 **Guía completa de los principios SOLID aplicados específicamente al desarrollo .NET con ejemplos prácticos en C#.**
@@ -17,6 +37,36 @@ Esencial para entender cómo cada principio contribuye a crear código más limp
 | **Liskov Substitution**   | **L**        | Las subclases deben ser intercambiables           | Polimorfismo confiable                 |
 | **Interface Segregation** | **I**        | Interfaces específicas, no gordas                 | Dependencias mínimas                   |
 | **Dependency Inversion**  | **D**        | Depender de abstracciones, no implementaciones    | Desacoplamiento y testabilidad         |
+
+## SOLID Benefits Summary
+
+**Resumen de beneficios obtenidos al aplicar correctamente los principios SOLID en proyectos .NET.**
+Esta tabla consolida las ventajas prácticas de seguir cada principio en el desarrollo empresarial.
+Fundamental para justificar la inversión en arquitectura limpia y convencer a equipos de desarrollo.
+
+| **Principio** | **Beneficios Técnicos**                          | **Beneficios de Negocio**              |
+| ------------- | ------------------------------------------------ | -------------------------------------- |
+| **SRP**       | Clases enfocadas, fácil debugging, alta cohesión | Desarrollo más rápido, menos bugs      |
+| **OCP**       | Código extensible, sin regresiones               | Nuevas features sin riesgo             |
+| **LSP**       | Polimorfismo confiable, menos casting            | Código predecible y robusto            |
+| **ISP**       | Dependencias mínimas, interfaces limpias         | Testing más simple, menos acoplamiento |
+| **DIP**       | Código testeable, arquitectura flexible          | Fácil mantenimiento, adaptabilidad     |
+
+## Common SOLID Violations
+
+**Violaciones comunes de los principios SOLID que se encuentran frecuentemente en proyectos .NET.**
+Esta referencia ayuda a identificar y corregir anti-patrones antes de que se conviertan en deuda técnica.
+Esencial para code reviews y refactoring de código legacy hacia arquitecturas más limpias.
+
+| **Violación**                   | **Síntoma**                                        | **Principio Afectado** | **Solución Rápida**                |
+| ------------------------------- | -------------------------------------------------- | ---------------------- | ---------------------------------- |
+| **Clase God**                   | Clase con 500+ líneas, múltiples responsabilidades | SRP                    | Extraer clases por responsabilidad |
+| **Switch/If gigante**           | Lógica condicional para tipos                      | OCP                    | Strategy pattern + Factory         |
+| **Cast defensivo**              | `if (obj is ConcreteType)` frecuente               | LSP                    | Rediseñar jerarquía con interfaces |
+| **Interface Fat**               | Interface con 10+ métodos no relacionados          | ISP                    | Dividir en interfaces específicas  |
+| **new en constructor**          | Instanciación directa de dependencias              | DIP                    | Inyección de dependencias          |
+| **Herencia para reutilización** | Herencia sin relación "es-un"                      | LSP                    | Composición sobre herencia         |
+| **Singleton abusado**           | Singleton para evitar DI                           | DIP                    | Registro en contenedor DI          |
 
 ## Single Responsibility Principle (SRP)
 
@@ -856,33 +906,3 @@ public class Startup
     }
 }
 ```
-
-## SOLID Benefits Summary
-
-**Resumen de beneficios obtenidos al aplicar correctamente los principios SOLID en proyectos .NET.**
-Esta tabla consolida las ventajas prácticas de seguir cada principio en el desarrollo empresarial.
-Fundamental para justificar la inversión en arquitectura limpia y convencer a equipos de desarrollo.
-
-| **Principio** | **Beneficios Técnicos**                          | **Beneficios de Negocio**              |
-| ------------- | ------------------------------------------------ | -------------------------------------- |
-| **SRP**       | Clases enfocadas, fácil debugging, alta cohesión | Desarrollo más rápido, menos bugs      |
-| **OCP**       | Código extensible, sin regresiones               | Nuevas features sin riesgo             |
-| **LSP**       | Polimorfismo confiable, menos casting            | Código predecible y robusto            |
-| **ISP**       | Dependencias mínimas, interfaces limpias         | Testing más simple, menos acoplamiento |
-| **DIP**       | Código testeable, arquitectura flexible          | Fácil mantenimiento, adaptabilidad     |
-
-## Common SOLID Violations
-
-**Violaciones comunes de los principios SOLID que se encuentran frecuentemente en proyectos .NET.**
-Esta referencia ayuda a identificar y corregir anti-patrones antes de que se conviertan en deuda técnica.
-Esencial para code reviews y refactoring de código legacy hacia arquitecturas más limpias.
-
-| **Violación**                   | **Síntoma**                                        | **Principio Afectado** | **Solución Rápida**                |
-| ------------------------------- | -------------------------------------------------- | ---------------------- | ---------------------------------- |
-| **Clase God**                   | Clase con 500+ líneas, múltiples responsabilidades | SRP                    | Extraer clases por responsabilidad |
-| **Switch/If gigante**           | Lógica condicional para tipos                      | OCP                    | Strategy pattern + Factory         |
-| **Cast defensivo**              | `if (obj is ConcreteType)` frecuente               | LSP                    | Rediseñar jerarquía con interfaces |
-| **Interface Fat**               | Interface con 10+ métodos no relacionados          | ISP                    | Dividir en interfaces específicas  |
-| **new en constructor**          | Instanciación directa de dependencias              | DIP                    | Inyección de dependencias          |
-| **Herencia para reutilización** | Herencia sin relación "es-un"                      | LSP                    | Composición sobre herencia         |
-| **Singleton abusado**           | Singleton para evitar DI                           | DIP                    | Registro en contenedor DI          |

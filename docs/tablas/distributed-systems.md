@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Los sistemas distribuidos son arquitecturas donde múltiples nodos colaboran para ofrecer disponibilidad, escalabilidad y tolerancia a fallos. En .NET se implementan con microservicios, colas de mensajes, event sourcing, CQRS y patrones como Saga. Los trade-offs se analizan con el teorema CAP (Consistency, Availability, Partition tolerance).
+
+## ¿Por qué?
+Porque hoy ninguna aplicación de escala significativa vive en un solo servidor. En mi experiencia, diseñar sin considerar consistencia eventual o resiliencia ante particiones llevó a sistemas frágiles. Adoptar patrones distribuidos correctos permitió garantizar continuidad en banca y servicios municipales.
+
+## ¿Para qué?
+- **Asegurar disponibilidad global** con replicación geográfica.  
+- **Manejar transacciones distribuidas** con Saga (orchestration y choreography).  
+- **Separar lecturas y escrituras** con CQRS y proyecciones.  
+- **Aplicar resiliencia** con circuit breakers, retries y colas de eventos.  
+
+## Valor agregado desde la experiencia
+- **Event Sourcing** permitió trazabilidad total en auditorías financieras.  
+- Con **Saga orchestration** implementamos procesos de pago + inventario + despacho sin inconsistencias.  
+- **Consistencia eventual con colas** resolvió problemas de latencia en aplicaciones municipales de emergencia.  
+- Aplicar **circuit breakers con Polly** evitó cascadas de fallos en microservicios bancarios.  
+
 # Distributed Systems for .NET
 
 **Guía completa de sistemas distribuidos aplicados al desarrollo .NET con patrones, teoremas y estrategias de implementación.**

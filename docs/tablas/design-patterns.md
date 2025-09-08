@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Los patrones de diseño son soluciones probadas a problemas comunes en ingeniería de software. Incluyen los principios SOLID, patrones creacionales, estructurales y de comportamiento del GoF (Gang of Four). En .NET se aplican con implementaciones idiomáticas en C#, mejorando mantenibilidad, extensibilidad y testabilidad.
+
+## ¿Por qué?
+Porque escribir código funcional no garantiza que sea mantenible. Patrones mal aplicados generan acoplamiento y rigidez. En mi experiencia, usar patrones como Repository, Unit of Work y Strategy permitió a los equipos extender funcionalidades sin reescribir todo el sistema.
+
+## ¿Para qué?
+- **Reducir acoplamiento** aplicando Dependency Injection y Factory.  
+- **Encapsular comportamientos** con Strategy, Command y Observer.  
+- **Simplificar subsistemas complejos** con Facade y Adapter.  
+- **Gestionar consistencia** en acceso a datos con Repository y Unit of Work.  
+
+## Valor agregado desde la experiencia
+- Aplicar **Decorator** en servicios de usuario permitió agregar caching sin tocar lógica existente.  
+- Con **Observer** implementamos notificaciones en tiempo real en retail.  
+- **Command con MediatR** facilitó CQRS en banca con handlers claros y escalables.  
+- **Factory Method** simplificó la integración de múltiples métodos de pago.  
+
 # Design Patterns for .NET
 
 **Guía completa de patrones de diseño aplicados específicamente a desarrollo .NET con ejemplos prácticos.**

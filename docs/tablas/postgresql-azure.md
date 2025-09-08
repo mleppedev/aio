@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+PostgreSQL es una base de datos relacional open source con soporte avanzado de tipos de datos, JSON, arrays y extensiones como PostGIS. En Azure se ofrece como servicio gestionado (Single Server, Flexible Server, Hyperscale) con integración nativa para .NET usando Npgsql:contentReference[oaicite:0]{index=0}.
+
+## ¿Por qué?
+Porque PostgreSQL combina la robustez de un motor relacional con la flexibilidad de NoSQL. En mi experiencia, adoptarlo en Azure redujo costos de licenciamiento frente a SQL Server y habilitó features avanzadas como JSONB y consultas espaciales con PostGIS.
+
+## ¿Para qué?
+- **Migrar aplicaciones .NET** de SQL Server a PostgreSQL usando EF Core.  
+- **Aprovechar JSONB y arrays** para modelos de datos flexibles.  
+- **Implementar datos geoespaciales** con PostGIS en tracking y delivery.  
+- **Automatizar despliegues** con Bicep/Terraform en Azure.  
+
+## Valor agregado desde la experiencia
+- **Flexible Server en Azure** nos dio alta disponibilidad con mínimo esfuerzo de gestión.  
+- Con **GIN indexes en JSONB**, consultas que tomaban segundos se redujeron a milisegundos.  
+- **NetTopologySuite** integró PostGIS con EF Core para sistemas municipales de georreferenciación.  
+- **IaC con Terraform** permitió desplegar PostgreSQL multi-región en minutos.  
+
 # PostgreSQL con .NET y Azure
 
 **Guía completa de PostgreSQL enfocada en desarrollo .NET y deployment en Azure con PostGIS, Infrastructure as Code y mejores prácticas.**

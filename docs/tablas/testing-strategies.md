@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Las estrategias de testing en .NET organizan pruebas desde unitarias hasta E2E (end-to-end), apoyándose en frameworks (xUnit, NUnit, MSTest), mocking (Moq, NSubstitute) y prácticas de data seeding:contentReference[oaicite:5]{index=5}.
+
+## ¿Por qué?
+Porque el testing no es opcional: asegura calidad y reduce costos de mantenimiento. En mi experiencia, definir la pirámide de testing evitó suites lentas y poco confiables en proyectos de banca y municipalidades.
+
+## ¿Para qué?
+- **Validar lógica aislada** con unit tests rápidos.
+- **Probar integración real** con bases y APIs.
+- **Simular escenarios completos** con E2E testing.
+- **Gestionar datos de prueba** con builders, seeding y transacciones rollback.
+
+## Valor agregado desde la experiencia
+- **xUnit + FluentAssertions** aceleraron feedback en pruebas unitarias.
+- Con **test containers en Docker**, simulamos entornos productivos realistas.
+- **Playwright E2E** detectó fallos en flujos críticos de usuarios finales.
+- Estrategias de **categorías de test** permitieron filtrar suites y optimizar pipelines CI/CD.
+
 # Testing Strategies
 
 **Estrategias completas de testing para aplicaciones .NET desde unit tests hasta E2E con frameworks, mocking y mejores prácticas.**

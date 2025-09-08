@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La arquitectura orientada a eventos es un enfoque donde los cambios en el sistema se representan como eventos que disparan reacciones en otros servicios. En .NET se implementa con message brokers (RabbitMQ, Kafka, Azure Service Bus), patrones como Event Sourcing, CQRS (Command Query Responsibility Segregation) y Sagas para orquestación.
+
+## ¿Por qué?
+Porque los sistemas modernos son distribuidos y necesitan alta resiliencia y desacoplamiento. En mi experiencia, diseñar con eventos permitió a retail, banca y municipalidades manejar picos de tráfico, asegurar trazabilidad y reducir dependencias entre servicios.
+
+## ¿Para qué?
+- **Desacoplar microservicios** con mensajería asíncrona.  
+- **Mantener trazabilidad** mediante Event Sourcing y almacenamiento de eventos.  
+- **Manejar transacciones distribuidas** con patrones Saga.  
+- **Escalar horizontalmente** con event streaming y Pub/Sub.  
+
+## Valor agregado desde la experiencia
+- Aplicar **Outbox Pattern** evitó pérdida de mensajes en integraciones bancarias.  
+- Con **CQRS + MediatR** logramos consultas rápidas y comandos consistentes en APIs de e-commerce.  
+- **Event Sourcing** permitió auditoría completa en transferencias municipales.  
+- **Sagas** resolvieron flujos complejos como pago + inventario + envío en retail.  
+
 # Event-Driven Architecture
 
 **Arquitectura orientada a eventos en .NET con patrones de messaging, Event Sourcing y CQRS.**

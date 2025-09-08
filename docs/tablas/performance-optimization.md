@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La optimización de performance en .NET incluye prácticas de memoria, asincronía, caching, bases de datos, HTTP y profiling. Busca reducir latencia, mejorar throughput y evitar cuellos de botella en sistemas de alto tráfico.
+
+## ¿Por qué?
+Porque en aplicaciones reales la experiencia de usuario y los costos de infraestructura dependen del rendimiento. En mi experiencia, optimizar queries, usar pooling y aplicar patrones async correctos fue decisivo en banca y retail para cumplir SLA y soportar picos de tráfico.
+
+## ¿Para qué?
+- **Optimizar consumo de memoria** con pooling y evitando allocaciones innecesarias.  
+- **Mejorar concurrencia** aplicando async/await y paralelismo.  
+- **Acelerar consultas a BD** con índices, proyecciones y reducción de N+1 queries.  
+- **Reducir latencia de red** con HTTP/2, compresión y caching distribuido.  
+
+## Valor agregado desde la experiencia
+- **StringBuilder** evitó sobrecarga de CPU en reportes con millones de concatenaciones.  
+- **Parallel.ForEach y PLINQ** redujeron tiempos de procesamiento de datos municipales.  
+- **Redis** bajó tiempos de respuesta de catálogos de segundos a milisegundos.  
+- **Profiling con dotMemory** detectó memory leaks que afectaban APIs críticas.  
+
 # Performance & Optimization
 
 **Guía completa de optimización de performance para aplicaciones .NET con técnicas de memory management, async programming y caching.**

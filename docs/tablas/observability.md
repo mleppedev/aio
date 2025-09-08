@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La observabilidad es la capacidad de entender el estado interno de un sistema a partir de sus logs, métricas y trazas. En .NET se implementa con OpenTelemetry, Application Insights, Prometheus, Serilog y Jaeger/Zipkin. Va más allá del monitoreo: busca correlacionar y diagnosticar.
+
+## ¿Por qué?
+Porque en sistemas distribuidos los errores no son obvios. En mi experiencia, carecer de observabilidad aumentó tiempos de resolución en banca, mientras que contar con métricas, logs estructurados y trazas distribuidas permitió aislar problemas en minutos en municipalidades y retail.
+
+## ¿Para qué?
+- **Correlacionar requests** en microservicios con trazas distribuidas.  
+- **Detectar degradación de performance** con métricas de CPU, memoria y latencia.  
+- **Asegurar SLA (Service Level Agreement)** mediante alertas proactivas.  
+- **Auditar eventos críticos** con logging estructurado.  
+
+## Valor agregado desde la experiencia
+- Implementar **OpenTelemetry + Jaeger** permitió visualizar cuellos de botella en pipelines de pagos.  
+- Con **Application Insights**, obtuvimos dashboards en tiempo real en proyectos municipales.  
+- **Health checks automáticos** facilitaron despliegues resilientes en Kubernetes.  
+- **Logs estructurados con Serilog** simplificaron auditorías bancarias y debugging de producción.  
+
 # Observability in .NET
 
 **Guía completa de observabilidad en aplicaciones .NET con telemetría, métricas, logging y tracing distribuido.**

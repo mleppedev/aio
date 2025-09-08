@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La seguridad en .NET abarca prácticas para proteger aplicaciones contra vulnerabilidades (OWASP Top 10), configurar autenticación y autorización, cifrar datos y aplicar headers de seguridad:contentReference[oaicite:2]{index=2}.
+
+## ¿Por qué?
+Porque la seguridad no se agrega al final, se diseña desde el inicio. En mi experiencia, integrar seguridad-by-design redujo riesgos de fuga de datos en banca y evitó incidentes en sistemas públicos municipales.
+
+## ¿Para qué?
+- **Proteger contra ataques comunes** (SQL Injection, XSS, CSRF).  
+- **Implementar autenticación robusta** con JWT, OAuth2/OpenID Connect.  
+- **Aplicar autorización granular** con RBAC (Role-Based Access Control), Claims y ABAC (Attribute-Based Access Control).  
+- **Cifrar y proteger secretos** con Key Vault y DPAPI.  
+
+## Valor agregado desde la experiencia
+- **JWT con expiración corta + refresh tokens** aumentaron seguridad en APIs móviles.  
+- Con **Key Vault en Azure**, eliminamos secretos hardcoded en municipalidades.  
+- **Policies basadas en claims** permitieron acceso granular en portales corporativos.  
+- **Security headers CSP y HSTS** evitaron vulnerabilidades críticas en retail.  
+
 # Security for .NET Applications
 
 **Guía completa de seguridad para aplicaciones .NET con focus en OWASP Top 10, autenticación, autorización y mejores prácticas.**

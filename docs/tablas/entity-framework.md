@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Entity Framework (EF) Core es un ORM (Object-Relational Mapper) que permite a aplicaciones .NET interactuar con bases de datos relacionales usando LINQ y modelos de objetos. Facilita el mapeo objeto-relacional, la gestión de migraciones y la optimización de consultas sin escribir SQL manual en la mayoría de los casos.
+
+## ¿Por qué?
+Porque abstraer el acceso a datos reduce errores, mejora la productividad y permite mantener consistencia entre capas. En mi experiencia, EF Core ha sido clave en banca y municipalidades para reducir complejidad en queries, agilizar despliegues con migraciones y mejorar mantenibilidad en equipos grandes.
+
+## ¿Para qué?
+- **Modelar datos** con Code First o Database First según el contexto.  
+- **Automatizar migraciones** y versionado de esquemas.  
+- **Optimizar queries** usando LINQ, proyecciones y configuraciones de tracking.  
+- **Aplicar patrones de acceso** como Repository, Unit of Work y DbContext por request.  
+
+## Valor agregado desde la experiencia
+- Implementar **AsNoTracking** redujo consumo de memoria en APIs de alta concurrencia.  
+- Usar **Split Queries** evitó explosiones cartesianas en joins complejos.  
+- Con **Compiled Queries**, mejoramos en 30% el rendimiento en escenarios de lectura masiva.  
+- Estrategias de **sharding y pooling** permitieron escalar sistemas municipales a millones de registros.  
+
 # Entity Framework Core Reference
 
 **Guía completa de Entity Framework Core para desarrolladores .NET con patrones, performance tips y mejores prácticas.**

@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La arquitectura de software es la forma en que organizamos los componentes, reglas y flujos de un sistema para hacerlo mantenible, escalable y seguro. Los patrones arquitectónicos (Clean, DDD, CQRS, Event-Driven, etc.) son guías probadas que ayudan a estructurar aplicaciones según distintos contextos de negocio y tecnológicos. No son recetas rígidas, sino marcos de decisión para enfrentar complejidad y cambio constante.
+
+## ¿Por qué?
+Porque la arquitectura define la vida útil de un sistema. Una mala elección lleva a deuda técnica, alto costo de cambios y limitaciones para escalar. En mi experiencia, proyectos municipales, bancarios y de retail han demostrado que la arquitectura correcta marca la diferencia entre una plataforma que soporta miles de usuarios y otra que se cae ante la primera carga inesperada. Además, patrones bien aplicados permiten alinear equipos técnicos y de negocio con un lenguaje común.
+
+## ¿Para qué?
+- **Diseñar sistemas sostenibles** que evolucionen sin necesidad de reescribirlos cada año.  
+- **Asegurar calidad y resiliencia**, integrando microservicios, APIs y módulos críticos sin fricción.  
+- **Reducir riesgos de integración** cuando conviven tecnologías diversas (SQL, NoSQL, colas, servicios externos).  
+- **Alinear al negocio con la tecnología**, usando bounded contexts, eventos o separación de responsabilidades según necesidad.  
+
+## Valor agregado desde la experiencia
+- Aplicar **Clean/Hexagonal** permitió en retail migrar de SQL Server a MongoDB sin romper la lógica de negocio.  
+- Con **DDD**, en un ERP municipal se lograron separar Finanzas, Recursos Humanos y Emergencias en contextos claros que redujeron acoplamiento.  
+- **CQRS** fue clave en banca para manejar miles de consultas en tiempo real sobre precios sin afectar la consistencia de operaciones.  
+- Una **arquitectura orientada a eventos** simplificó procesos en logística, donde un `PaqueteEntregado` disparaba notificaciones, facturación y encuestas de manera independiente.  
+
 # Patrones Arquitectónicos
 
 **Comparación detallada de los principales patrones arquitectónicos utilizados en desarrollo de software moderno.**

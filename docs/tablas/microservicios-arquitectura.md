@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La arquitectura de microservicios es un estilo donde un sistema se divide en servicios pequeños, autónomos y desplegables de forma independiente. En .NET se implementa con APIs REST/gRPC, colas de mensajes, bases de datos por servicio y herramientas de orquestación como Kubernetes.
+
+## ¿Por qué?
+Porque sistemas monolíticos no escalan bien en equipos grandes ni en infraestructuras distribuidas. En mi experiencia, pasar de monolito a microservicios en banca y municipalidades permitió escalar módulos críticos sin reescribir todo, además de habilitar despliegues independientes y mayor resiliencia.
+
+## ¿Para qué?
+- **Escalar equipos y dominios** aplicando DDD (Domain-Driven Design) y bounded contexts.  
+- **Desplegar y versionar servicios** de forma independiente.  
+- **Adoptar resiliencia** con patrones como Circuit Breaker, Retry y Bulkhead.  
+- **Integrar comunicación asíncrona** con colas y event streaming.  
+
+## Valor agregado desde la experiencia
+- Implementar **API Gateway con Ocelot/YARP** centralizó seguridad y rate limiting.  
+- Con **CQRS + Event Sourcing**, logramos auditoría completa en procesos municipales.  
+- Estrategias **blue-green y canary** redujeron riesgo en despliegues bancarios.  
+- **Observabilidad distribuida con OpenTelemetry** permitió rastrear requests de extremo a extremo.  
+
 # Arquitecturas de Microservicios
 
 **Guía completa para diseñar e implementar arquitecturas de microservicios robustas en .NET con patrones y mejores prácticas.**

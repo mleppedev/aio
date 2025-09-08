@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Los sistemas de mensajería y colas son infraestructuras que permiten comunicación asíncrona, desacoplada y confiable entre servicios. Incluyen brokers tradicionales como RabbitMQ, servicios cloud como Azure Service Bus y motores de event streaming como Kafka. En .NET se consumen con librerías como MassTransit, NServiceBus o SDKs nativos.
+
+## ¿Por qué?
+Porque en arquitecturas distribuidas la comunicación directa (HTTP) no siempre escala ni resiste fallos. En mi experiencia, adoptar colas y mensajes permitió garantizar entrega confiable en banca, desacoplar módulos en retail y manejar eventos masivos en municipalidades sin perder datos.
+
+## ¿Para qué?
+- **Desacoplar microservicios** y permitir escalabilidad independiente.  
+- **Garantizar entrega de mensajes** con reintentos, DLQ (Dead Letter Queue) y patrones de idempotencia.  
+- **Procesar en paralelo** con competing consumers y fan-out.  
+- **Construir flujos event-driven** para auditoría, notificaciones y procesos críticos.  
+
+## Valor agregado desde la experiencia
+- Con **RabbitMQ + MassTransit**, implementamos compensaciones (Sagas) en procesos de órdenes.  
+- **Kafka** permitió manejar millones de eventos de catálogo y precios en retail con trazabilidad.  
+- **Azure Service Bus con sesiones** aseguró orden en procesos bancarios multi-step.  
+- Estrategias como **Exponential Backoff** y **Circuit Breakers** evitaron cascadas de fallos en integraciones.  
+
 # Messaging & Queues
 
 **Guía completa de sistemas de messaging y queues para arquitecturas distribuidas en .NET con comparativas y implementaciones.**

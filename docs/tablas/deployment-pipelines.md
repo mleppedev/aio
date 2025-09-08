@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Los deployment pipelines son procesos automatizados de integración continua (CI) y entrega continua (CD) que permiten compilar, testear y desplegar aplicaciones de manera confiable. En .NET se implementan con herramientas como Azure DevOps, GitHub Actions, GitLab CI o Jenkins, y suelen incluir stages de build, testing, análisis de seguridad y despliegue.
+
+## ¿Por qué?
+Porque los despliegues manuales son lentos, propensos a errores y no escalan. En la práctica, un buen pipeline reduce riesgos, asegura trazabilidad y permite releases frecuentes sin afectar disponibilidad. En mis proyectos, la adopción de pipelines CI/CD habilitó pasar de despliegues mensuales a despliegues diarios con rollback seguro.
+
+## ¿Para qué?
+- **Automatizar compilación y testing** asegurando calidad desde el commit.  
+- **Estandarizar despliegues** en múltiples ambientes (staging, producción).  
+- **Aplicar despliegues sin downtime** con estrategias blue-green o canary.  
+- **Incluir seguridad y compliance** mediante escaneos automáticos de vulnerabilidades.  
+
+## Valor agregado desde la experiencia
+- Usar **Azure DevOps con slots de App Service** permitió despliegues sin downtime en banca.  
+- Con **GitHub Actions** logramos pipelines modulares y reutilizables en proyectos municipales.  
+- **Análisis con SonarQube y CodeQL** detectaron vulnerabilidades antes de llegar a producción.  
+- Integrar **Terraform/Bicep** como IaC evitó configuraciones manuales y redujo errores en infraestructura.  
+
 # Deployment Pipelines - Microservices & APIs
 
 **Guía completa para implementar pipelines de deployment optimizados para microservicios y APIs en .NET.**

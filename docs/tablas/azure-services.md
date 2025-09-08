@@ -1,3 +1,26 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Azure es la nube de Microsoft que ofrece servicios de cómputo, datos, mensajería, seguridad y monitoreo. Para el ecosistema .NET es especialmente relevante porque permite desplegar aplicaciones con integración nativa desde Visual Studio y SDKs oficiales. Sus servicios incluyen modelos PaaS (Platform as a Service), Serverless, CaaS (Containers as a Service) y IaaS (Infrastructure as a Service), además de bases de datos, mensajería distribuida y herramientas de identidad corporativa.
+
+## ¿Por qué?
+Porque en proyectos reales no basta con desarrollar; hay que garantizar escalabilidad, resiliencia y costo eficiente. Azure aporta servicios diseñados para aplicaciones .NET con soporte directo para Entity Framework, logging estructurado y despliegue automatizado. En mi experiencia, usar Azure ha reducido tiempos de salida a producción en banca y retail, y ha facilitado que proyectos municipales se integren con servicios críticos como autenticación corporativa o notificaciones en tiempo real.
+
+## ¿Para qué?
+- **Acelerar despliegues** de aplicaciones .NET en entornos productivos sin depender de infraestructura on-premise.  
+- **Escalar horizontalmente** microservicios y APIs usando Azure App Service, Azure Functions o Kubernetes Service (AKS).  
+- **Elegir la persistencia óptima** (relacional con Azure SQL Database, NoSQL con Cosmos DB, caching con Redis).  
+- **Implementar mensajería distribuida** con Azure Service Bus, Event Hubs y Event Grid para arquitecturas event-driven.  
+- **Proteger identidades y secretos** con Azure AD (Active Directory) y Key Vault.  
+- **Monitorear rendimiento y fallos** con Application Insights y Azure Monitor.  
+
+## Valor agregado desde la experiencia
+- **Azure Functions (serverless)** permitió manejar picos de tráfico en sistemas municipales pagando solo por uso.  
+- Con **Cosmos DB**, en un proyecto de retail logramos replicación global con baja latencia para catálogos y pedidos.  
+- **Service Bus** aseguró entrega confiable de mensajes entre microservicios bancarios críticos con trazabilidad completa.  
+- **Azure Key Vault** simplificó la gestión de credenciales en despliegues multiambiente, eliminando secretos en código.  
+- La integración de **Azure DevOps con CI/CD** redujo errores manuales de despliegue y aceleró releases semanales.  
+
 # Azure Services for .NET
 
 ## Compute Services Comparison

@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+HTTP (HyperText Transfer Protocol) es el protocolo base de la web y de APIs REST. Los códigos de estado HTTP comunican el resultado de las operaciones cliente-servidor (ej. 200 OK, 404 Not Found, 500 Internal Server Error). En .NET, su uso correcto es esencial para APIs claras y predecibles.
+
+## ¿Por qué?
+Porque una API no solo debe funcionar, también debe comunicar correctamente errores y estados. En mi experiencia, un uso inconsistente de códigos HTTP llevó a confusión de clientes y mayores tickets de soporte. Aplicar buenas prácticas redujo fricción y mejoró interoperabilidad.
+
+## ¿Para qué?
+- **Establecer convenciones claras** en respuestas API.  
+- **Reducir ambigüedad** en manejo de errores.  
+- **Facilitar debugging** con códigos precisos.  
+- **Cumplir estándares REST** que esperan integradores externos.  
+
+## Valor agregado desde la experiencia
+- Usar **422 Unprocessable Entity** en validaciones mejoró feedback en formularios bancarios.  
+- Aplicar **202 Accepted** en operaciones asíncronas evitó timeouts en retail.  
+- Estándarizar **Problem Details (RFC 7807)** en errores redujo soporte en municipalidades.  
+- Con **429 Too Many Requests**, implementamos rate limiting que protegió APIs expuestas al público.  
+
 # HTTP Status Codes for .NET APIs
 
 **Códigos de estado HTTP esenciales para APIs REST en .NET con ejemplos de uso específicos y mejores prácticas.**

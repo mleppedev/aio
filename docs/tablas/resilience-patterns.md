@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Los patrones de resiliencia son técnicas de diseño que permiten a sistemas .NET tolerar fallos y mantener disponibilidad parcial. Incluyen Circuit Breaker, Retry con backoff, Timeout, Bulkhead y Fallback:contentReference[oaicite:1]{index=1}.
+
+## ¿Por qué?
+Porque en sistemas distribuidos los fallos son inevitables. En mi experiencia, implementar resiliencia fue clave en banca y retail para evitar caídas masivas cuando servicios externos fallaban o se saturaban.
+
+## ¿Para qué?
+- **Prevenir cascadas de fallos** con Circuit Breaker.  
+- **Recuperarse de fallos transitorios** con Retry y backoff exponencial.  
+- **Proteger recursos críticos** aislando con Bulkhead.  
+- **Garantizar continuidad parcial** con Fallbacks predefinidos.  
+
+## Valor agregado desde la experiencia
+- Con **Circuit Breaker + Polly**, APIs bancarias dejaron de colapsar ante fallos de terceros.  
+- Estrategias de **Retry con jitter** evitaron tormentas de reintentos en retail.  
+- **Bulkhead en colas** permitió aislar procesos de pagos de otros módulos menos críticos.  
+- **Fallbacks con respuestas cacheadas** aseguraron continuidad en servicios municipales offline.  
+
 # Resilience Patterns for .NET
 
 **Guía completa de patrones de resiliencia para construir aplicaciones .NET robustas y tolerantes a fallos.**

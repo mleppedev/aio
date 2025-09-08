@@ -1,3 +1,22 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+La notación Big O es una forma de describir cómo crece el tiempo o el espacio que requiere un algoritmo a medida que aumenta el tamaño de los datos. No mide tiempos exactos, sino el comportamiento asintótico. En .NET es clave para elegir colecciones, diseñar algoritmos y anticipar cuellos de botella en producción.
+
+## ¿Por qué?
+Porque escribir código que "funcione" no basta: debe escalar. Un algoritmo O(n²) puede ser aceptable con 100 elementos pero desastroso con 1 millón. En mi experiencia, identificar estas diferencias marcó la diferencia entre sistemas que soportaban picos de carga en retail o banca, y otros que colapsaban ante volúmenes de datos moderados.
+
+## ¿Para qué?
+- **Evaluar rendimiento** de algoritmos en escenarios reales de negocio.  
+- **Seleccionar estructuras de datos .NET** (Dictionary, List, LinkedList, etc.) según patrones de acceso.  
+- **Optimizar código crítico** en APIs, microservicios y motores de análisis.  
+- **Comunicar decisiones técnicas** con un marco común entre arquitectos y desarrolladores.  
+
+## Valor agregado desde la experiencia
+- Migrar búsquedas de listas a **Dictionary<TKey, TValue> O(1)** redujo tiempos de respuesta en APIs de scoring financiero.  
+- Aplicar **HashSet O(1)** en validaciones masivas de datos municipales eliminó problemas de latencia.  
+- Reemplazar concatenaciones de strings O(n²) por **StringBuilder O(n)** redujo el consumo de CPU en reportes de gran escala.  
+
 # Big O Notation for .NET
 
 **Guía completa de complejidad algorítmica con ejemplos específicos en C# para análisis de rendimiento y optimización.**

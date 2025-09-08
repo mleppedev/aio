@@ -1,3 +1,22 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+El diseño de APIs en .NET es la disciplina de crear interfaces de comunicación claras, seguras y escalables entre sistemas. Implica definir recursos, contratos de datos, versionado y mecanismos de seguridad que permitan a aplicaciones heterogéneas interoperar de forma confiable. No es solo programar controladores, es establecer reglas de comunicación que soporten tanto microservicios internos como integraciones externas con bancos, municipios o retailers.
+
+## ¿Por qué?
+Porque una API es la puerta de entrada a los sistemas. Si está mal diseñada, genera sobrecarga de soporte, problemas de compatibilidad y vulnerabilidades críticas. En mi experiencia, he visto cómo APIs improvisadas obligan a rehacer integraciones completas al cambiar de versión o escalar, mientras que APIs bien diseñadas han permitido incorporar nuevos servicios en días en lugar de meses.
+
+## ¿Para qué?
+- **Garantizar interoperabilidad** entre distintos dominios (ej. logística on-demand, banca, municipios).
+- **Reducir fricción** para equipos de desarrollo externos al exponer contratos consistentes y predecibles.
+- **Escalar** servicios críticos con versionado y gobernanza adecuados.
+- **Asegurar confianza** al implementar autenticación, autorización y manejo estandarizado de errores.
+
+## Valor agregado desde la experiencia
+- En banca, un API REST bien diseñado permitió conectar un motor de fraude en tiempo real con latencia <100ms sin romper la arquitectura existente.
+- En municipalidades, usar versionado y convenciones uniformes hizo posible que sistemas legados se comunicaran con apps móviles ciudadanas sin duplicar esfuerzos.  
+- En retail, adoptar estándares HTTP y Problem Details redujo incidentes de integración y mejoró la trazabilidad de fallos.
+
 # API Design for .NET
 
 **Guía completa de diseño de APIs REST en .NET con patrones, versionado y mejores prácticas.**

@@ -1,3 +1,36 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+SQL (Structured Query Language / Lenguaje de Consulta Estructurado) es el lenguaje estándar para manipular bases de datos relacionales. Incluye dos subconjuntos principales:  
+- **DDL (Data Definition Language / Lenguaje de Definición de Datos):** define y modifica la **estructura** de la base de datos.  
+  - `CREATE` → crear bases de datos, tablas, vistas.  
+  - `ALTER` → modificar estructuras existentes.  
+  - `DROP` → eliminar objetos.  
+  - `TRUNCATE` → vaciar una tabla rápidamente.  
+- **DML (Data Manipulation Language / Lenguaje de Manipulación de Datos):** manipula el **contenido** de las tablas.  
+  - `SELECT` → consultar datos.  
+  - `INSERT` → agregar registros.  
+  - `UPDATE` → modificar registros existentes.  
+  - `DELETE` → eliminar registros específicos.  
+
+👉 En resumen: **DDL define la forma, DML maneja los datos dentro de esa forma**:contentReference[oaicite:0]{index=0}.  
+SQL también cubre transacciones ACID, joins, índices y estrategias de optimización que son fundamentales en aplicaciones .NET.
+
+## ¿Por qué?
+Porque dominar SQL es esencial para cualquier desarrollador .NET. En mi experiencia, optimizar queries y diseñar índices correctos resolvió problemas de rendimiento críticos en banca y retail.
+
+## ¿Para qué?
+- **Definir y modificar estructuras** con DDL.  
+- **Manipular datos** con DML y transacciones ACID.  
+- **Relacionar entidades** con JOINs eficientes.  
+- **Optimizar consultas** con índices, particiones y pooling.  
+
+## Valor agregado desde la experiencia
+- Con **índices compuestos**, queries en retail bajaron de minutos a milisegundos.  
+- **Particionamiento por fecha** mejoró performance en reportes masivos.  
+- **Connection pooling** en .NET evitó saturación de bases en municipalidades.  
+- Estrategias de **desnormalización** redujeron latencia en dashboards analíticos.  
+
 # Comandos SQL Esenciales
 
 **Referencia completa de comandos SQL fundamentales organizados por categoría con ejemplos prácticos y casos de uso.**

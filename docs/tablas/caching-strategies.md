@@ -1,3 +1,23 @@
+# Contexto y Propósito
+
+## ¿Qué es?
+Las estrategias de caché son patrones para almacenar temporalmente datos y reducir accesos costosos a base de datos o servicios externos. En .NET se implementan con IMemoryCache, IDistributedCache, Redis y servicios externos. Existen múltiples enfoques: Cache-Aside, Write-Through, Write-Behind, Write-Around y Refresh-Ahead.
+
+## ¿Por qué?
+Porque la latencia y la escalabilidad no dependen solo de algoritmos; también de evitar operaciones innecesarias. En proyectos reales, un caché mal diseñado genera inconsistencias o datos obsoletos, mientras que un caché bien aplicado reduce costos y soporta picos de tráfico sin necesidad de escalar infraestructura.
+
+## ¿Para qué?
+- **Reducir latencia** en consultas frecuentes.  
+- **Disminuir carga en bases de datos** mediante cachés distribuidos como Redis.  
+- **Asegurar consistencia** con patrones de invalidación apropiados (time-based, event-based, tag-based).  
+- **Escalar sistemas** de alta concurrencia con patrones como write-behind y refresh-ahead.  
+
+## Valor agregado desde la experiencia
+- Usar **Cache-Aside** en APIs de catálogo retail redujo tiempos de respuesta de segundos a milisegundos.  
+- Con **Write-Through**, aseguramos que datos críticos bancarios nunca quedaran desincronizados entre BD y caché.  
+- En aplicaciones municipales, **Redis con Pub/Sub** permitió invalidar cachés en múltiples instancias sin duplicar lógica.  
+- Estrategias **tag-based** facilitaron invalidar productos por categoría sin recalcular todo el catálogo.  
+
 # Caching Strategies for .NET
 
 **Guía completa de estrategias de caché aplicadas al desarrollo .NET con patrones, implementaciones y optimizaciones.**
