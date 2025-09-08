@@ -166,9 +166,15 @@ graph TB
         L[Unchanged] --> M[No SQL]
     end
 
-    style A fill:#4f8ff7
-    style E fill:#22c55e
-    style H fill:#ef4444
+    classDef lifecycle fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef savepoint fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef disposal fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    classDef entityState fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    
+    class A lifecycle
+    class E savepoint
+    class H disposal
+    class I,J,K,L entityState
 ```
 
 ## Connection String Patterns

@@ -314,9 +314,13 @@ graph TB
         C[Business Logic<br/>Validation Rules<br/>Calculations<br/>Utility Methods]
     end
 
-    style A fill:#ef4444
-    style B fill:#f59e0b
-    style C fill:#22c55e
+    classDef e2eTest fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    classDef integrationTest fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef unitTest fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    
+    class A e2eTest
+    class B integrationTest
+    class C unitTest
 ```
 
 ## Test Execution Pipeline

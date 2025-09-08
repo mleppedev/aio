@@ -579,11 +579,19 @@ graph TB
         AA --> BB[Investigate Issues]
     end
 
-    style A fill:#4f8ff7
-    style L fill:#22c55e
-    style R fill:#f59e0b
-    style W fill:#ec4899
-    style Y fill:#ef4444
+    classDef source fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef ciStage fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef approval fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef monitoring fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef rollback fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    classDef success fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    
+    class A source
+    class L ciStage
+    class R approval
+    class W monitoring
+    class Y rollback
+    class Z success
 ```
 
 ## Environment Configuration Best Practices

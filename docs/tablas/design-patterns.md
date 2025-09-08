@@ -321,22 +321,16 @@ graph TD
 
     O -->|No| V[Consider SOLID Principles]
 
-    style C fill:#4f8ff7
-    style D fill:#4f8ff7
-    style E fill:#4f8ff7
-    style F fill:#4f8ff7
-    style G fill:#4f8ff7
-    style J fill:#22c55e
-    style K fill:#22c55e
-    style L fill:#22c55e
-    style M fill:#22c55e
-    style N fill:#22c55e
-    style Q fill:#f59e0b
-    style R fill:#f59e0b
-    style S fill:#f59e0b
-    style T fill:#f59e0b
-    style U fill:#f59e0b
-    style V fill:#ec4899
+    classDef creational fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef structural fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef behavioral fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef principle fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef decision fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    
+    class C,D,E,F,G creational
+    class J,K,L,M,N structural
+    class Q,R,S,T,U behavioral
+    class V principle
 ```
 
 ## Anti-Patterns to Avoid

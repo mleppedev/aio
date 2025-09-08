@@ -18,6 +18,174 @@ Porque la latencia y la escalabilidad no dependen solo de algoritmos; también d
 - En aplicaciones municipales, **Redis con Pub/Sub** permitió invalidar cachés en múltiples instancias sin duplicar lógica.  
 - Estrategias **tag-based** facilitaron invalidar productos por categoría sin recalcular todo el catálogo.  
 
+## Arquitectura de Caching Multi-Layer
+
+**Arquitectura completa de caching mostrando múltiples niveles desde caché local hasta distribuido con patrones de invalidación.**
+Este diagrama ilustra cómo se integran IMemoryCache, Redis, CDN y base de datos en una estrategia cohesiva de caching.
+Fundamental para diseñar sistemas de alto rendimiento con múltiples capas de caché y patrones de invalidación eficientes.
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        Browser[Browser Cache]
+        Mobile[Mobile App Cache]
+    end
+    
+    subgraph "CDN/Edge"
+        CDN[Content Delivery Network]
+        Edge[Edge Locations]
+    end
+    
+    subgraph "Application Layer"
+        LB[Load Balancer]
+        subgraph "App Instance 1"
+            App1[.NET App]
+            L1Cache1[IMemoryCache<br/>L1 Cache]
+        end
+        subgraph "App Instance 2"
+            App2[.NET App]
+            L1Cache2[IMemoryCache<br/>L1 Cache]
+        end
+        subgraph "App Instance N"
+            AppN[.NET App]
+            L1CacheN[IMemoryCache<br/>L1 Cache]
+        end
+    end
+    
+    subgraph "Distributed Cache Layer"
+        Redis[Redis Cluster<br/>L2 Cache]
+        RedisPrimary[Redis Primary]
+        RedisReplica1[Redis Replica 1]
+        RedisReplica2[Redis Replica 2]
+    end
+    
+    subgraph "Database Layer"
+        QueryCache[Query Result Cache]
+        DB[(Primary Database)]
+        ReadReplica1[(Read Replica 1)]
+        ReadReplica2[(Read Replica 2)]
+    end
+    
+    subgraph "Cache Invalidation"
+        EventBus[Service Bus<br/>Cache Events]
+        PubSub[Redis Pub/Sub]
+        Webhook[Webhook Triggers]
+    end
+    
+    %% Client to CDN
+    Browser --> CDN
+    Mobile --> CDN
+    CDN --> Edge
+    
+    %% CDN to Load Balancer
+    Edge --> LB
+    CDN --> LB
+    
+    %% Load Balancer to Apps
+    LB --> App1
+    LB --> App2
+    LB --> AppN
+    
+    %% Apps to L1 Cache
+    App1 --> L1Cache1
+    App2 --> L1Cache2
+    AppN --> L1CacheN
+    
+    %% L1 to L2 Cache
+    L1Cache1 --> Redis
+    L1Cache2 --> Redis
+    L1CacheN --> Redis
+    
+    %% Redis Cluster
+    Redis --> RedisPrimary
+    RedisPrimary --> RedisReplica1
+    RedisPrimary --> RedisReplica2
+    
+    %% Cache to Database
+    Redis --> QueryCache
+    QueryCache --> DB
+    DB --> ReadReplica1
+    DB --> ReadReplica2
+    
+    %% Cache Invalidation Flows
+    DB --> EventBus
+    EventBus --> App1
+    EventBus --> App2
+    EventBus --> AppN
+    
+    RedisPrimary --> PubSub
+    PubSub --> L1Cache1
+    PubSub --> L1Cache2
+    PubSub --> L1CacheN
+    
+    Webhook --> EventBus
+    
+    classDef client fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef cdn fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef application fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef l1cache fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef redis fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    classDef database fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    classDef invalidation fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    
+    class Browser,Mobile client
+    class CDN,Edge cdn
+    class LB,App1,App2,AppN application
+    class L1Cache1,L1Cache2,L1CacheN l1cache
+    class Redis,RedisPrimary,RedisReplica1,RedisReplica2 redis
+    class QueryCache,DB,ReadReplica1,ReadReplica2 database
+    class EventBus,PubSub,Webhook invalidation
+```
+
+### Flujo de Patrones de Caching
+
+**Diagrama de flujo que muestra los diferentes patrones de caching y cuándo aplicar cada uno según el caso de uso.**
+Este diagrama de decisión ayuda a seleccionar la estrategia más apropiada basándose en requisitos de consistencia y rendimiento.
+Esencial para arquitectos que diseñan sistemas con diferentes necesidades de caché según el dominio de aplicación.
+
+```mermaid
+flowchart TD
+    Start([Necesitas Caching?]) --> ReadPattern{Patrón de Acceso}
+    
+    ReadPattern -->|Lectura Frecuente| CacheAside[Cache-Aside Pattern]
+    ReadPattern -->|Escritura + Lectura| WritePattern{Requisitos de Consistencia}
+    ReadPattern -->|Solo Escritura| WriteAround[Write-Around Pattern]
+    
+    WritePattern -->|Consistencia Fuerte| WriteThrough[Write-Through Pattern]
+    WritePattern -->|Alto Rendimiento| WriteBehind[Write-Behind Pattern]
+    WritePattern -->|Predicible Expiración| RefreshAhead[Refresh-Ahead Pattern]
+    
+    CacheAside --> Implementation{Implementación}
+    WriteThrough --> Implementation
+    WriteBehind --> Implementation
+    WriteAround --> Implementation
+    RefreshAhead --> Implementation
+    
+    Implementation -->|Local| LocalCache[IMemoryCache<br/>- Rápido<br/>- No distribuido<br/>- Limitado por memoria]
+    Implementation -->|Distribuido| DistributedCache[Redis/SQL Cache<br/>- Compartido<br/>- Escalable<br/>- Network latency]
+    Implementation -->|Híbrido| MultiLevel[L1 + L2 Cache<br/>- Mejor de ambos<br/>- Más complejo<br/>- Invalidación sync]
+    
+    LocalCache --> Invalidation{Estrategia de Invalidación}
+    DistributedCache --> Invalidation
+    MultiLevel --> Invalidation
+    
+    Invalidation -->|Tiempo| TimeBasedExp[Time-Based Expiration<br/>- TTL simple<br/>- Puede servir datos obsoletos]
+    Invalidation -->|Eventos| EventBasedInv[Event-Based Invalidation<br/>- Inmediato<br/>- Más complejo]
+    Invalidation -->|Tags| TagBasedInv[Tag-Based Invalidation<br/>- Granular<br/>- Flexible]
+    
+    classDef startNode fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef decisionNode fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef patternNode fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef implementationNode fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef invalidationNode fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    
+    class Start startNode
+    class ReadPattern,WritePattern,Implementation,Invalidation decisionNode
+    class CacheAside,WriteThrough,WriteBehind,WriteAround,RefreshAhead patternNode
+    class LocalCache,DistributedCache,MultiLevel implementationNode
+    class TimeBasedExp,EventBasedInv,TagBasedInv invalidationNode
+```
+
 # Caching Strategies for .NET
 
 **Guía completa de estrategias de caché aplicadas al desarrollo .NET con patrones, implementaciones y optimizaciones.**

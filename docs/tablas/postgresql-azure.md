@@ -300,10 +300,19 @@ graph TB
     API --> Insights
     Monitor --> LogAnalytics
 
-    style Primary fill:#4f8ff7
-    style Redis fill:#22c55e
-    style WebApp fill:#ec4899
-    style Monitor fill:#f59e0b
+    classDef database fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef cache fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef webapp fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef monitoring fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef storage fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    classDef backup fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    
+    class Primary,ReadReplica database
+    class Redis cache
+    class WebApp,API webapp
+    class Monitor,Insights,LogAnalytics monitoring
+    class BlobStorage storage
+    class BackupServer backup
 ```
 
 ## Security Best Practices PostgreSQL

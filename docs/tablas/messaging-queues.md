@@ -420,10 +420,19 @@ graph LR
     J -.-> G
     K -.-> G
 
-    style D fill:#4f8ff7
-    style E fill:#22c55e
-    style F fill:#f59e0b
-    style G fill:#ef4444
+    classDef producer fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef topicOrders fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef topicPayments fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef topicInventory fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef dlq fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    classDef consumer fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    
+    class A,B,C producer
+    class D topicOrders
+    class E topicPayments
+    class F topicInventory
+    class G dlq
+    class H,I,J,K consumer
 ```
 
 ## Common Anti-Patterns

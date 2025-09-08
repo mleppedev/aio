@@ -186,9 +186,17 @@ graph TB
         G --> K[Faster Serializer<br/>Response Compression<br/>Pagination]
     end
 
-    style F fill:#ef4444
-    style E fill:#f59e0b
-    style G fill:#22c55e
+    classDef critical fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    classDef important fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef moderate fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef fast fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef optimization fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    
+    class F critical
+    class E important
+    class G moderate
+    class B,C,D,H fast
+    class I,J,K optimization
 ```
 
 ## Benchmark Examples with BenchmarkDotNet

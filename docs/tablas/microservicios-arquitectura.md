@@ -153,9 +153,16 @@ graph TB
     Queue2 --> PaymentSvc
     Queue3 --> NotifSvc
 
-    style Gateway fill:#4f8ff7
-    style EventBus fill:#22c55e
-    style Cache fill:#f59e0b
+    classDef gateway fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef messaging fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef cache fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef service fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    classDef database fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef external fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    
+    class Gateway gateway
+    class EventBus messaging
+    class Cache cache
 ```
 
 ## Configuración y Secrets Management

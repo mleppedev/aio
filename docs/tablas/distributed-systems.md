@@ -18,6 +18,222 @@ Porque hoy ninguna aplicación de escala significativa vive en un solo servidor.
 - **Consistencia eventual con colas** resolvió problemas de latencia en aplicaciones municipales de emergencia.  
 - Aplicar **circuit breakers con Polly** evitó cascadas de fallos en microservicios bancarios.  
 
+## Arquitectura de Sistemas Distribuidos
+
+**Arquitectura completa de un sistema distribuido moderno mostrando patrones, teorema CAP y flujos de comunicación.**
+Este diagrama ilustra cómo se integran microservicios, event sourcing, CQRS, Saga patterns y mecanismos de resiliencia.
+Fundamental para comprender la interacción entre todos los componentes de un sistema distribuido enterprise-grade.
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        Web[Web Application]
+        Mobile[Mobile App]
+        API[API Gateway<br/>Rate Limiting<br/>Authentication]
+    end
+    
+    subgraph "Service Mesh"
+        LB[Load Balancer]
+        SD[Service Discovery<br/>Consul/Service Fabric]
+        CB[Circuit Breaker<br/>Polly]
+    end
+    
+    subgraph "Microservices (.NET)"
+        subgraph "Order Domain"
+            OrderAPI[Order API]
+            OrderDB[(Order DB<br/>SQL Server)]
+        end
+        
+        subgraph "Payment Domain"
+            PaymentAPI[Payment API]
+            PaymentDB[(Payment DB<br/>PostgreSQL)]
+        end
+        
+        subgraph "Inventory Domain"
+            InventoryAPI[Inventory API]
+            InventoryDB[(Inventory DB<br/>MongoDB)]
+        end
+        
+        subgraph "Notification Domain"
+            NotificationAPI[Notification API]
+            NotificationDB[(Notification DB<br/>Redis)]
+        end
+    end
+    
+    subgraph "Event-Driven Architecture"
+        EventBus[Event Bus<br/>Azure Service Bus]
+        EventStore[(Event Store<br/>EventStore/SQL)]
+        SagaOrchestrator[Saga Orchestrator<br/>MassTransit]
+    end
+    
+    subgraph "CQRS Implementation"
+        CommandSide[Command Side<br/>Write Model]
+        QuerySide[Query Side<br/>Read Model]
+        Projections[Event Projections<br/>Materialized Views]
+    end
+    
+    subgraph "Data Layer"
+        subgraph "CP Systems (Consistency + Partition)"
+            SQLCP[(SQL Server<br/>Always On)]
+            PostgreSQLCP[(PostgreSQL<br/>Streaming Replication)]
+        end
+        
+        subgraph "AP Systems (Availability + Partition)"
+            CosmosAP[(Cosmos DB<br/>Multi-region)]
+            RedisAP[(Redis Cluster<br/>Sharding)]
+        end
+        
+        subgraph "CA Systems (Consistency + Availability)"
+            MonolithDB[(Monolith DB<br/>Single Region)]
+        end
+    end
+    
+    subgraph "Cross-Cutting Concerns"
+        Monitoring[Monitoring<br/>Application Insights]
+        Logging[Distributed Logging<br/>Serilog + ELK]
+        Tracing[Distributed Tracing<br/>OpenTelemetry]
+        Security[Security<br/>JWT + OAuth2]
+    end
+    
+    %% Client to API Gateway
+    Web --> API
+    Mobile --> API
+    
+    %% API Gateway to Service Mesh
+    API --> LB
+    LB --> SD
+    SD --> CB
+    
+    %% Service Mesh to Microservices
+    CB --> OrderAPI
+    CB --> PaymentAPI
+    CB --> InventoryAPI
+    CB --> NotificationAPI
+    
+    %% Microservices to Databases
+    OrderAPI --> OrderDB
+    PaymentAPI --> PaymentDB
+    InventoryAPI --> InventoryDB
+    NotificationAPI --> NotificationDB
+    
+    %% Event-Driven Connections
+    OrderAPI --> EventBus
+    PaymentAPI --> EventBus
+    InventoryAPI --> EventBus
+    NotificationAPI --> EventBus
+    
+    EventBus --> SagaOrchestrator
+    EventBus --> EventStore
+    
+    %% CQRS Connections
+    OrderAPI --> CommandSide
+    CommandSide --> EventStore
+    EventStore --> Projections
+    Projections --> QuerySide
+    
+    %% CAP Theorem Connections
+    OrderDB --> SQLCP
+    PaymentDB --> PostgreSQLCP
+    InventoryDB --> CosmosAP
+    NotificationDB --> RedisAP
+    
+    %% Cross-cutting Concerns
+    OrderAPI --> Monitoring
+    PaymentAPI --> Logging
+    InventoryAPI --> Tracing
+    API --> Security
+    
+    classDef client fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef gateway fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef serviceMesh fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    classDef microservice fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef eventDriven fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef cqrs fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    classDef capCP fill:#134e4a,stroke:#2dd4bf,stroke-width:3px,color:#ffffff
+    classDef capAP fill:#7c2d12,stroke:#f97316,stroke-width:3px,color:#ffffff
+    classDef capCA fill:#4c1d95,stroke:#8b5cf6,stroke-width:3px,color:#ffffff
+    classDef crossCutting fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    
+    class Web,Mobile,API client
+    class LB gateway
+    class SD,CB serviceMesh
+    class OrderAPI,PaymentAPI,InventoryAPI,NotificationAPI microservice
+    class EventBus,EventStore,SagaOrchestrator eventDriven
+    class CommandSide,QuerySide,Projections cqrs
+    class SQLCP,PostgreSQLCP capCP
+    class CosmosAP,RedisAP capAP
+    class MonolithDB capCA
+    class Monitoring,Logging,Tracing,Security crossCutting
+```
+
+### Patrones de Comunicación y Resiliencia
+
+**Diagrama de flujo que muestra los patrones de comunicación síncrona y asíncrona con mecanismos de resiliencia.**
+Este flujo ilustra cómo se manejan las comunicaciones entre servicios con circuit breakers, retries y event sourcing.
+Esencial para entender cómo mantener la resiliencia en sistemas distribuidos bajo condiciones de fallo.
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant AG as API Gateway
+    participant OS as Order Service
+    participant PS as Payment Service
+    participant EB as Event Bus
+    participant SO as Saga Orchestrator
+    participant ES as Event Store
+    
+    Note over C,ES: Flujo de Orden con Saga Pattern
+    
+    C->>AG: POST /orders
+    AG->>AG: Rate Limiting Check
+    AG->>AG: Authentication/Authorization
+    
+    AG->>OS: Create Order Command
+    OS->>ES: Store OrderCreated Event
+    OS->>EB: Publish OrderCreated Event
+    OS->>C: 202 Accepted (Async Processing)
+    
+    Note over EB,SO: Saga Orchestration Pattern
+    
+    EB->>SO: OrderCreated Event
+    SO->>SO: Start Order Processing Saga
+    
+    SO->>PS: Process Payment Command
+    
+    alt Payment Success
+        PS->>ES: Store PaymentProcessed Event
+        PS->>EB: Publish PaymentProcessed Event
+        PS->>SO: Payment Success Response
+        
+        SO->>EB: Publish OrderConfirmed Event
+        EB->>C: Notification (WebSocket/SignalR)
+        
+    else Payment Failure
+        PS->>ES: Store PaymentFailed Event
+        PS->>EB: Publish PaymentFailed Event
+        PS->>SO: Payment Failed Response
+        
+        Note over SO: Compensation Actions
+        SO->>OS: Cancel Order Command
+        OS->>ES: Store OrderCancelled Event
+        SO->>EB: Publish OrderCancelled Event
+        EB->>C: Failure Notification
+    end
+    
+    Note over AG,PS: Circuit Breaker Pattern
+    
+    Note over AG,PS: Circuit Breaker Open State
+    AG->>PS: Service Call (Fails)
+    PS--xAG: Service Unavailable
+    AG->>AG: Circuit Breaker Opens
+    AG->>C: Fallback Response
+    
+    Note over AG,PS: Circuit Breaker Closed State  
+    AG->>PS: Service Call (Success)
+    PS->>AG: Successful Response
+    AG->>C: Normal Response
+```
+
 # Distributed Systems for .NET
 
 **Guía completa de sistemas distribuidos aplicados al desarrollo .NET con patrones, teoremas y estrategias de implementación.**

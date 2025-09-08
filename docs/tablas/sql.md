@@ -143,9 +143,17 @@ graph TB
     Master --> Backup
     Backup --> Archive
 
-    style Master fill:#4f8ff7
-    style Cache fill:#22c55e
-    style App fill:#ec4899
+    classDef application fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef cache fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef database fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef framework fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    classDef storage fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    
+    class App,API application
+    class Cache cache
+    class Master,Replica1,Replica2 database
+    class EF,CP framework
+    class Backup,Archive storage
 ```
 
 ## Estrategias de Optimización
@@ -193,11 +201,19 @@ flowchart LR
     Transaction --> RR
     Transaction --> S
 
-    style Transaction fill:#4f8ff7
-    style A fill:#22c55e
-    style C fill:#22c55e
-    style I fill:#f59e0b
-    style D fill:#ef4444
+    classDef transaction fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef atomicity fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef consistency fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef isolation fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef durability fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    classDef isolationLevel fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    
+    class Transaction transaction
+    class A atomicity
+    class C consistency
+    class I isolation
+    class D durability
+    class RU,RC,RR,S isolationLevel
 ```
 
 ## Ejemplo de Consulta Compleja

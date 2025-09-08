@@ -719,10 +719,17 @@ graph TB
     EventHub --> ML
     DataLake --> PowerBI
 
-    style Redis fill:#22c55e
-    style Mongo fill:#4f8ff7
-    style Cosmos fill:#ec4899
-    style Elastic fill:#f59e0b
+    classDef cache fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef document fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef cosmosdb fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef search fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef service fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    classDef messaging fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    
+    class Redis cache
+    class Mongo document
+    class Cosmos cosmosdb
+    class Elastic search
 ```
 
 ## Performance Optimization NoSQL

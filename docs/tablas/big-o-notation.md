@@ -242,12 +242,14 @@ graph TD
     N -->|Medio| P[LinkedList T O 1]
     N -->|Por clave| Q[Dictionary O 1]
 
-    style F fill:#22c55e
-    style H fill:#22c55e
-    style L fill:#f59e0b
-    style M fill:#f59e0b
-    style O fill:#4f8ff7
-    style P fill:#4f8ff7
+    classDef optimal fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef good fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef efficient fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef decision fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    
+    class F,H optimal
+    class L,M good
+    class O,P efficient
     style Q fill:#4f8ff7
 ```## Memory vs Speed Trade-offs
 
