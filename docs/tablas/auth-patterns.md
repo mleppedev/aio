@@ -18,6 +18,229 @@ Porque la seguridad es el eje de cualquier sistema expuesto a internet o con dat
 - **Policies basadas en permisos y claims** facilitaron que el mismo sistema de órdenes distinguiera entre clientes, operadores y administradores.  
 - Al aplicar **Conditional Access con evaluación de riesgo**, fue posible bloquear accesos sospechosos en tiempo real (ej. intentos desde IPs anómalas).  
 
+## Arquitectura de Autenticación y Autorización
+
+**Arquitectura completa de autenticación y autorización mostrando JWT, OAuth2, RBAC, policies y Zero Trust.**
+Este diagrama ilustra el flujo completo desde la autenticación inicial hasta la autorización granular con evaluación de riesgo.
+Fundamental para comprender cómo se integran todos los componentes de seguridad en una aplicación enterprise-grade.
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        WebApp[Web Application]
+        MobileApp[Mobile App]
+        SPA[Single Page App]
+        Desktop[Desktop App]
+    end
+    
+    subgraph "Authentication Gateway"
+        APIGateway[API Gateway<br/>Rate Limiting<br/>IP Filtering]
+        AuthMiddleware[Auth Middleware<br/>JWT Validation]
+        MFA[Multi-Factor<br/>Authentication]
+    end
+    
+    subgraph "Identity Providers"
+        AuthServer[Authorization Server<br/>JWT Issuer]
+        
+        subgraph "External IdP"
+            AzureAD[Azure AD<br/>OIDC]
+            Google[Google OAuth2]
+            SAML[SAML Provider]
+        end
+        
+        subgraph "Internal IdP"
+            LocalAuth[Local Authentication<br/>Username/Password]
+            CertAuth[Certificate Auth<br/>mTLS]
+        end
+    end
+    
+    subgraph "Token Management"
+        TokenStore[Token Store<br/>Redis]
+        RefreshTokens[Refresh Tokens<br/>Database]
+        TokenRevocation[Token Revocation<br/>Blacklist]
+    end
+    
+    subgraph "Authorization Engine"
+        PolicyEngine[Policy Engine<br/>Authorization Policies]
+        RBACEngine[RBAC Engine<br/>Roles & Permissions]
+        ABACEngine[ABAC Engine<br/>Attribute-Based Access]
+        ConditionalAccess[Conditional Access<br/>Risk Assessment]
+    end
+    
+    subgraph "Protected Resources"
+        subgraph "Microservices"
+            UserAPI[User API]
+            OrderAPI[Order API]
+            PaymentAPI[Payment API]
+            AdminAPI[Admin API]
+        end
+        
+        subgraph "Databases"
+            UserDB[(User Database)]
+            OrderDB[(Order Database)]
+            AuditDB[(Audit Database)]
+        end
+    end
+    
+    subgraph "Security Services"
+        RiskEngine[Risk Assessment<br/>ML-based Scoring]
+        AuditService[Audit Service<br/>Security Logs]
+        AlertSystem[Alert System<br/>Security Monitoring]
+        SessionMgmt[Session Management<br/>Concurrent Sessions]
+    end
+    
+    %% Client to Gateway
+    WebApp --> APIGateway
+    MobileApp --> APIGateway
+    SPA --> APIGateway
+    Desktop --> APIGateway
+    
+    %% Gateway to Auth
+    APIGateway --> AuthMiddleware
+    AuthMiddleware --> MFA
+    
+    %% Auth to Identity Providers
+    AuthMiddleware --> AuthServer
+    AuthServer --> AzureAD
+    AuthServer --> Google
+    AuthServer --> SAML
+    AuthServer --> LocalAuth
+    AuthServer --> CertAuth
+    
+    %% Token Management
+    AuthServer --> TokenStore
+    AuthServer --> RefreshTokens
+    AuthMiddleware --> TokenRevocation
+    
+    %% Authorization Flow
+    AuthMiddleware --> PolicyEngine
+    PolicyEngine --> RBACEngine
+    PolicyEngine --> ABACEngine
+    PolicyEngine --> ConditionalAccess
+    
+    %% Risk Assessment
+    ConditionalAccess --> RiskEngine
+    RiskEngine --> AlertSystem
+    
+    %% Access to Resources
+    PolicyEngine --> UserAPI
+    PolicyEngine --> OrderAPI
+    PolicyEngine --> PaymentAPI
+    PolicyEngine --> AdminAPI
+    
+    %% Resources to Databases
+    UserAPI --> UserDB
+    OrderAPI --> OrderDB
+    AdminAPI --> AuditDB
+    
+    %% Security Services
+    AuthMiddleware --> AuditService
+    PolicyEngine --> SessionMgmt
+    AuditService --> AlertSystem
+    
+    classDef client fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef gateway fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef identityProvider fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef external fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef tokenMgmt fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    classDef authzEngine fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    classDef microservice fill:#134e4a,stroke:#2dd4bf,stroke-width:3px,color:#ffffff
+    classDef database fill:#7c2d12,stroke:#f97316,stroke-width:3px,color:#ffffff
+    classDef security fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    
+    class WebApp,MobileApp,SPA,Desktop client
+    class APIGateway,AuthMiddleware,MFA gateway
+    class AuthServer,LocalAuth,CertAuth identityProvider
+    class AzureAD,Google,SAML external
+    class TokenStore,RefreshTokens,TokenRevocation tokenMgmt
+    class PolicyEngine,RBACEngine,ABACEngine,ConditionalAccess authzEngine
+    class UserAPI,OrderAPI,PaymentAPI,AdminAPI microservice
+    class UserDB,OrderDB,AuditDB database
+    class RiskEngine,AuditService,AlertSystem,SessionMgmt security
+```
+
+### Flujo de Autenticación y Autorización OAuth2/OIDC
+
+**Diagrama de secuencia que muestra el flujo completo de OAuth2 con OpenID Connect incluyendo autorización basada en policies.**
+Este flujo ilustra desde la autenticación inicial hasta el acceso a recursos protegidos con evaluación de policies.
+Esencial para entender cómo se coordinan la autenticación, autorización y evaluación de riesgo en tiempo real.
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant C as Client App
+    participant AG as API Gateway
+    participant AS as Auth Server
+    participant IDP as Identity Provider
+    participant PE as Policy Engine
+    participant RA as Risk Assessment
+    participant API as Protected API
+    participant DB as Database
+    
+    Note over U,DB: OAuth2/OIDC Authentication Flow
+    
+    U->>C: Access Application
+    C->>AS: Redirect to Authorization Endpoint
+    AS->>IDP: External Authentication
+    IDP->>U: Login Form
+    U->>IDP: Credentials + MFA
+    IDP->>AS: Authentication Success
+    AS->>C: Authorization Code
+    
+    Note over C,AS: Token Exchange
+    C->>AS: Authorization Code + Client Secret
+    AS->>AS: Validate Code & Client
+    AS->>C: Access Token + ID Token + Refresh Token
+    
+    Note over C,API: API Access with Authorization
+    C->>AG: API Request + Bearer Token
+    AG->>AG: Rate Limiting & IP Validation
+    AG->>AS: Token Validation
+    AS->>AG: Token Valid + Claims
+    
+    AG->>PE: Authorization Request + Claims
+    PE->>PE: Evaluate RBAC Policies
+    PE->>PE: Evaluate ABAC Policies
+    PE->>RA: Risk Assessment Request
+    
+    RA->>RA: Analyze User Behavior
+    RA->>RA: Check IP Reputation
+    RA->>RA: Evaluate Device Trust
+    RA->>PE: Risk Score (Low/Medium/High)
+    
+    alt Low Risk
+        PE->>AG: Access Granted
+        AG->>API: Forward Request + User Context
+        API->>DB: Data Access
+        DB->>API: Query Results
+        API->>AG: API Response
+        AG->>C: Success Response
+        
+    else Medium Risk
+        PE->>AG: Conditional Access (MFA Required)
+        AG->>C: MFA Challenge
+        C->>U: Additional Authentication
+        U->>C: MFA Response
+        C->>AG: MFA Token
+        AG->>PE: Re-evaluate with MFA
+        PE->>AG: Access Granted
+        AG->>API: Forward Request
+        API->>AG: API Response
+        AG->>C: Success Response
+        
+    else High Risk
+        PE->>AG: Access Denied
+        AG->>C: 403 Forbidden
+        PE->>RA: Log Security Event
+        RA->>RA: Trigger Security Alert
+    end
+    
+    Note over C,AS: Token Refresh Flow
+    C->>AS: Refresh Token Request
+    AS->>AS: Validate Refresh Token
+    AS->>C: New Access Token
+```
+
 # Authentication & Authorization Patterns
 
 **Patrones de autenticación y autorización en .NET con JWT, OAuth2, RBAC y Zero Trust.**

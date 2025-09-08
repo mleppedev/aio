@@ -18,6 +18,323 @@ Porque el rendimiento de aplicaciones modernas depende de manejar miles de reque
 - Implementar **BlockingCollection** simplificó pipelines producer-consumer en servicios de logística.  
 - **Channels con backpressure** permitieron manejar streams IoT sin pérdida de datos ni sobrecarga en memoria.  
 
+## Arquitectura de Concurrencia en .NET
+
+**Arquitectura completa del ecosistema de concurrencia en .NET mostrando Threading, Task Parallel Library, async/await y Channels.**
+Este diagrama ilustra cómo interactúan todos los componentes de concurrencia desde el ThreadPool hasta las primitivas de sincronización.
+Fundamental para entender la jerarquía y seleccionar la herramienta correcta según el tipo de operación (CPU-bound vs I/O-bound).
+
+```mermaid
+graph TB
+    subgraph ApplicationLayer["Application Layer"]
+        WebAPI[Web API Controllers]
+        Services[Business Services]
+        BackgroundSvc[Background Services]
+        ConsoleApp[Console Application]
+    end
+    
+    subgraph ConcurrencyAbstractions["Concurrency Abstractions"]
+        subgraph HighLevelAPIs["High-Level APIs"]
+            AsyncAwait[async/await Asynchronous Programming]
+            ParallelLINQ[PLINQ Parallel LINQ]
+            ParallelClass[Parallel Class ForEach]
+            Channels[System Threading Channels Producer-Consumer]
+        end
+        
+        subgraph TaskParallelLibrary["Task Parallel Library"]
+            TaskClass[Task and Task T Asynchronous Operations]
+            TaskFactory[TaskFactory Task Creation]
+            TaskScheduler[TaskScheduler Task Execution]
+            TaskCompletionSource[TaskCompletionSource Manual Task Control]
+        end
+        
+        subgraph ThreadSafeCollections["Thread-Safe Collections"]
+            ConcurrentDict[ConcurrentDictionary Thread-Safe Cache]
+            ConcurrentQueue[ConcurrentQueue Lock-Free Queue]
+            ConcurrentBag[ConcurrentBag Unordered Collection]
+            BlockingCollection[BlockingCollection Producer-Consumer]
+        end
+    end
+    
+    subgraph SynchronizationPrimitives["Synchronization Primitives"]
+        subgraph LocksMutexes["Locks and Mutexes"]
+            Lock[lock Monitor Mutual Exclusion]
+            RWLock[ReaderWriterLockSlim Multiple Readers]
+            Mutex[Mutex Cross-Process Lock]
+            Interlocked[Interlocked Atomic Operations]
+        end
+        
+        subgraph Signaling["Signaling"]
+            Semaphore[SemaphoreSlim Resource Counting]
+            ManualReset[ManualResetEventSlim Thread Signaling]
+            AutoReset[AutoResetEvent One-Shot Signal]
+            Barrier[Barrier Phase Synchronization]
+        end
+    end
+    
+    subgraph ThreadingInfrastructure["Threading Infrastructure"]
+        subgraph ThreadPool["ThreadPool"]
+            WorkerThreads[Worker Threads CPU-bound Tasks]
+            IOThreads[IO Threads Completion Ports]
+            ThreadPoolScheduler[ThreadPool Scheduler Work Distribution]
+        end
+        
+        subgraph CustomThreading["Custom Threading"]
+            Thread[Thread Class Manual Thread Control]
+            Timer[Timer Periodic Execution]
+            BackgroundWorker[BackgroundWorker UI Thread Communication]
+        end
+    end
+    
+    subgraph RuntimeOS["Runtime and OS"]
+        CLRThreading[CLR Threading Managed Threading]
+        OSThreads[OS Threads Native Threading]
+        CompletionPorts[IO Completion Ports Asynchronous IO]
+        WorkStealingQueue[Work-Stealing Queues Load Balancing]
+    end
+    
+    %% Application to Abstractions
+    WebAPI --> AsyncAwait
+    Services --> TaskClass
+    BackgroundSvc --> Channels
+    ConsoleApp --> ParallelClass
+    
+    %% High-level to TPL
+    AsyncAwait --> TaskClass
+    ParallelLINQ --> TaskClass
+    ParallelClass --> TaskFactory
+    Channels --> TaskClass
+    
+    %% TPL to Infrastructure
+    TaskClass --> TaskScheduler
+    TaskFactory --> ThreadPoolScheduler
+    TaskScheduler --> WorkerThreads
+    TaskCompletionSource --> TaskClass
+    
+    %% Collections to Synchronization
+    ConcurrentDict --> Interlocked
+    ConcurrentQueue --> Interlocked
+    BlockingCollection --> Semaphore
+    
+    %% Synchronization usage
+    Lock --> CLRThreading
+    RWLock --> CLRThreading
+    Semaphore --> CLRThreading
+    Barrier --> ManualReset
+    
+    %% Threading Infrastructure
+    WorkerThreads --> CLRThreading
+    IOThreads --> CompletionPorts
+    Thread --> OSThreads
+    Timer --> OSThreads
+    
+    %% Runtime connections
+    CLRThreading --> OSThreads
+    ThreadPoolScheduler --> WorkStealingQueue
+    CompletionPorts --> OSThreads
+    
+    classDef application fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef highlevel fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef tpl fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef collections fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef sync fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    classDef infrastructure fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    classDef runtime fill:#991b1b,stroke:#f87171,stroke-width:3px,color:#ffffff
+    
+    class WebAPI,Services,BackgroundSvc,ConsoleApp application
+    class AsyncAwait,ParallelLINQ,ParallelClass,Channels highlevel
+    class TaskClass,TaskFactory,TaskScheduler,TaskCompletionSource tpl
+    class ConcurrentDict,ConcurrentQueue,ConcurrentBag,BlockingCollection collections
+    class Lock,RWLock,Mutex,Interlocked,Semaphore,ManualReset,AutoReset,Barrier sync
+    class WorkerThreads,IOThreads,ThreadPoolScheduler,Thread,Timer,BackgroundWorker infrastructure
+    class CLRThreading,OSThreads,CompletionPorts,WorkStealingQueue runtime
+```
+
+### Flujo de Async/Await y Task Execution
+
+**Diagrama de secuencia que muestra el flujo completo de async/await desde la llamada inicial hasta la finalización.**
+Este flujo ilustra cómo se coordina la ejecución asíncrona con el ThreadPool, continuations y synchronization context.
+Esencial para entender el modelo de threading de .NET y cómo evitar deadlocks en código asíncrono.
+
+```mermaid
+sequenceDiagram
+    participant App as Application Thread
+    participant Scheduler as TaskScheduler
+    participant TP as ThreadPool
+    participant Worker as Worker Thread
+    participant IO as I/O Operation
+    participant SC as SynchronizationContext
+    
+    Note over App,SC: Async/Await Execution Flow
+    
+    App->>App: Call async method
+    App->>Scheduler: Create Task
+    Scheduler->>TP: Queue work item
+    App->>App: Return Task (not completed)
+    App->>App: Continue synchronously or await
+    
+    Note over TP,Worker: Task Execution
+    TP->>Worker: Assign work to available thread
+    Worker->>Worker: Start method execution
+    Worker->>IO: Initiate async I/O operation
+    IO->>Worker: Return immediately (non-blocking)
+    Worker->>TP: Thread returns to pool
+    
+    Note over IO,SC: I/O Completion
+    IO->>IO: I/O operation completes
+    IO->>TP: Queue continuation
+    TP->>Worker: Assign continuation to thread
+    
+    alt ConfigureAwait(false)
+        Worker->>Worker: Execute continuation directly
+        Worker->>App: Complete Task
+        
+    else Default behavior (capture context)
+        Worker->>SC: Post continuation to context
+        SC->>App: Execute on original context
+        App->>App: Complete Task
+    end
+    
+    Note over App,Worker: Exception Handling
+    alt Exception in async method
+        Worker->>Worker: Catch exception
+        Worker->>Scheduler: Set Task.Exception
+        Scheduler->>App: Propagate when awaited
+        App->>App: Handle exception
+        
+    else Cancellation
+        Worker->>Worker: Check CancellationToken
+        Worker->>Scheduler: Set Task.Cancelled
+        Scheduler->>App: Throw OperationCancelledException
+    end
+    
+    Note over App,TP: Task Continuation Chain
+    App->>App: await FirstAsync()
+    App->>Scheduler: Schedule continuation
+    Scheduler->>TP: Queue continuation work
+    TP->>Worker: Execute continuation
+    Worker->>App: Complete continuation
+```
+
+### Patrones de Paralelismo y Concurrencia
+
+**Arquitectura de patrones de paralelismo mostrando CPU-bound vs I/O-bound operations y sus estrategias óptimas.**
+Este diagrama compara diferentes enfoques para maximizar throughput según el tipo de workload.
+Fundamental para seleccionar la estrategia correcta de paralelización según las características de la operación.
+
+```mermaid
+graph TB
+    subgraph WorkloadClassification["Workload Classification"]
+        CPUBound[CPU-Bound Operations Compute Intensive]
+        IOBound[IO-Bound Operations Network Disk Database]
+        Mixed[Mixed Workloads CPU plus IO Combined]
+    end
+    
+    subgraph CPUBoundStrategies["CPU-Bound Strategies"]
+        subgraph DataParallelism["Data Parallelism"]
+            ParallelFor[Parallel For ForEach Split data across cores]
+            PLINQ[PLINQ Parallel LINQ queries]
+            Partitioner[Custom Partitioner Load balancing]
+        end
+        
+        subgraph TaskParallelism["Task Parallelism"]
+            TaskRun[Task Run Delegate to ThreadPool]
+            ParallelInvoke[Parallel Invoke Independent operations]
+            CustomScheduler[Custom TaskScheduler Specialized threading]
+        end
+    end
+    
+    subgraph IOBoundStrategies["IO-Bound Strategies"]
+        subgraph AsynchronousPatterns["Asynchronous Patterns"]
+            AsyncAwait[async await Non-blocking IO]
+            TaskWhenAll[Task WhenAll Concurrent IO operations]
+            AsyncEnumerable[IAsyncEnumerable Streaming data]
+        end
+        
+        subgraph CoordinationPatterns["Coordination Patterns"]
+            SemaphorePattern[SemaphoreSlim Throttle concurrent requests]
+            ChannelPattern[Channels Producer-consumer pipelines]
+            BackpressurePattern[Backpressure Flow control]
+        end
+    end
+    
+    subgraph SynchronizationCoordination["Synchronization and Coordination"]
+        subgraph ThreadSafety["Thread Safety"]
+            LockFree[Lock-Free Collections ConcurrentDictionary]
+            AtomicOps[Atomic Operations Interlocked]
+            ImmutableData[Immutable Data Thread-safe by design]
+        end
+        
+        subgraph CoordinationPrimitives["Coordination Primitives"]
+            BarrierSync[Barrier Phase synchronization]
+            CountdownEvent[CountdownEvent Fork-join coordination]
+            ManualResetEvent[ManualResetEventSlim Thread signaling]
+        end
+    end
+    
+    subgraph PerformanceOptimization["Performance Optimization"]
+        subgraph MemoryManagement["Memory Management"]
+            ArrayPool[ArrayPool Reduce allocations]
+            ObjectPool[ObjectPool Reuse expensive objects]
+            StackAlloc[stackalloc Stack-based arrays]
+        end
+        
+        subgraph ThreadingOptimization["Threading Optimization"]
+            ThreadLocal[ThreadLocal T Thread-specific data]
+            ThreadStatic[ThreadStatic Static per-thread storage]
+            ConfigureAwait[ConfigureAwait false Avoid context capture]
+        end
+    end
+    
+    %% Workload to Strategies
+    CPUBound --> ParallelFor
+    CPUBound --> PLINQ
+    CPUBound --> TaskRun
+    
+    IOBound --> AsyncAwait
+    IOBound --> TaskWhenAll
+    IOBound --> SemaphorePattern
+    
+    Mixed --> ChannelPattern
+    Mixed --> BackpressurePattern
+    Mixed --> ParallelInvoke
+    
+    %% Strategy connections
+    ParallelFor --> Partitioner
+    TaskRun --> CustomScheduler
+    AsyncAwait --> ConfigureAwait
+    TaskWhenAll --> AsyncEnumerable
+    
+    %% Synchronization connections
+    ParallelFor --> LockFree
+    ChannelPattern --> AtomicOps
+    TaskWhenAll --> SemaphorePattern
+    
+    %% Coordination patterns
+    ParallelInvoke --> BarrierSync
+    ChannelPattern --> CountdownEvent
+    BackpressurePattern --> ManualResetEvent
+    
+    %% Performance optimizations
+    PLINQ --> ArrayPool
+    ChannelPattern --> ObjectPool
+    AsyncAwait --> ThreadLocal
+    
+    classDef workload fill:#1e3a8a,stroke:#60a5fa,stroke-width:3px,color:#ffffff
+    classDef cpuStrategy fill:#be185d,stroke:#f472b6,stroke-width:3px,color:#ffffff
+    classDef ioStrategy fill:#14532d,stroke:#4ade80,stroke-width:3px,color:#ffffff
+    classDef sync fill:#c2410c,stroke:#fb923c,stroke-width:3px,color:#ffffff
+    classDef coordination fill:#581c87,stroke:#c084fc,stroke-width:3px,color:#ffffff
+    classDef optimization fill:#365314,stroke:#84cc16,stroke-width:3px,color:#ffffff
+    
+    class CPUBound,IOBound,Mixed workload
+    class ParallelFor,PLINQ,Partitioner,TaskRun,ParallelInvoke,CustomScheduler cpuStrategy
+    class AsyncAwait,TaskWhenAll,AsyncEnumerable,SemaphorePattern,ChannelPattern,BackpressurePattern ioStrategy
+    class LockFree,AtomicOps,ImmutableData sync
+    class BarrierSync,CountdownEvent,ManualResetEvent coordination
+    class ArrayPool,ObjectPool,StackAlloc,ThreadLocal,ThreadStatic,ConfigureAwait optimization
+```
+
 # Concurrency in .NET
 
 **Guía completa de programación concurrente en .NET con Task, async/await, Parallel y collections thread-safe.**
