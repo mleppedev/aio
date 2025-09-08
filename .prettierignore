@@ -1,0 +1,19 @@
+# Ignorar archivos de documentación con tablas complejas
+docs/tablas/*.md
+docs/site/*.html
+docs/site/*.json
+*.md
+
+# Ignorar archivos de configuración
+*.sln
+*.csproj
+
+# Ignorar archivos de salida
+bin/
+obj/
+tests/bin/
+tests/obj/
+
+# Ignorar archivos temporales
+*.tmp
+*.log

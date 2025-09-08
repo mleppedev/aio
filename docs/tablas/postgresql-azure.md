@@ -4,11 +4,7 @@
 Esta referencia cubre desde configuración básica hasta arquitecturas enterprise con datos geoespaciales y automatización de deployment.
 Esencial para desarrolladores .NET que migran de SQL Server o implementan soluciones PostgreSQL en Azure con alta disponibilidad.
 
-## PostgreSQL vs SQL Server para .NET
-
-**Comparación detallada entre PostgreSQL y SQL Server desde la perspectiva de desarrollo .NET y ecosystem Microsoft.**
-Esta tabla analiza diferencias clave en tipos de datos, sintaxis y herramientas para facilitar decisiones de arquitectura.
-Fundamental para equipos que evalúan migración o implementación de PostgreSQL en proyectos .NET existentes.
+## 💡 Tips para Entrevistas Técnicas PostgreSQL en proyectos .NET existentes.
 
 | **Aspecto**          | **SQL Server**                            | **PostgreSQL**                           | **Consideraciones .NET**               |
 | -------------------- | ----------------------------------------- | ---------------------------------------- | -------------------------------------- |
@@ -171,261 +167,22 @@ Fundamental para consultas complejas que requieren combinación de datasets y an
 
 ### 🎯 Ejemplos Prácticos con Casos de Uso
 
-#### **1. UNION - Combinando Datasets Relacionados**
+**Implementaciones reales de teoría de conjuntos en PostgreSQL y .NET para casos de negocio comunes.**
+Esta sección muestra ejemplos prácticos que aparecen frecuentemente en entrevistas técnicas y proyectos reales.
+Fundamental para demostrar expertise en consultas complejas y análisis de datos empresariales.
 
-**Caso:** Lista unificada de contactos de clientes y proveedores
-
-**PostgreSQL:**
-
-```sql
--- Obtener lista unificada de contactos
-SELECT
-    'Cliente' as tipo,
-    nombre,
-    email,
-    telefono
-FROM clientes
-WHERE activo = true
-
-UNION
-
-SELECT
-    'Proveedor' as tipo,
-    nombre_empresa,
-    email_contacto,
-    telefono_contacto
-FROM proveedores
-WHERE estado = 'ACTIVO';
-```
-
-**Implementación .NET/EF Core:**
-
-```csharp
-var clientesActivos = context.Clientes
-    .Where(c => c.Activo)
-    .Select(c => new ContactoUnificado
-    {
-        Tipo = "Cliente",
-        Nombre = c.Nombre,
-        Email = c.Email,
-        Telefono = c.Telefono
-    });
-
-var proveedoresActivos = context.Proveedores
-    .Where(p => p.Estado == "ACTIVO")
-    .Select(p => new ContactoUnificado
-    {
-        Tipo = "Proveedor",
-        Nombre = p.NombreEmpresa,
-        Email = p.EmailContacto,
-        Telefono = p.TelefonoContacto
-    });
-
-var contactosUnificados = clientesActivos.Union(proveedoresActivos).ToList();
-```
-
-#### **2. UNION ALL - Performance con Duplicados Permitidos**
-
-**Caso:** Log completo de transacciones de múltiples sistemas
-
-**PostgreSQL:**
-
-```sql
--- Historial completo de transacciones (permitiendo duplicados para auditoría)
-SELECT
-    fecha,
-    usuario_id,
-    'VENTA' as tipo_transaccion,
-    monto,
-    descripcion
-FROM ventas
-WHERE fecha >= '2024-01-01'
-
-UNION ALL
-
-SELECT
-    fecha_devolucion,
-    usuario_id,
-    'DEVOLUCION' as tipo_transaccion,
-    -monto as monto,
-    CONCAT('Devolución: ', motivo)
-FROM devoluciones
-WHERE fecha_devolucion >= '2024-01-01';
-```
-
-**Implementación .NET/EF Core:**
-
-```csharp
-var fechaInicio = new DateTime(2024, 1, 1);
-
-var ventas = context.Ventas
-    .Where(v => v.Fecha >= fechaInicio)
-    .Select(v => new TransaccionLog
-    {
-        Fecha = v.Fecha,
-        UsuarioId = v.UsuarioId,
-        TipoTransaccion = "VENTA",
-        Monto = v.Monto,
-        Descripcion = v.Descripcion
-    });
-
-var devoluciones = context.Devoluciones
-    .Where(d => d.FechaDevolucion >= fechaInicio)
-    .Select(d => new TransaccionLog
-    {
-        Fecha = d.FechaDevolucion,
-        UsuarioId = d.UsuarioId,
-        TipoTransaccion = "DEVOLUCION",
-        Monto = -d.Monto,
-        Descripcion = $"Devolución: {d.Motivo}"
-    });
-
-// Concat mantiene duplicados como UNION ALL
-var logCompleto = ventas.Concat(devoluciones).OrderBy(t => t.Fecha).ToList();
-```
-
-#### **3. INTERSECT - Encontrar Elementos Comunes**
-
-**Caso:** Productos vendidos en ambas temporadas (verano e invierno)
-
-**PostgreSQL:**
-
-```sql
--- Productos populares en ambas temporadas
-SELECT producto_id, nombre_producto
-FROM ventas v
-JOIN productos p ON v.producto_id = p.id
-WHERE v.fecha BETWEEN '2024-06-01' AND '2024-08-31' -- Verano
-
-INTERSECT
-
-SELECT producto_id, nombre_producto
-FROM ventas v
-JOIN productos p ON v.producto_id = p.id
-WHERE v.fecha BETWEEN '2024-12-01' AND '2024-02-28'; -- Invierno
-```
-
-**Implementación .NET/EF Core:**
-
-```csharp
-var ventasVerano = context.Ventas
-    .Where(v => v.Fecha >= new DateTime(2024, 6, 1) && v.Fecha <= new DateTime(2024, 8, 31))
-    .Select(v => new { v.ProductoId, v.Producto.NombreProducto });
-
-var ventasInvierno = context.Ventas
-    .Where(v => v.Fecha >= new DateTime(2024, 12, 1) && v.Fecha <= new DateTime(2024, 2, 28))
-    .Select(v => new { v.ProductoId, v.Producto.NombreProducto });
-
-// Intersect encuentra productos vendidos en ambas temporadas
-var productosPopularesAmbasTemporadas = ventasVerano
-    .Intersect(ventasInvierno)
-    .ToList();
-```
-
-#### **4. EXCEPT - Análisis de Diferencias**
-
-**Caso:** Clientes que compraron en 2023 pero NO en 2024
-
-**PostgreSQL:**
-
-```sql
--- Clientes que compraron en 2023 pero no en 2024 (posibles clientes perdidos)
-SELECT DISTINCT cliente_id, nombre, email
-FROM ventas v
-JOIN clientes c ON v.cliente_id = c.id
-WHERE EXTRACT(YEAR FROM v.fecha) = 2023
-
-EXCEPT
-
-SELECT DISTINCT cliente_id, nombre, email
-FROM ventas v
-JOIN clientes c ON v.cliente_id = c.id
-WHERE EXTRACT(YEAR FROM v.fecha) = 2024;
-```
-
-**Implementación .NET/EF Core:**
-
-```csharp
-var clientes2023 = context.Ventas
-    .Where(v => v.Fecha.Year == 2023)
-    .Select(v => new { v.ClienteId, v.Cliente.Nombre, v.Cliente.Email })
-    .Distinct();
-
-var clientes2024 = context.Ventas
-    .Where(v => v.Fecha.Year == 2024)
-    .Select(v => new { v.ClienteId, v.Cliente.Nombre, v.Cliente.Email })
-    .Distinct();
-
-// Except encuentra clientes que compraron en 2023 pero no en 2024
-var clientesPerdidos = clientes2023.Except(clientes2024).ToList();
-```
-
-#### **5. Operadores Complejos - Análisis Avanzado**
-
-**Caso:** Análisis de preferencias de categorías por región
-
-**PostgreSQL:**
-
-```sql
--- Categorías preferidas en región Norte pero no en Sur
-(SELECT DISTINCT categoria_id, nombre_categoria
- FROM ventas v
- JOIN productos p ON v.producto_id = p.id
- JOIN categorias c ON p.categoria_id = c.id
- JOIN clientes cl ON v.cliente_id = cl.id
- WHERE cl.region = 'Norte'
-
- EXCEPT
-
- SELECT DISTINCT categoria_id, nombre_categoria
- FROM ventas v
- JOIN productos p ON v.producto_id = p.id
- JOIN categorias c ON p.categoria_id = c.id
- JOIN clientes cl ON v.cliente_id = cl.id
- WHERE cl.region = 'Sur')
-
-UNION
-
--- Categorías comunes a ambas regiones
-(SELECT DISTINCT categoria_id, nombre_categoria
- FROM ventas v
- JOIN productos p ON v.producto_id = p.id
- JOIN categorias c ON p.categoria_id = c.id
- JOIN clientes cl ON v.cliente_id = cl.id
- WHERE cl.region = 'Norte'
-
- INTERSECT
-
- SELECT DISTINCT categoria_id, nombre_categoria
- FROM ventas v
- JOIN productos p ON v.producto_id = p.id
- JOIN categorias c ON p.categoria_id = c.id
- JOIN clientes cl ON v.cliente_id = cl.id
- WHERE cl.region = 'Sur');
-```
-
-**Implementación .NET/EF Core:**
-
-```csharp
-var categoriasNorte = context.Ventas
-    .Where(v => v.Cliente.Region == "Norte")
-    .Select(v => new { v.Producto.CategoriaId, v.Producto.Categoria.NombreCategoria })
-    .Distinct();
-
-var categoriasSur = context.Ventas
-    .Where(v => v.Cliente.Region == "Sur")
-    .Select(v => new { v.Producto.CategoriaId, v.Producto.Categoria.NombreCategoria })
-    .Distinct();
-
-// Categorías exclusivas del Norte
-var categoriasExclusivasNorte = categoriasNorte.Except(categoriasSur);
-
-// Categorías comunes a ambas regiones
-var categoriasComunes = categoriasNorte.Intersect(categoriasSur);
-
-// Análisis completo combinado
-var analisisCompleto = categoriasExclusivasNorte.Union(categoriasComunes).ToList();
-```
+| **Caso de Uso**                           | **Query PostgreSQL**                                                                                                                                                                                                                                                                                                                                                                                        | **Implementación .NET**                                                                                                                                                                                                                                                                                                                                                                                             | **Aplicación de Negocio**                                        |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **UNION - Lista Unificada de Contactos**  |                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                                                                                                                                     |                                                                  |
+|                                            | `SELECT 'Cliente' as tipo, nombre, email, telefono FROM clientes WHERE activo = true UNION SELECT 'Proveedor' as tipo, nombre_empresa, email_contacto, telefono_contacto FROM proveedores WHERE estado = 'ACTIVO';`                                                                                                                                                                                      | `var clientes = context.Clientes.Where(c => c.Activo).Select(c => new ContactoUnificado { Tipo = "Cliente", Nombre = c.Nombre, Email = c.Email, Telefono = c.Telefono }); var proveedores = context.Proveedores.Where(p => p.Estado == "ACTIVO").Select(p => new ContactoUnificado { Tipo = "Proveedor", Nombre = p.NombreEmpresa, Email = p.EmailContacto, Telefono = p.TelefonoContacto }); var contactos = clientes.Union(proveedores).ToList();` | Directorio unificado de contactos eliminando duplicados         |
+| **UNION ALL - Log de Transacciones**      |                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                                                                                                                                     |                                                                  |
+|                                            | `SELECT fecha, usuario_id, 'VENTA' as tipo, monto, descripcion FROM ventas WHERE fecha >= '2024-01-01' UNION ALL SELECT fecha_devolucion, usuario_id, 'DEVOLUCION' as tipo, -monto, CONCAT('Devolución: ', motivo) FROM devoluciones WHERE fecha_devolucion >= '2024-01-01';`                                                                                                                             | `var ventas = context.Ventas.Where(v => v.Fecha >= fechaInicio).Select(v => new TransaccionLog { Fecha = v.Fecha, UsuarioId = v.UsuarioId, Tipo = "VENTA", Monto = v.Monto, Descripcion = v.Descripcion }); var devoluciones = context.Devoluciones.Where(d => d.FechaDevolucion >= fechaInicio).Select(d => new TransaccionLog { Fecha = d.FechaDevolucion, UsuarioId = d.UsuarioId, Tipo = "DEVOLUCION", Monto = -d.Monto, Descripcion = $"Devolución: {d.Motivo}" }); var log = ventas.Concat(devoluciones).OrderBy(t => t.Fecha).ToList();` | Auditoría completa manteniendo todos los registros              |
+| **INTERSECT - Productos Temporadas**      |                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                                                                                                                                     |                                                                  |
+|                                            | `SELECT producto_id, nombre_producto FROM ventas v JOIN productos p ON v.producto_id = p.id WHERE v.fecha BETWEEN '2024-06-01' AND '2024-08-31' INTERSECT SELECT producto_id, nombre_producto FROM ventas v JOIN productos p ON v.producto_id = p.id WHERE v.fecha BETWEEN '2024-12-01' AND '2024-02-28';`                                                                                             | `var ventasVerano = context.Ventas.Where(v => v.Fecha >= new DateTime(2024, 6, 1) && v.Fecha <= new DateTime(2024, 8, 31)).Select(v => new { v.ProductoId, v.Producto.NombreProducto }); var ventasInvierno = context.Ventas.Where(v => v.Fecha >= new DateTime(2024, 12, 1) && v.Fecha <= new DateTime(2024, 2, 28)).Select(v => new { v.ProductoId, v.Producto.NombreProducto }); var productosPopulares = ventasVerano.Intersect(ventasInvierno).ToList();` | Productos que se venden bien en ambas temporadas                |
+| **EXCEPT - Clientes Perdidos**            |                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                                                                                                                                     |                                                                  |
+|                                            | `SELECT DISTINCT cliente_id, nombre, email FROM ventas v JOIN clientes c ON v.cliente_id = c.id WHERE EXTRACT(YEAR FROM v.fecha) = 2023 EXCEPT SELECT DISTINCT cliente_id, nombre, email FROM ventas v JOIN clientes c ON v.cliente_id = c.id WHERE EXTRACT(YEAR FROM v.fecha) = 2024;`                                                                                                                  | `var clientes2023 = context.Ventas.Where(v => v.Fecha.Year == 2023).Select(v => new { v.ClienteId, v.Cliente.Nombre, v.Cliente.Email }).Distinct(); var clientes2024 = context.Ventas.Where(v => v.Fecha.Year == 2024).Select(v => new { v.ClienteId, v.Cliente.Nombre, v.Cliente.Email }).Distinct(); var clientesPerdidos = clientes2023.Except(clientes2024).ToList();`                                                    | Identificar clientes que dejaron de comprar para re-engagement  |
+| **Análisis Complejo - Preferencias**      |                                                                                                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                                                                                                                                     |                                                                  |
+|                                            | `(SELECT DISTINCT categoria_id, nombre_categoria FROM ventas v JOIN productos p ON v.producto_id = p.id JOIN categorias c ON p.categoria_id = c.id JOIN clientes cl ON v.cliente_id = cl.id WHERE cl.region = 'Norte' EXCEPT SELECT DISTINCT categoria_id, nombre_categoria FROM ventas v JOIN productos p ON v.producto_id = p.id JOIN categorias c ON p.categoria_id = c.id JOIN clientes cl ON v.cliente_id = cl.id WHERE cl.region = 'Sur') UNION (SELECT DISTINCT categoria_id, nombre_categoria FROM ventas v JOIN productos p ON v.producto_id = p.id JOIN categorias c ON p.categoria_id = c.id JOIN clientes cl ON v.cliente_id = cl.id WHERE cl.region = 'Norte' INTERSECT SELECT DISTINCT categoria_id, nombre_categoria FROM ventas v JOIN productos p ON v.producto_id = p.id JOIN categorias c ON p.categoria_id = c.id JOIN clientes cl ON v.cliente_id = cl.id WHERE cl.region = 'Sur');` | `var categoriasNorte = context.Ventas.Where(v => v.Cliente.Region == "Norte").Select(v => new { v.Producto.CategoriaId, v.Producto.Categoria.NombreCategoria }).Distinct(); var categoriasSur = context.Ventas.Where(v => v.Cliente.Region == "Sur").Select(v => new { v.Producto.CategoriaId, v.Producto.Categoria.NombreCategoria }).Distinct(); var exclusivasNorte = categoriasNorte.Except(categoriasSur); var comunes = categoriasNorte.Intersect(categoriasSur); var analisis = exclusivasNorte.Union(comunes).ToList();` | Análisis de mercado y segmentación geográfica de preferencias   |
 
 ### 🎯 Reglas y Consideraciones Importantes
 
@@ -734,8 +491,6 @@ Fundamental para preparar entrevistas senior y demostrar expertise en desarrollo
 | **20** | **EXPLAIN ANALYZE**                                                                                                                                                                                                                   |                                                                                                                                                                                                                                                                   |                                                                                       |
 |        | `EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM orders o JOIN customers c ON o.customer_id = c.id WHERE c.country = 'USA' AND o.total > 1000;`                                                                                              | `// Usar logging de EF Core o herramientas como MiniProfiler`                                                                                                                                                                                                     | Análisis de plan de ejecución para optimización de queries costosas                   |
 
----
-
 ## 🗺️ 20 Queries PostGIS Esenciales para Entrevistas
 
 **Queries PostGIS más demandadas en entrevistas con datos geoespaciales usando NetTopologySuite en .NET.**
@@ -785,8 +540,6 @@ Esencial para roles que involucran GIS, delivery, real estate, logistics o cualq
 | **20** | **Ruta óptima (TSP básico)**                                                                                                                                                                            |                                                                                                                                                                                                                                                                       |                                                              |
 |        | `SELECT ST_MakeLine(location ORDER BY sequence) FROM (SELECT location, ROW_NUMBER() OVER (ORDER BY ST_Distance(location, LAG(location) OVER (ORDER BY random()))) as sequence FROM waypoints) ordered;` | `// Usar algoritmos de routing como Google Directions API integrado con PostGIS`                                                                                                                                                                                      | Ordenar puntos para crear ruta más eficiente                 |
 
----
-
 ## 💡 Tips para Entrevistas Técnicas
 
 **Consejos específicos para demostrar expertise en PostgreSQL y PostGIS durante entrevistas técnicas.**
@@ -812,4 +565,4 @@ Fundamental para destacar en entrevistas senior y posiciones de arquitecto de da
 - **Considera implicaciones de escalabilidad** en cada solución
 - **Relaciona con casos de uso reales** de tu experiencia
 
-_🎓 Esta sección de queries cubre los aspectos más importantes que se evalúan en entrevistas técnicas para roles que involucran PostgreSQL y datos geoespaciales con .NET._
+🎓 Esta sección de queries cubre los aspectos más importantes que se evalúan en entrevistas técnicas para roles que involucran PostgreSQL y datos geoespaciales con .NET.
