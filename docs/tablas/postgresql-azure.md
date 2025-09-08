@@ -154,6 +154,297 @@ resource postgreSQLDatabase 'Microsoft.DBforPostgreSQL/flexibleServers/databases
 }
 ```
 
+## Teoría de Conjuntos en PostgreSQL
+
+**Operadores de conjuntos en PostgreSQL para combinar resultados de múltiples consultas siguiendo principios matemáticos.**
+Esta sección cubre UNION, INTERSECT, EXCEPT con ejemplos prácticos y implementación en .NET usando Entity Framework Core.
+Fundamental para consultas complejas que requieren combinación de datasets y análisis de diferencias entre conjuntos de datos.
+
+### 🔗 Operadores de Conjuntos PostgreSQL
+
+| **Operador**  | **Descripción**                                                     | **Sintaxis**                      | **Reglas**                         |
+| ------------- | ------------------------------------------------------------------- | --------------------------------- | ---------------------------------- |
+| **UNION**     | Combina todos los registros únicos de ambas consultas               | `SELECT ... UNION SELECT ...`     | Elimina duplicados automáticamente |
+| **UNION ALL** | Combina todos los registros incluyendo duplicados                   | `SELECT ... UNION ALL SELECT ...` | Más rápido, mantiene duplicados    |
+| **INTERSECT** | Retorna solo registros que aparecen en ambas consultas              | `SELECT ... INTERSECT SELECT ...` | Equivale a un JOIN inner           |
+| **EXCEPT**    | Retorna registros de la primera consulta que NO están en la segunda | `SELECT ... EXCEPT SELECT ...`    | Equivale a LEFT JOIN WHERE NULL    |
+
+### 🎯 Ejemplos Prácticos con Casos de Uso
+
+#### **1. UNION - Combinando Datasets Relacionados**
+
+**Caso:** Lista unificada de contactos de clientes y proveedores
+
+**PostgreSQL:**
+
+```sql
+-- Obtener lista unificada de contactos
+SELECT
+    'Cliente' as tipo,
+    nombre,
+    email,
+    telefono
+FROM clientes
+WHERE activo = true
+
+UNION
+
+SELECT
+    'Proveedor' as tipo,
+    nombre_empresa,
+    email_contacto,
+    telefono_contacto
+FROM proveedores
+WHERE estado = 'ACTIVO';
+```
+
+**Implementación .NET/EF Core:**
+
+```csharp
+var clientesActivos = context.Clientes
+    .Where(c => c.Activo)
+    .Select(c => new ContactoUnificado
+    {
+        Tipo = "Cliente",
+        Nombre = c.Nombre,
+        Email = c.Email,
+        Telefono = c.Telefono
+    });
+
+var proveedoresActivos = context.Proveedores
+    .Where(p => p.Estado == "ACTIVO")
+    .Select(p => new ContactoUnificado
+    {
+        Tipo = "Proveedor",
+        Nombre = p.NombreEmpresa,
+        Email = p.EmailContacto,
+        Telefono = p.TelefonoContacto
+    });
+
+var contactosUnificados = clientesActivos.Union(proveedoresActivos).ToList();
+```
+
+#### **2. UNION ALL - Performance con Duplicados Permitidos**
+
+**Caso:** Log completo de transacciones de múltiples sistemas
+
+**PostgreSQL:**
+
+```sql
+-- Historial completo de transacciones (permitiendo duplicados para auditoría)
+SELECT
+    fecha,
+    usuario_id,
+    'VENTA' as tipo_transaccion,
+    monto,
+    descripcion
+FROM ventas
+WHERE fecha >= '2024-01-01'
+
+UNION ALL
+
+SELECT
+    fecha_devolucion,
+    usuario_id,
+    'DEVOLUCION' as tipo_transaccion,
+    -monto as monto,
+    CONCAT('Devolución: ', motivo)
+FROM devoluciones
+WHERE fecha_devolucion >= '2024-01-01';
+```
+
+**Implementación .NET/EF Core:**
+
+```csharp
+var fechaInicio = new DateTime(2024, 1, 1);
+
+var ventas = context.Ventas
+    .Where(v => v.Fecha >= fechaInicio)
+    .Select(v => new TransaccionLog
+    {
+        Fecha = v.Fecha,
+        UsuarioId = v.UsuarioId,
+        TipoTransaccion = "VENTA",
+        Monto = v.Monto,
+        Descripcion = v.Descripcion
+    });
+
+var devoluciones = context.Devoluciones
+    .Where(d => d.FechaDevolucion >= fechaInicio)
+    .Select(d => new TransaccionLog
+    {
+        Fecha = d.FechaDevolucion,
+        UsuarioId = d.UsuarioId,
+        TipoTransaccion = "DEVOLUCION",
+        Monto = -d.Monto,
+        Descripcion = $"Devolución: {d.Motivo}"
+    });
+
+// Concat mantiene duplicados como UNION ALL
+var logCompleto = ventas.Concat(devoluciones).OrderBy(t => t.Fecha).ToList();
+```
+
+#### **3. INTERSECT - Encontrar Elementos Comunes**
+
+**Caso:** Productos vendidos en ambas temporadas (verano e invierno)
+
+**PostgreSQL:**
+
+```sql
+-- Productos populares en ambas temporadas
+SELECT producto_id, nombre_producto
+FROM ventas v
+JOIN productos p ON v.producto_id = p.id
+WHERE v.fecha BETWEEN '2024-06-01' AND '2024-08-31' -- Verano
+
+INTERSECT
+
+SELECT producto_id, nombre_producto
+FROM ventas v
+JOIN productos p ON v.producto_id = p.id
+WHERE v.fecha BETWEEN '2024-12-01' AND '2024-02-28'; -- Invierno
+```
+
+**Implementación .NET/EF Core:**
+
+```csharp
+var ventasVerano = context.Ventas
+    .Where(v => v.Fecha >= new DateTime(2024, 6, 1) && v.Fecha <= new DateTime(2024, 8, 31))
+    .Select(v => new { v.ProductoId, v.Producto.NombreProducto });
+
+var ventasInvierno = context.Ventas
+    .Where(v => v.Fecha >= new DateTime(2024, 12, 1) && v.Fecha <= new DateTime(2024, 2, 28))
+    .Select(v => new { v.ProductoId, v.Producto.NombreProducto });
+
+// Intersect encuentra productos vendidos en ambas temporadas
+var productosPopularesAmbasTemporadas = ventasVerano
+    .Intersect(ventasInvierno)
+    .ToList();
+```
+
+#### **4. EXCEPT - Análisis de Diferencias**
+
+**Caso:** Clientes que compraron en 2023 pero NO en 2024
+
+**PostgreSQL:**
+
+```sql
+-- Clientes que compraron en 2023 pero no en 2024 (posibles clientes perdidos)
+SELECT DISTINCT cliente_id, nombre, email
+FROM ventas v
+JOIN clientes c ON v.cliente_id = c.id
+WHERE EXTRACT(YEAR FROM v.fecha) = 2023
+
+EXCEPT
+
+SELECT DISTINCT cliente_id, nombre, email
+FROM ventas v
+JOIN clientes c ON v.cliente_id = c.id
+WHERE EXTRACT(YEAR FROM v.fecha) = 2024;
+```
+
+**Implementación .NET/EF Core:**
+
+```csharp
+var clientes2023 = context.Ventas
+    .Where(v => v.Fecha.Year == 2023)
+    .Select(v => new { v.ClienteId, v.Cliente.Nombre, v.Cliente.Email })
+    .Distinct();
+
+var clientes2024 = context.Ventas
+    .Where(v => v.Fecha.Year == 2024)
+    .Select(v => new { v.ClienteId, v.Cliente.Nombre, v.Cliente.Email })
+    .Distinct();
+
+// Except encuentra clientes que compraron en 2023 pero no en 2024
+var clientesPerdidos = clientes2023.Except(clientes2024).ToList();
+```
+
+#### **5. Operadores Complejos - Análisis Avanzado**
+
+**Caso:** Análisis de preferencias de categorías por región
+
+**PostgreSQL:**
+
+```sql
+-- Categorías preferidas en región Norte pero no en Sur
+(SELECT DISTINCT categoria_id, nombre_categoria
+ FROM ventas v
+ JOIN productos p ON v.producto_id = p.id
+ JOIN categorias c ON p.categoria_id = c.id
+ JOIN clientes cl ON v.cliente_id = cl.id
+ WHERE cl.region = 'Norte'
+
+ EXCEPT
+
+ SELECT DISTINCT categoria_id, nombre_categoria
+ FROM ventas v
+ JOIN productos p ON v.producto_id = p.id
+ JOIN categorias c ON p.categoria_id = c.id
+ JOIN clientes cl ON v.cliente_id = cl.id
+ WHERE cl.region = 'Sur')
+
+UNION
+
+-- Categorías comunes a ambas regiones
+(SELECT DISTINCT categoria_id, nombre_categoria
+ FROM ventas v
+ JOIN productos p ON v.producto_id = p.id
+ JOIN categorias c ON p.categoria_id = c.id
+ JOIN clientes cl ON v.cliente_id = cl.id
+ WHERE cl.region = 'Norte'
+
+ INTERSECT
+
+ SELECT DISTINCT categoria_id, nombre_categoria
+ FROM ventas v
+ JOIN productos p ON v.producto_id = p.id
+ JOIN categorias c ON p.categoria_id = c.id
+ JOIN clientes cl ON v.cliente_id = cl.id
+ WHERE cl.region = 'Sur');
+```
+
+**Implementación .NET/EF Core:**
+
+```csharp
+var categoriasNorte = context.Ventas
+    .Where(v => v.Cliente.Region == "Norte")
+    .Select(v => new { v.Producto.CategoriaId, v.Producto.Categoria.NombreCategoria })
+    .Distinct();
+
+var categoriasSur = context.Ventas
+    .Where(v => v.Cliente.Region == "Sur")
+    .Select(v => new { v.Producto.CategoriaId, v.Producto.Categoria.NombreCategoria })
+    .Distinct();
+
+// Categorías exclusivas del Norte
+var categoriasExclusivasNorte = categoriasNorte.Except(categoriasSur);
+
+// Categorías comunes a ambas regiones
+var categoriasComunes = categoriasNorte.Intersect(categoriasSur);
+
+// Análisis completo combinado
+var analisisCompleto = categoriasExclusivasNorte.Union(categoriasComunes).ToList();
+```
+
+### 🎯 Reglas y Consideraciones Importantes
+
+| **Aspecto**                    | **Regla**                               | **Ejemplo**                                                                                        |
+| ------------------------------ | --------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Compatibilidad de Columnas** | Mismo número y tipos compatibles        | `SELECT id, nombre` debe coincidir en ambas queries                                                |
+| **Orden de Columnas**          | Debe ser idéntico en ambas consultas    | Primera columna de ambas queries debe ser del mismo tipo                                           |
+| **Nomenclatura**               | Se usa el nombre de la primera consulta | `SELECT id, nombre UNION SELECT cliente_id, nombre_cliente` → resultado tiene columnas: id, nombre |
+| **ORDER BY**                   | Solo al final de toda la operación      | `(SELECT ...) UNION (SELECT ...) ORDER BY columna`                                                 |
+| **Performance**                | UNION ALL > UNION > INTERSECT > EXCEPT  | UNION ALL es más rápido porque no elimina duplicados                                               |
+
+### 💡 Tips para Entrevistas Técnicas
+
+- **Explicar diferencia entre UNION y UNION ALL**: UNION elimina duplicados, UNION ALL es más rápido
+- **Mencionar equivalencias**: INTERSECT ≈ INNER JOIN, EXCEPT ≈ LEFT JOIN WHERE NULL
+- **Considerar índices**: Operaciones de conjuntos se benefician de índices en columnas de JOIN
+- **Performance**: Para datasets grandes, considerar materialized views para operaciones frecuentes
+- **Casos de uso reales**: Análisis de churn, segmentación de clientes, reports comparativos
+
 ## Performance Optimization PostgreSQL
 
 **Estrategias específicas de optimización para PostgreSQL con enfoque en aplicaciones .NET de alto tráfico.**
@@ -391,3 +682,134 @@ Crítica para equipos de soporte que mantienen aplicaciones .NET con PostgreSQL 
 | **Memory Issues**              | OOM errors                          | Monitor PostgreSQL memory usage | Tune shared_buffers, work_mem              |
 | **SSL Connection Issues**      | Certificate errors                  | Verify SSL configuration        | Update connection string, certificates     |
 | **Migration Failures**         | EF migration errors                 | Check PostgreSQL logs           | Fix schema differences, data types         |
+
+---
+
+## 🔍 20 Queries PostgreSQL Esenciales para Entrevistas
+
+**Queries PostgreSQL más comunes en entrevistas técnicas con implementación .NET usando Npgsql y Entity Framework.**
+Esta sección cubre desde consultas básicas hasta optimizaciones avanzadas que demuestran conocimiento profundo de PostgreSQL.
+Fundamental para preparar entrevistas senior y demostrar expertise en desarrollo .NET con PostgreSQL.
+
+| **#**  | **Query PostgreSQL**                                                                                                                                                                                                                  | **Implementación .NET**                                                                                                                                                                                                                                           | **Descripción**                                                                       |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **1**  | **SELECT con LIMIT y OFFSET**                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT * FROM users ORDER BY created_at DESC LIMIT 10 OFFSET 20;`                                                                                                                                                                    | `context.Users.OrderByDescending(u => u.CreatedAt).Skip(20).Take(10).ToListAsync()`                                                                                                                                                                               | Paginación básica para mostrar registros de la página 3 con 10 elementos por página   |
+| **2**  | **JOIN con agregaciones**                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT u.name, COUNT(o.id) as order_count FROM users u LEFT JOIN orders o ON u.id = o.user_id GROUP BY u.id, u.name;`                                                                                                                | `context.Users.Select(u => new { u.Name, OrderCount = u.Orders.Count() }).ToListAsync()`                                                                                                                                                                          | Obtener usuarios con el total de órdenes de cada uno, incluyendo usuarios sin órdenes |
+| **3**  | **Window Functions - ROW_NUMBER()**                                                                                                                                                                                                   |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT *, ROW_NUMBER() OVER (PARTITION BY category_id ORDER BY price DESC) as rank FROM products;`                                                                                                                                   | `context.Products.Select(p => new { Product = p, Rank = context.Products.Where(x => x.CategoryId == p.CategoryId).Where(x => x.Price >= p.Price).Count() })`                                                                                                      | Ranking de productos por precio dentro de cada categoría                              |
+| **4**  | **CTE (Common Table Expression)**                                                                                                                                                                                                     |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `WITH monthly_sales AS (SELECT DATE_TRUNC('month', created_at) as month, SUM(total) as sales FROM orders GROUP BY month) SELECT * FROM monthly_sales WHERE sales > 10000;`                                                            | `var monthlySales = context.Orders.GroupBy(o => new { o.CreatedAt.Year, o.CreatedAt.Month }).Select(g => new { Month = g.Key, Sales = g.Sum(o => o.Total) }); var result = monthlySales.Where(m => m.Sales > 10000);`                                             | Ventas mensuales agregadas con filtro de umbral mínimo                                |
+| **5**  | **EXISTS vs IN**                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT * FROM users u WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id AND o.status = 'completed');`                                                                                                                      | `context.Users.Where(u => u.Orders.Any(o => o.Status == "completed")).ToListAsync()`                                                                                                                                                                              | Usuarios que tienen al menos una orden completada (más eficiente que IN)              |
+| **6**  | **JSONB Query**                                                                                                                                                                                                                       |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT * FROM products WHERE metadata->>'brand' = 'Apple' AND (metadata->'features'->>0) = 'wireless';`                                                                                                                              | `context.Products.Where(p => p.Metadata.RootElement.GetProperty("brand").GetString() == "Apple").ToListAsync()`                                                                                                                                                   | Búsqueda en campos JSON por marca y primera característica                            |
+| **7**  | **Array Operations**                                                                                                                                                                                                                  |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT * FROM products WHERE 'electronics' = ANY(categories) AND array_length(categories, 1) > 2;`                                                                                                                                   | `context.Products.Where(p => p.Categories.Contains("electronics") && p.Categories.Length > 2).ToListAsync()`                                                                                                                                                      | Productos en categoría específica con múltiples categorías                            |
+| **8**  | **UPSERT con ON CONFLICT**                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `INSERT INTO user_stats (user_id, login_count) VALUES ($1, 1) ON CONFLICT (user_id) DO UPDATE SET login_count = user_stats.login_count + 1;`                                                                                          | `var userStat = await context.UserStats.FirstOrDefaultAsync(us => us.UserId == userId); if (userStat == null) { context.UserStats.Add(new UserStat { UserId = userId, LoginCount = 1 }); } else { userStat.LoginCount++; }`                                       | Incrementar contador de logins o crear registro si no existe                          |
+| **9**  | **Recursive CTE**                                                                                                                                                                                                                     |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `WITH RECURSIVE subordinates AS (SELECT id, name, manager_id FROM employees WHERE id = $1 UNION ALL SELECT e.id, e.name, e.manager_id FROM employees e INNER JOIN subordinates s ON s.id = e.manager_id) SELECT * FROM subordinates;` | `// Usar función personalizada o múltiples queries`                                                                                                                                                                                                               | Obtener todos los subordinados de un manager (jerarquía organizacional)               |
+| **10** | **Date Range con Index**                                                                                                                                                                                                              |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT * FROM orders WHERE created_at >= '2024-01-01' AND created_at < '2024-02-01' ORDER BY created_at;`                                                                                                                            | `context.Orders.Where(o => o.CreatedAt >= new DateTime(2024, 1, 1) && o.CreatedAt < new DateTime(2024, 2, 1)).OrderBy(o => o.CreatedAt).ToListAsync()`                                                                                                            | Órdenes del mes de enero 2024 con orden cronológico                                   |
+| **11** | **Subquery Correlacionada**                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT * FROM products p WHERE p.price > (SELECT AVG(price) FROM products p2 WHERE p2.category_id = p.category_id);`                                                                                                                 | `context.Products.Where(p => p.Price > context.Products.Where(p2 => p2.CategoryId == p.CategoryId).Average(p2 => p2.Price)).ToListAsync()`                                                                                                                        | Productos con precio superior al promedio de su categoría                             |
+| **12** | **CASE WHEN**                                                                                                                                                                                                                         |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT name, CASE WHEN age < 18 THEN 'Minor' WHEN age < 65 THEN 'Adult' ELSE 'Senior' END as age_group FROM users;`                                                                                                                  | `context.Users.Select(u => new { u.Name, AgeGroup = u.Age < 18 ? "Minor" : u.Age < 65 ? "Adult" : "Senior" }).ToListAsync()`                                                                                                                                      | Clasificación de usuarios por grupos de edad                                          |
+| **13** | **DISTINCT ON**                                                                                                                                                                                                                       |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT DISTINCT ON (user_id) * FROM orders ORDER BY user_id, created_at DESC;`                                                                                                                                                       | `context.Orders.GroupBy(o => o.UserId).Select(g => g.OrderByDescending(o => o.CreatedAt).First()).ToListAsync()`                                                                                                                                                  | Última orden de cada usuario                                                          |
+| **14** | **String Functions**                                                                                                                                                                                                                  |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT * FROM users WHERE LOWER(email) LIKE '%@gmail.com' AND LENGTH(name) > 5;`                                                                                                                                                     | `context.Users.Where(u => u.Email.ToLower().Contains("@gmail.com") && u.Name.Length > 5).ToListAsync()`                                                                                                                                                           | Usuarios Gmail con nombres largos                                                     |
+| **15** | **NULL Handling**                                                                                                                                                                                                                     |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT name, COALESCE(phone, 'No phone') as contact FROM users WHERE email IS NOT NULL;`                                                                                                                                             | `context.Users.Where(u => u.Email != null).Select(u => new { u.Name, Contact = u.Phone ?? "No phone" }).ToListAsync()`                                                                                                                                            | Usuarios con email válido y manejo de teléfono opcional                               |
+| **16** | **Performance - Index Hint**                                                                                                                                                                                                          |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT * FROM orders WHERE customer_id = $1 AND status = 'pending' ORDER BY created_at DESC;`                                                                                                                                        | `context.Orders.Where(o => o.CustomerId == customerId && o.Status == "pending").OrderByDescending(o => o.CreatedAt).ToListAsync()`                                                                                                                                | Query optimizada que debe usar índice compuesto (customer_id, status, created_at)     |
+| **17** | **HAVING con GROUP BY**                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `SELECT category_id, COUNT(*) as product_count, AVG(price) as avg_price FROM products GROUP BY category_id HAVING COUNT(*) > 5 AND AVG(price) > 100;`                                                                                 | `context.Products.GroupBy(p => p.CategoryId).Where(g => g.Count() > 5 && g.Average(p => p.Price) > 100).Select(g => new { CategoryId = g.Key, ProductCount = g.Count(), AvgPrice = g.Average(p => p.Price) }).ToListAsync()`                                      | Categorías con muchos productos y precio promedio alto                                |
+| **18** | **Union y Except**                                                                                                                                                                                                                    |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `(SELECT name FROM active_users) UNION (SELECT name FROM premium_users) EXCEPT (SELECT name FROM banned_users);`                                                                                                                      | `var active = context.ActiveUsers.Select(u => u.Name); var premium = context.PremiumUsers.Select(u => u.Name); var banned = context.BannedUsers.Select(u => u.Name); var result = active.Union(premium).Except(banned).ToListAsync()`                             | Usuarios activos o premium pero no baneados                                           |
+| **19** | **Transacciones y Locks**                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `BEGIN; SELECT * FROM products WHERE id = $1 FOR UPDATE; UPDATE products SET stock = stock - $2 WHERE id = $1; COMMIT;`                                                                                                               | `using var transaction = await context.Database.BeginTransactionAsync(); var product = await context.Products.Where(p => p.Id == productId).FirstOrDefaultAsync(); product.Stock -= quantity; await context.SaveChangesAsync(); await transaction.CommitAsync();` | Reducción de stock con lock para evitar condiciones de carrera                        |
+| **20** | **EXPLAIN ANALYZE**                                                                                                                                                                                                                   |                                                                                                                                                                                                                                                                   |                                                                                       |
+|        | `EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM orders o JOIN customers c ON o.customer_id = c.id WHERE c.country = 'USA' AND o.total > 1000;`                                                                                              | `// Usar logging de EF Core o herramientas como MiniProfiler`                                                                                                                                                                                                     | Análisis de plan de ejecución para optimización de queries costosas                   |
+
+---
+
+## 🗺️ 20 Queries PostGIS Esenciales para Entrevistas
+
+**Queries PostGIS más demandadas en entrevistas con datos geoespaciales usando NetTopologySuite en .NET.**
+Esta sección cubre consultas espaciales desde básicas hasta análisis geográfico complejo para aplicaciones de mapas y geolocalización.
+Esencial para roles que involucran GIS, delivery, real estate, logistics o cualquier aplicación con componente geográfico.
+
+| **#**  | **Query PostGIS**                                                                                                                                                                                       | **Implementación .NET**                                                                                                                                                                                                                                               | **Descripción**                                              |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **1**  | **Crear Point**                                                                                                                                                                                         |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_MakePoint(-74.006, 40.7128);`                                                                                                                                                                | `var point = new Point(-74.006, 40.7128) { SRID = 4326 };`                                                                                                                                                                                                            | Crear punto geográfico (Nueva York) con coordenadas lat/lng  |
+| **2**  | **Distancia entre puntos**                                                                                                                                                                              |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_Distance(ST_MakePoint(-74.006, 40.7128), ST_MakePoint(-118.2437, 34.0522));`                                                                                                                 | `var nyc = new Point(-74.006, 40.7128) { SRID = 4326 }; var la = new Point(-118.2437, 34.0522) { SRID = 4326 }; var distance = nyc.Distance(la);`                                                                                                                     | Distancia en metros entre Nueva York y Los Ángeles           |
+| **3**  | **Puntos dentro de radio**                                                                                                                                                                              |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT * FROM stores WHERE ST_DWithin(location, ST_MakePoint($1, $2), 5000);`                                                                                                                          | `var userLocation = new Point(lng, lat) { SRID = 4326 }; var nearbyStores = context.Stores.Where(s => s.Location.IsWithinDistance(userLocation, 5000)).ToListAsync();`                                                                                                | Tiendas dentro de 5km del usuario                            |
+| **4**  | **Punto dentro de polígono**                                                                                                                                                                            |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT * FROM deliveries WHERE ST_Contains(delivery_zone, customer_location);`                                                                                                                         | `context.Deliveries.Where(d => d.DeliveryZone.Contains(d.CustomerLocation)).ToListAsync()`                                                                                                                                                                            | Entregas donde el cliente está dentro de la zona de delivery |
+| **5**  | **Crear buffer/zona circular**                                                                                                                                                                          |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_Buffer(ST_MakePoint($1, $2), 1000);`                                                                                                                                                         | `var storeLocation = new Point(lng, lat) { SRID = 4326 }; var deliveryZone = storeLocation.Buffer(1000);`                                                                                                                                                             | Crear zona de 1km alrededor de una tienda                    |
+| **6**  | **Área de polígono**                                                                                                                                                                                    |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_Area(ST_Transform(polygon, 3857)) FROM zones WHERE id = $1;`                                                                                                                                 | `var zone = await context.Zones.FindAsync(zoneId); var area = zone.Polygon.Area;`                                                                                                                                                                                     | Calcular área en metros cuadrados de una zona                |
+| **7**  | **Punto más cercano**                                                                                                                                                                                   |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT *, ST_Distance(location, ST_MakePoint($1, $2)) as distance FROM restaurants ORDER BY distance LIMIT 1;`                                                                                         | `var userLocation = new Point(lng, lat) { SRID = 4326 }; var nearest = await context.Restaurants.OrderBy(r => r.Location.Distance(userLocation)).FirstOrDefaultAsync();`                                                                                              | Restaurante más cercano al usuario                           |
+| **8**  | **Intersección de polígonos**                                                                                                                                                                           |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_Intersection(a.polygon, b.polygon) FROM area_a a, area_b b WHERE ST_Intersects(a.polygon, b.polygon);`                                                                                       | `context.AreaA.Join(context.AreaB, a => true, b => true, (a, b) => new { a, b }).Where(x => x.a.Polygon.Intersects(x.b.Polygon)).Select(x => x.a.Polygon.Intersection(x.b.Polygon))`                                                                                  | Área de intersección entre dos zonas                         |
+| **9**  | **Geocoding inverso**                                                                                                                                                                                   |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT address FROM addresses ORDER BY location <-> ST_MakePoint($1, $2) LIMIT 1;`                                                                                                                     | `var location = new Point(lng, lat) { SRID = 4326 }; var address = await context.Addresses.OrderBy(a => a.Location.Distance(location)).Select(a => a.AddressText).FirstOrDefaultAsync();`                                                                             | Dirección más cercana a una coordenada                       |
+| **10** | **Ruta/línea entre puntos**                                                                                                                                                                             |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_MakeLine(ARRAY[ST_MakePoint(-74, 40), ST_MakePoint(-118, 34)]);`                                                                                                                             | `var points = new[] { new Point(-74, 40), new Point(-118, 34) }; var route = new LineString(points);`                                                                                                                                                                 | Crear línea de ruta entre múltiples puntos                   |
+| **11** | **Bounding Box**                                                                                                                                                                                        |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT * FROM locations WHERE location && ST_MakeEnvelope($1, $2, $3, $4, 4326);`                                                                                                                      | `var bbox = new Polygon(new LinearRing(new[] { new Coordinate(x1, y1), new Coordinate(x2, y1), new Coordinate(x2, y2), new Coordinate(x1, y2), new Coordinate(x1, y1) })); var results = context.Locations.Where(l => bbox.Intersects(l.Location));`                  | Puntos dentro de un rectángulo geográfico                    |
+| **12** | **Centroide de polígono**                                                                                                                                                                               |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_Centroid(polygon) FROM districts WHERE name = $1;`                                                                                                                                           | `var district = await context.Districts.Where(d => d.Name == districtName).Select(d => d.Polygon.Centroid).FirstOrDefaultAsync();`                                                                                                                                    | Centro geográfico de un distrito                             |
+| **13** | **Densidad de puntos**                                                                                                                                                                                  |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_X(location) as lng, ST_Y(location) as lat, COUNT(*) as density FROM events WHERE created_at > NOW() - INTERVAL '1 day' GROUP BY ST_SnapToGrid(location, 0.01);`                              | `var yesterday = DateTime.Now.AddDays(-1); var density = context.Events.Where(e => e.CreatedAt > yesterday).GroupBy(e => new { Lng = Math.Round(e.Location.X, 2), Lat = Math.Round(e.Location.Y, 2) }).Select(g => new { g.Key.Lng, g.Key.Lat, Count = g.Count() });` | Mapa de calor agrupando eventos por grid                     |
+| **14** | **Validar geometría**                                                                                                                                                                                   |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT id, ST_IsValid(polygon), ST_IsValidReason(polygon) FROM zones WHERE NOT ST_IsValid(polygon);`                                                                                                   | `var invalidZones = context.Zones.Where(z => !z.Polygon.IsValid).Select(z => new { z.Id, IsValid = z.Polygon.IsValid });`                                                                                                                                             | Encontrar polígonos con geometría inválida                   |
+| **15** | **Simplificar geometría**                                                                                                                                                                               |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `UPDATE zones SET simplified_polygon = ST_Simplify(polygon, 0.001) WHERE ST_NPoints(polygon) > 1000;`                                                                                                   | `var complexZones = context.Zones.Where(z => z.Polygon.NumPoints > 1000); foreach(var zone in complexZones) { zone.SimplifiedPolygon = zone.Polygon.Simplify(0.001); }`                                                                                               | Simplificar polígonos complejos para mejor performance       |
+| **16** | **Línea más cercana**                                                                                                                                                                                   |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT *, ST_Distance(location, road_geometry) as distance FROM buildings ORDER BY distance LIMIT 5;`                                                                                                  | `context.Buildings.OrderBy(b => b.Location.Distance(context.Roads.Select(r => r.Geometry).FirstOrDefault())).Take(5)`                                                                                                                                                 | Edificios más cercanos a cualquier carretera                 |
+| **17** | **Análisis de cobertura**                                                                                                                                                                               |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT zone_id, COUNT(*) as coverage FROM customers c JOIN service_zones sz ON ST_Contains(sz.polygon, c.location) GROUP BY zone_id;`                                                                  | `var coverage = context.ServiceZones.Select(sz => new { sz.ZoneId, Coverage = context.Customers.Count(c => sz.Polygon.Contains(c.Location)) });`                                                                                                                      | Cuántos clientes cubre cada zona de servicio                 |
+| **18** | **Conversión de coordenadas**                                                                                                                                                                           |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_Transform(ST_SetSRID(ST_MakePoint($1, $2), 4326), 3857);`                                                                                                                                    | `var wgs84Point = new Point(lng, lat) { SRID = 4326 }; var webMercator = wgs84Point.Copy(); webMercator.SRID = 3857;`                                                                                                                                                 | Convertir de WGS84 (lat/lng) a Web Mercator para mapas       |
+| **19** | **Cluster espacial**                                                                                                                                                                                    |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT cluster_id, COUNT(*), ST_Centroid(ST_Collect(location)) as center FROM (SELECT *, ST_ClusterDBSCAN(location, 1000, 5) OVER () as cluster_id FROM events) clustered GROUP BY cluster_id;`        | `// Requiere procesamiento custom o usar algoritmos de clustering en .NET`                                                                                                                                                                                            | Agrupar eventos cercanos en clusters geográficos             |
+| **20** | **Ruta óptima (TSP básico)**                                                                                                                                                                            |                                                                                                                                                                                                                                                                       |                                                              |
+|        | `SELECT ST_MakeLine(location ORDER BY sequence) FROM (SELECT location, ROW_NUMBER() OVER (ORDER BY ST_Distance(location, LAG(location) OVER (ORDER BY random()))) as sequence FROM waypoints) ordered;` | `// Usar algoritmos de routing como Google Directions API integrado con PostGIS`                                                                                                                                                                                      | Ordenar puntos para crear ruta más eficiente                 |
+
+---
+
+## 💡 Tips para Entrevistas Técnicas
+
+**Consejos específicos para demostrar expertise en PostgreSQL y PostGIS durante entrevistas técnicas.**
+Esta sección ayuda a prepararse para preguntas avanzadas y demostrar conocimiento profundo del ecosistema.
+Fundamental para destacar en entrevistas senior y posiciones de arquitecto de datos.
+
+### 🎯 **Temas Clave a Dominar:**
+
+| **Categoría**         | **Conceptos Importantes**                     | **Preguntas Típicas**                                    |
+| --------------------- | --------------------------------------------- | -------------------------------------------------------- |
+| **Performance**       | Índices GIN/GiST, EXPLAIN, connection pooling | "¿Cómo optimizarías una query lenta?"                    |
+| **Transacciones**     | ACID, isolation levels, deadlocks             | "¿Cómo manejas concurrencia en PostgreSQL?"              |
+| **Tipos de Datos**    | JSONB vs JSON, Arrays, UUID vs SERIAL         | "¿Cuándo usarías JSONB en lugar de tablas relacionales?" |
+| **Spatial**           | SRID, proyecciones, índices espaciales        | "¿Cómo calcularías entregas dentro de un radio?"         |
+| **Azure Integration** | Managed services, backup strategies           | "¿Cómo migrarías PostgreSQL a Azure?"                    |
+| **EF Core**           | Migrations, DbContext optimization            | "¿Cómo mapeas tipos PostgreSQL específicos?"             |
+
+### 🏆 **Demonstrar Expertise:**
+
+- **Explica trade-offs** entre diferentes approaches
+- **Menciona consideraciones de performance** para cada query
+- **Discute índices apropiados** para optimizar consultas
+- **Considera implicaciones de escalabilidad** en cada solución
+- **Relaciona con casos de uso reales** de tu experiencia
+
+_🎓 Esta sección de queries cubre los aspectos más importantes que se evalúan en entrevistas técnicas para roles que involucran PostgreSQL y datos geoespaciales con .NET._
