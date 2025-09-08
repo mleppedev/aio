@@ -141,8 +141,6 @@ public class PaymentEventHandler
 }
 ```
 
----
-
 ## 🏦 Caso de Uso: Sistema Bancario
 
 **Implementación de transferencias bancarias usando Saga Pattern para manejar transacciones distribuidas.**
@@ -268,8 +266,6 @@ public class MoneyTransferSaga
     }
 }
 ```
-
----
 
 ## 📊 Caso de Uso: Sistema de Inventario en Tiempo Real
 
@@ -437,8 +433,6 @@ public class CurrentStockProjection
 }
 ```
 
----
-
 ## 🚚 Caso de Uso: Sistema de Delivery
 
 **Implementación de tracking en tiempo real usando eventos para coordinar conductores, pedidos y clientes.**
@@ -580,8 +574,6 @@ public class AnalyticsHandler
 }
 ```
 
----
-
 ## 🎯 Patrones de Messaging Comparados
 
 **Comparación práctica de diferentes patrones de messaging con ejemplos de cuándo usar cada uno.**
@@ -595,8 +587,6 @@ Fundamental para tomar decisiones arquitectónicas informadas en sistemas distri
 | **Publish/Subscribe** | 1 a muchos, asíncrono    | Notificaciones, updates | Escalable, flexible | Complejidad en orden   | Múltiples consumidores del mismo evento              |
 | **Message Queue**     | 1 a 1, garantías         | Task processing         | Confiable, ordenado | Single consumer        | Procesamiento de tareas, workers                     |
 | **Event Streaming**   | Continuo, alto volumen   | Real-time analytics     | Alto throughput     | Complejidad            | Análisis en tiempo real, big data                    |
-
----
 
 ## 🔧 Tools y Tecnologías por Escenario
 
@@ -612,15 +602,13 @@ Esencial para hacer decisiones técnicas alineadas con requirements no funcional
 | **Gaming/Social**               | Redis Streams, Apache Pulsar   | MongoDB, Cassandra          | Chat, leaderboards, notifications | Latencia ultra-baja, escalabilidad     |
 | **Enterprise Integration**      | Azure Service Bus, MassTransit | Azure Cosmos DB, SQL Server | ERP integration, workflows        | Connectivity, security, compliance     |
 
----
-
 ## 📊 Monitoreo y Observabilidad
 
 **Métricas clave para monitorear sistemas event-driven y detectar problemas proactivamente.**
 Esta tabla define qué observar en cada componente para mantener sistemas saludables.
 Crítica para operaciones que mantienen sistemas distribuidos en producción.
 
-````mermaid
+```mermaid
 graph TB
     subgraph "Event-Driven System Monitoring"
         subgraph "Message Queue Health"
@@ -658,15 +646,15 @@ graph TB
     style SC1 fill:#e1f5fe
     style SC2 fill:#fff3e0
     style SH1 fill:#e8f5e8
-```| **Componente**        | **Métricas Clave**                               | **Alertas**                   | **Herramientas**      |
+```
+
+| **Componente**        | **Métricas Clave**                               | **Alertas**                   | **Herramientas**      |
 | --------------------- | ------------------------------------------------ | ----------------------------- | --------------------- |
 | **Message Broker**    | Queue depth, throughput, latency                 | Queue overflow, consumer lag  | Prometheus, Grafana   |
 | **Event Handlers**    | Processing time, error rate, retry count         | High latency, failures        | Application Insights  |
 | **Saga Orchestrator** | Active sagas, completion rate, compensation rate | Stuck sagas, high failures    | Custom dashboards     |
 | **Event Store**       | Write throughput, read latency, storage growth   | Storage limits, slow queries  | Database monitoring   |
 | **Consumer Groups**   | Lag, partition distribution, rebalancing         | Consumer failures, lag spikes | Kafka Manager, Burrow |
-
----
 
 ## 🚀 Mejores Prácticas Implementadas
 
@@ -712,7 +700,7 @@ public class OrderEventHandler
         return $"{@event.GetType().Name}_{@event.OrderId}_{@event.Timestamp:yyyyMMddHHmmss}";
     }
 }
-````
+```
 
 ### 2. **Circuit Breaker para Event Publishing**
 
@@ -771,8 +759,6 @@ public class ReliableEventHandler<T> where T : class
 }
 ```
 
----
-
 ## 📚 Recursos y Referencias
 
 **Enlaces útiles y recursos adicionales para profundizar en Event-Driven Architecture.**
@@ -800,7 +786,5 @@ Esta sección proporciona materiales complementarios para continuar el aprendiza
 3. **Introducir sagas** - Para transacciones distribuidas
 4. **Monitoreo y alertas** - Observabilidad completa
 5. **Performance tuning** - Optimización para producción
-
----
 
 _🎯 Esta guía didáctica complementa la referencia técnica proporcionando contexto práctico y casos de uso reales para implementar Event-Driven Architecture exitosamente._

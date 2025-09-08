@@ -870,12 +870,12 @@ code {
   font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
   font-size: 0.85rem;
   border: 1px solid var(--border);
-  white-space: pre-wrap; /* Permitir saltos de línea y preservar espacios */
-  word-break: break-word; /* Romper palabras largas */
-  overflow-wrap: break-word; /* Compatibilidad adicional */
+  white-space: pre-wrap; /* Permitir saltos de línea */
+  word-break: break-word; /* Romper palabras largas si es necesario */
   display: inline-block;
   max-width: 100%;
   line-height: 1.4;
+  overflow-wrap: break-word; /* Para mejor compatibilidad */
 }
 
 /* Indicadores de estado con colores */
